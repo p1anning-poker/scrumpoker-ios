@@ -38,6 +38,7 @@ struct TaskCreate: View {
     Task {
       do {
         let task = try await taskService.createTask(name: name, url: url)
+        taskService.share(task: task)
         onCreate(task)
       } catch {
         self.error = error.localizedDescription

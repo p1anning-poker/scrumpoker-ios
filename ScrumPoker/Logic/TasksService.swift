@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Cocoa
 
 final class TasksService: ObservableObject {
   
@@ -20,7 +21,9 @@ final class TasksService: ObservableObject {
   
   func reloadTasks() async throws {
     self.tasks = try await api.myTasks()
-    objectWillChange.send()
+    await MainActor.run {
+      self.objectWillChange.send()
+    }
   }
   
   private func reload() {
@@ -46,5 +49,12 @@ extension TasksService {
   func delete(taskId: ApiTask.ID) async throws {
     try await api.delete(taskId: taskId)
     reload()
+  }
+  
+  func share(task: ApiTask) {
+    let text = "[\(task.name)](scrumpoker://?taskId=\(task.id))"
+    let pasteboard = NSPasteboard.general
+    pasteboard.declareTypes([.string], owner: nil)
+    pasteboard.setString(text, forType: .string)
   }
 }

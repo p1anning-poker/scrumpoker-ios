@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TaskView: View {
   @EnvironmentObject private var api: PokerAPI
+  @EnvironmentObject private var taskService: TasksService
   @EnvironmentObject private var appState: AppState
   @Environment(\.openURL) var openURL
   
@@ -182,10 +183,8 @@ struct TaskView: View {
   }
   
   private func shareLink() {
-    let text = "[\(task?.name ?? taskId)](scrumpoker://?taskId=\(taskId))"
-    let pasteboard = NSPasteboard.general
-    pasteboard.declareTypes([.string], owner: nil)
-    pasteboard.setString(text, forType: .string)
+    guard let task = task else { return }
+    taskService.share(task: task)
   }
 }
 
