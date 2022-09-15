@@ -9,39 +9,52 @@ import SwiftUI
 import Cocoa
 
 struct MyTasksView: View {
+  
+  private enum ContentType: Equatable {
+    case empty
+    case details(ApiTask)
+    case none
+  }
+  
   @EnvironmentObject private var appState: AppState
-  @EnvironmentObject private var api: PokerAPI
-  @State private var tasks = [ApiTask]()
+  @EnvironmentObject private var tasksService: TasksService
   @State private var error: String?
   @State private var displayCreate: Bool = false
   @State private var selection: Int?
+  @State private var content: ContentType = .empty
   
   @Binding var openAtStart: ApiTask.ID?
   
   var body: some View {
     VStack(alignment: .center) {
-      header()
       if let error = error {
         Text(error)
           .foregroundColor(.red)
-      } else if tasks.isEmpty {
+      } else if tasksService.tasks.isEmpty {
         Text("You have no tasks")
       } else {
-        List(selection: $selection) {
-          ForEach(tasks) { task in
+        List() {
+          ForEach(tasksService.tasks) { task in
             taskView(task)
           }
         }
-        .listRowBackground(Color.orange)
       }
       Spacer()
-      if let id = openAtStart {
-        NavigationLink("", isActive: .constant(true)) {
-          TaskView(taskId: id)
+      NavigationLink(isActive: .constant(content == .empty)) {
+        switch content {
+        case .empty:
+          Text("Nothing to display")
+        case .details(let apiTask):
+          TaskView(task: apiTask)
+        case .none:
+          EmptyView()
         }
+      } label: {
+        EmptyView()
       }
+      .frame(width: 0)
+      .opacity(0)
     }
-    .padding()
     .onAppear {
       reload()
       openAtStart = nil
@@ -61,19 +74,27 @@ struct MyTasksView: View {
         NavigationLink("Add", isActive: $displayCreate) {
           TaskCreate { _ in
             displayCreate = false
-            reload()
           }
         }
         Button("Refresh", action: reload)
       }
       Divider()
     }
-    .frame(minWidth: 200, maxWidth: .infinity, minHeight: 30)
   }
   
   @ViewBuilder
   private func taskView(_ task: ApiTask) -> some View {
-    NavigationLink {
+    let binding = Binding<Bool> {
+      content == .details(task)
+    } set: { active in
+      if active {
+        content = .details(task)
+      } else {
+        content = .empty
+      }
+    }
+
+    NavigationLink(isActive: binding) {
       TaskView(task: task)
     } label: {
       HStack {
@@ -102,7 +123,7 @@ struct MyTasksView: View {
     error = nil
     Task {
       do {
-        tasks = try await api.myTasks()
+        try await tasksService.reloadTasks()
       } catch {
         self.error = error.localizedDescription
       }
@@ -113,11 +134,10 @@ struct MyTasksView: View {
     error = nil
     Task {
       do {
-        try await api.delete(taskId: task.id)
-        if selection == tasks.firstIndex(where: { $0.id == task.id }) {
-          selection = nil
+        try await tasksService.delete(taskId: task.id)
+        if content == .details(task) {
+          content = .empty
         }
-        reload()
       } catch {
         self.error = error.localizedDescription
       }

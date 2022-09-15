@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B43E4C4028D3B52F00ABD0D2 /* Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43E4C3F28D3B52F00ABD0D2 /* Toolbar.swift */; };
+		B43E4C4228D3C17800ABD0D2 /* TasksService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43E4C4128D3C17800ABD0D2 /* TasksService.swift */; };
 		B493D4D628D31C7F00B95A23 /* ScrumPokerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4D528D31C7F00B95A23 /* ScrumPokerApp.swift */; };
 		B493D4D828D31C7F00B95A23 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4D728D31C7F00B95A23 /* ContentView.swift */; };
 		B493D4DA28D31C8100B95A23 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B493D4D928D31C8100B95A23 /* Assets.xcassets */; };
@@ -30,6 +32,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B43E4C3F28D3B52F00ABD0D2 /* Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toolbar.swift; sourceTree = "<group>"; };
+		B43E4C4128D3C17800ABD0D2 /* TasksService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksService.swift; sourceTree = "<group>"; };
 		B493D4D228D31C7F00B95A23 /* ScrumPoker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScrumPoker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B493D4D528D31C7F00B95A23 /* ScrumPokerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrumPokerApp.swift; sourceTree = "<group>"; };
 		B493D4D728D31C7F00B95A23 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -66,6 +70,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B43E4C3E28D3B51B00ABD0D2 /* Elements */ = {
+			isa = PBXGroup;
+			children = (
+				B43E4C3F28D3B52F00ABD0D2 /* Toolbar.swift */,
+			);
+			path = Elements;
+			sourceTree = "<group>";
+		};
 		B493D4C928D31C7F00B95A23 = {
 			isa = PBXGroup;
 			children = (
@@ -114,6 +126,7 @@
 				B493D4E728D31D9100B95A23 /* Coordinator.swift */,
 				B493D4F628D3329D00B95A23 /* PokerAPI.swift */,
 				B493D4F828D333DF00B95A23 /* NetworkService.swift */,
+				B43E4C4128D3C17800ABD0D2 /* TasksService.swift */,
 			);
 			path = Logic;
 			sourceTree = "<group>";
@@ -142,6 +155,7 @@
 		B493D4F328D3321300B95A23 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B43E4C3E28D3B51B00ABD0D2 /* Elements */,
 				B493D4F128D3320F00B95A23 /* MyTasksView.swift */,
 				B493D4F428D3322C00B95A23 /* AuthorizationView.swift */,
 				B493D50028D34AA200B95A23 /* TaskView.swift */,
@@ -225,6 +239,7 @@
 				B493D50128D34AA200B95A23 /* TaskView.swift in Sources */,
 				B493D4F928D333DF00B95A23 /* NetworkService.swift in Sources */,
 				B493D50A28D37F2200B95A23 /* RegistrationView.swift in Sources */,
+				B43E4C4228D3C17800ABD0D2 /* TasksService.swift in Sources */,
 				B493D50728D3650C00B95A23 /* TaskCreate.swift in Sources */,
 				B493D4F028D32F5900B95A23 /* Dependencies.swift in Sources */,
 				B493D4E828D31D9100B95A23 /* Coordinator.swift in Sources */,
@@ -238,6 +253,7 @@
 				B493D4F728D3329D00B95A23 /* PokerAPI.swift in Sources */,
 				B493D4EE28D31F4200B95A23 /* PopoverHolderView.swift in Sources */,
 				B493D4E628D31D7F00B95A23 /* MenuService.swift in Sources */,
+				B43E4C4028D3B52F00ABD0D2 /* Toolbar.swift in Sources */,
 				B493D4F528D3322C00B95A23 /* AuthorizationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

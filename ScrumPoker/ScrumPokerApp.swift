@@ -15,17 +15,20 @@ struct ScrumPokerApp: App {
   var body: some Scene {
     WindowGroup {
       MainView()
-        .onOpenURL { url in
-          print("url: \(url)")
-          dependencies.coordinator.handle(deeplink: url,
-                                          button: dependencies.menuService.statusItem.button ?? NSStatusBarButton())
-        }
-        .onAppear {
-          _ = dependencies.menuService
-        }
         .environmentObject(dependencies.appState)
-        .environmentObject(dependencies.coordinator)
+        .environmentObject(dependencies.pokerApi)
+        .environmentObject(dependencies.tasksService)
+//        .onOpenURL { url in
+//          print("url: \(url)")
+//          dependencies.coordinator.handle(deeplink: url,
+//                                          button: dependencies.menuService.statusItem.button ?? NSStatusBarButton())
+//        }
+//        .onAppear {
+//          _ = dependencies.menuService
+//        }
     }
+    .windowStyle(HiddenTitleBarWindowStyle())
+    .windowToolbarStyle(UnifiedWindowToolbarStyle())
   }
 }
 
@@ -34,14 +37,30 @@ private struct MainView: View {
   @EnvironmentObject private var coordinator: Coordinator
   
   var body: some View {
-    EmptyView()
-        .frame(width: .zero)
-        .onReceive(appState.isAuthorized) { isAuthorized in
-          updateContent(isAuthorized: isAuthorized)
+    if let user = appState.currentUser {
+      NavigationView {
+        MyTasksView(openAtStart: .constant(nil))
+          .frame(minWidth: 250, maxWidth: 300)
+      }
+      .toolbar {
+        Toolbar(userName: user.name) {
+          appState.set(token: nil, user: nil)
+        } onCreate: {
+          print("create")
         }
-        .onAppear {
-          updateContent(isAuthorized: appState.isAuthorizedValue)
-        }
+      }
+      .frame(minWidth: 600, idealWidth: 800, minHeight: 400, idealHeight: 400)
+    } else {
+      AuthorizationView(onRegister: {})
+    }
+//    EmptyView()
+//        .frame(width: .zero)
+//        .onReceive(appState.isAuthorized) { isAuthorized in
+//          updateContent(isAuthorized: isAuthorized)
+//        }
+//        .onAppear {
+//          updateContent(isAuthorized: appState.isAuthorizedValue)
+//        }
   }
   
   private func updateContent(isAuthorized: Bool) {
