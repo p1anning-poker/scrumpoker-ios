@@ -56,12 +56,6 @@ final class MenuService: NSObject {
   }
   /// Отображает количество реквестов на статус баре
   private func setNumberOfTasks(_ number: Int) {
-    let title = NSAttributedString(
-      string: "Scrum Poker",
-      attributes: [
-        NSAttributedString.Key.foregroundColor: number == 0 ? NSColor.labelColor : NSColor.systemRed
-      ]
-    )
-    statusItem.button?.attributedTitle = title
+    statusItem.button?.image = NSImage(named: "unnamed")
   }
 }
