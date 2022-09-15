@@ -9,7 +9,6 @@ import Cocoa
 import Combine
 
 final class MenuService: NSObject {
-  private let coordinator: Coordinator
   private let appState: AppState
   /// Инстанс статус бара osx
   private let statusBar: NSStatusBar
@@ -17,10 +16,9 @@ final class MenuService: NSObject {
   let statusItem: NSStatusItem
   private var cancellables = Set<AnyCancellable>()
   
-  init(statusBar: NSStatusBar, coordinator: Coordinator, appState: AppState) {
+  init(statusBar: NSStatusBar, appState: AppState) {
     self.statusBar = statusBar
     statusItem = statusBar.statusItem(withLength: NSStatusItem.variableLength)
-    self.coordinator = coordinator
     self.appState = appState
     
     super.init()
@@ -48,11 +46,11 @@ final class MenuService: NSObject {
   }
   
   func togglePopover(button: NSStatusBarButton) {
-    if coordinator.isPopoverVisible {
-      coordinator.dissmissPopover()
-    } else {
-      coordinator.showCurrentContentPopover(aroundButton: button)
-    }
+//    if coordinator.isPopoverVisible {
+//      coordinator.dissmissPopover()
+//    } else {
+//      coordinator.showCurrentContentPopover(aroundButton: button)
+//    }
   }
   /// Отображает количество реквестов на статус баре
   private func setNumberOfTasks(_ number: Int) {

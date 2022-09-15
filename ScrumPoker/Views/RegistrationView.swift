@@ -24,16 +24,7 @@ struct RegistrationView: View {
           .foregroundColor(.red)
           .fixedSize(horizontal: false, vertical: true)
       }
-      TextField("Email", text: $email)
-        .textContentType(.username)
-      TextField("Name", text: $name)
-      SecureField("Password", text: $password)
-        .textContentType(.password)
-      HStack {
-        Button("Exit", action: terminate)
-        Button("Sign In Instead", action: login)
-      }
-      Button("Register", action: register)
+      
     }
     .padding()
   }

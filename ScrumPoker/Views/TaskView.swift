@@ -32,7 +32,9 @@ struct TaskView: View {
       globalActions
       if let error = error {
         Text(error)
+          .fixedSize(horizontal: false, vertical: true)
           .foregroundColor(.red)
+          .multilineTextAlignment(.center)
       } else if task != nil {
         taskBody
       } else {
@@ -173,7 +175,7 @@ struct TaskView: View {
     error = nil
     Task {
       do {
-        try await api.finish(taskId: taskId)
+        try await taskService.finish(taskId: taskId)
         reload()
         reloadVotes()
       } catch {

@@ -14,7 +14,6 @@
 		B493D4DA28D31C8100B95A23 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B493D4D928D31C8100B95A23 /* Assets.xcassets */; };
 		B493D4DD28D31C8100B95A23 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B493D4DC28D31C8100B95A23 /* Preview Assets.xcassets */; };
 		B493D4E628D31D7F00B95A23 /* MenuService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4E528D31D7F00B95A23 /* MenuService.swift */; };
-		B493D4E828D31D9100B95A23 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4E728D31D9100B95A23 /* Coordinator.swift */; };
 		B493D4EB28D31DC300B95A23 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4EA28D31DC300B95A23 /* AppState.swift */; };
 		B493D4EE28D31F4200B95A23 /* PopoverHolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4ED28D31F4200B95A23 /* PopoverHolderView.swift */; };
 		B493D4F028D32F5900B95A23 /* Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4EF28D32F5900B95A23 /* Dependencies.swift */; };
@@ -41,7 +40,6 @@
 		B493D4DC28D31C8100B95A23 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B493D4DE28D31C8100B95A23 /* ScrumPoker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ScrumPoker.entitlements; sourceTree = "<group>"; };
 		B493D4E528D31D7F00B95A23 /* MenuService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuService.swift; sourceTree = "<group>"; };
-		B493D4E728D31D9100B95A23 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		B493D4EA28D31DC300B95A23 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		B493D4ED28D31F4200B95A23 /* PopoverHolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverHolderView.swift; sourceTree = "<group>"; };
 		B493D4EF28D32F5900B95A23 /* Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dependencies.swift; sourceTree = "<group>"; };
@@ -123,7 +121,6 @@
 			isa = PBXGroup;
 			children = (
 				B493D4E528D31D7F00B95A23 /* MenuService.swift */,
-				B493D4E728D31D9100B95A23 /* Coordinator.swift */,
 				B493D4F628D3329D00B95A23 /* PokerAPI.swift */,
 				B493D4F828D333DF00B95A23 /* NetworkService.swift */,
 				B43E4C4128D3C17800ABD0D2 /* TasksService.swift */,
@@ -242,7 +239,6 @@
 				B43E4C4228D3C17800ABD0D2 /* TasksService.swift in Sources */,
 				B493D50728D3650C00B95A23 /* TaskCreate.swift in Sources */,
 				B493D4F028D32F5900B95A23 /* Dependencies.swift in Sources */,
-				B493D4E828D31D9100B95A23 /* Coordinator.swift in Sources */,
 				B493D4EB28D31DC300B95A23 /* AppState.swift in Sources */,
 				B493D4FB28D3410D00B95A23 /* Task.swift in Sources */,
 				B493D50528D3599500B95A23 /* VotesInfo.swift in Sources */,
