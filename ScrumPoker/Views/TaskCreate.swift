@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TaskCreate: View {
-  @EnvironmentObject private var api: PokerAPI
+  @EnvironmentObject private var taskService: TasksService
   
   @State private var name = ""
   @State private var url = ""
@@ -37,7 +37,7 @@ struct TaskCreate: View {
     error = nil
     Task {
       do {
-        let task = try await api.createTask(name: name, url: url)
+        let task = try await taskService.createTask(name: name, url: url)
         onCreate(task)
       } catch {
         self.error = error.localizedDescription

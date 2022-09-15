@@ -89,9 +89,7 @@ struct MyTasksView: View {
     } set: { active in
       if active {
         content = .details(task)
-      } else {
-        content = .empty
-      }
+      } 
     }
 
     NavigationLink(isActive: binding) {

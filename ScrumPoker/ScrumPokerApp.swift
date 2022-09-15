@@ -35,6 +35,15 @@ struct ScrumPokerApp: App {
 private struct MainView: View {
   @EnvironmentObject private var appState: AppState
   @EnvironmentObject private var coordinator: Coordinator
+  @State private var modal: Modal?
+  
+  enum Modal: Identifiable {
+    case createNew
+    
+    var id: Int {
+      return 0
+    }
+  }
   
   var body: some View {
     if let user = appState.currentUser {
@@ -46,21 +55,22 @@ private struct MainView: View {
         Toolbar(userName: user.name) {
           appState.set(token: nil, user: nil)
         } onCreate: {
-          print("create")
+          modal = .createNew
         }
       }
       .frame(minWidth: 600, idealWidth: 800, minHeight: 400, idealHeight: 400)
+      .sheet(item: $modal) { modal in
+        switch modal {
+        case .createNew:
+          TaskCreate { _ in
+            self.modal = nil
+          }
+          .frame(minWidth: 300, maxWidth: 400)
+        }
+      }
     } else {
       AuthorizationView(onRegister: {})
     }
-//    EmptyView()
-//        .frame(width: .zero)
-//        .onReceive(appState.isAuthorized) { isAuthorized in
-//          updateContent(isAuthorized: isAuthorized)
-//        }
-//        .onAppear {
-//          updateContent(isAuthorized: appState.isAuthorizedValue)
-//        }
   }
   
   private func updateContent(isAuthorized: Bool) {
