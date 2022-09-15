@@ -78,7 +78,7 @@ struct TaskView: View {
           Text("Votes: \(task.votesCount)")
           Button("Share link", action: shareLink)
           Spacer()
-          if task.userName != nil, task.userName == appState.currentUser?.name {
+          if task.finished == false, task.userName != nil, task.userName == appState.currentUser?.name {
             Button("Complete") {
               complete()
             }
@@ -173,6 +173,7 @@ struct TaskView: View {
     Task {
       do {
         try await api.finish(taskId: taskId)
+        reload()
         reloadVotes()
       } catch {
         self.error = error.localizedDescription
