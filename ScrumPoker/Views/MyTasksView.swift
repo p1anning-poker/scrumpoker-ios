@@ -10,33 +10,25 @@ import Cocoa
 
 struct MyTasksView: View {
   
-  private enum ContentType: Equatable {
-    case empty
-    case details(ApiTask)
-    case none
-  }
-  
   @EnvironmentObject private var appState: AppState
   @EnvironmentObject private var tasksService: TasksService
+  
+  @State private var tasks: [ApiTask] = []
   @State private var error: String?
   @State private var displayCreate: Bool = false
   @State private var selection: Int?
   @State private var content: ContentType = .empty
-  
-  @Binding var openAtStart: ApiTask.ID?
   
   var body: some View {
     VStack(alignment: .center) {
       if let error = error {
         Text(error)
           .foregroundColor(.red)
-      } else if tasksService.tasks.isEmpty {
+      } else if tasks.isEmpty {
         Text("You have no tasks")
       } else {
-        List() {
-          ForEach(tasksService.tasks) { task in
-            taskView(task)
-          }
+        List(tasks) { task in
+          taskView(task)
         }
       }
       Spacer()
@@ -57,7 +49,16 @@ struct MyTasksView: View {
     }
     .onAppear {
       reload()
-      openAtStart = nil
+    }
+    .onReceive(tasksService.objectWillChange) { _ in
+      updateTasks(animated: true)
+    }
+    .toolbar {
+      ToolbarItem(placement: .keyboard) {
+        Button("RELOAD") {
+          reload()
+        }
+      }
     }
   }
   
@@ -122,6 +123,7 @@ struct MyTasksView: View {
     Task {
       do {
         try await tasksService.reloadTasks()
+        updateTasks(animated: true)
       } catch {
         self.error = error.localizedDescription
       }
@@ -145,12 +147,46 @@ struct MyTasksView: View {
   private func terminate() {
    exit(0)
   }
+  
+  private func updateTasks(animated: Bool) {
+    if animated {
+      withAnimation {
+        tasks = tasksService.tasks
+      }
+    } else {
+      tasks = tasksService.tasks
+    }
+  }
+}
+
+// MARK: - Types
+extension MyTasksView {
+  
+  private enum ContentType: Equatable {
+    case empty
+    case details(ApiTask)
+    case none
+    
+    static func == (lhs: Self, rhs: Self) -> Bool {
+      switch (lhs, rhs) {
+      case (.empty, .empty), (.none, .none):
+        return true
+      case (.details(let l), .details(let r)):
+        return l.id == r.id
+      default:
+        return false
+      }
+    }
+  }
 }
 
 struct MyTasksView_Previews: PreviewProvider {
   static var previews: some View {
+    let appState = AppState.shared
     NavigationView {
-      MyTasksView(openAtStart: .constant(nil))
+      MyTasksView()
+        .environmentObject(appState)
+        .environmentObject(TasksService(api: PokerAPI(networkService: NetworkService(), appState: appState), appState: appState))
     }
   }
 }

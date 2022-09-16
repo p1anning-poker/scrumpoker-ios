@@ -13,7 +13,7 @@ struct TaskCreate: View {
   @State private var name = ""
   @State private var url = ""
   @State private var error: String?
-  let onCreate: (ApiTask) -> Void
+  let onFinish: (ApiTask?) -> Void
   
   var body: some View {
     VStack {
@@ -23,8 +23,13 @@ struct TaskCreate: View {
       }
       TextField("Name", text: $name)
       TextField("URL", text: $url)
-      Button("Create", action: create)
-        .disabled(name.isEmpty || url.isEmpty)
+      HStack {
+        Button("Cancel") {
+          onFinish(nil)
+        }
+        Button("Create", action: create)
+          .disabled(name.isEmpty || url.isEmpty)
+      }
     }
     .padding()
   }
@@ -39,7 +44,7 @@ struct TaskCreate: View {
       do {
         let task = try await taskService.createTask(name: name, url: url)
         taskService.share(task: task)
-        onCreate(task)
+        onFinish(task)
       } catch {
         self.error = error.localizedDescription
       }

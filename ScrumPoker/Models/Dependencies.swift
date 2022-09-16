@@ -17,5 +17,5 @@ final class Dependencies {
   )
   private(set) lazy var networkService = NetworkService()
   private(set) lazy var pokerApi = PokerAPI(networkService: networkService, appState: appState)
-  private(set) lazy var tasksService = TasksService(api: pokerApi)
+  private(set) lazy var tasksService = TasksService(api: pokerApi, appState: appState)
 }

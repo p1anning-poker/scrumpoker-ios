@@ -51,42 +51,7 @@ private struct MainView: View {
   
   var body: some View {
     if let user = appState.currentUser {
-      NavigationView {
-        MyTasksView(openAtStart: .constant(nil))
-          .frame(minWidth: 250, maxWidth: 300)
-      }
-      .toolbar {
-        Toolbar(userName: user.name) {
-          appState.set(token: nil, user: nil)
-        } onCreate: {
-          modal = .createNew
-        }
-      }
-      .frame(minWidth: 600, idealWidth: 800, minHeight: 400, idealHeight: 400)
-      .sheet(item: $modal) { modal in
-        switch modal {
-        case .createNew:
-          TaskCreate { _ in
-            self.modal = nil
-          }
-          .frame(minWidth: 300, maxWidth: 400)
-        case .details(let id):
-          TaskView(taskId: id)
-            .toolbar {
-              ToolbarItem(placement: .cancellationAction) {
-                Button {
-                  self.modal = nil
-                } label: {
-                  Text("Close")
-                }
-              }
-            }
-            .frame(minWidth: 400, maxWidth: 600, minHeight: 200, alignment: .top)
-        }
-      }
-      .onOpenURL { url in
-        modal = self.modal(for: url)
-      }
+      contentView(user: user)
     } else {
       AuthorizationView(content: appState.lastLogin == nil ? .registration : .authorization) {
         if let modal = deferredModal {
@@ -94,12 +59,53 @@ private struct MainView: View {
           self.modal = modal
         }
       }
+      .frame(width: 350, alignment: .center)
       .onOpenURL { url in
         if let modal = self.modal(for: url) {
           // waiting for the authorization
           deferredModal = modal
         }
       }
+    }
+  }
+  
+  @ViewBuilder
+  private func contentView(user: User) -> some View {
+    NavigationView {
+      MyTasksView()
+        .frame(minWidth: 250, maxWidth: 300)
+    }
+    .toolbar {
+      Toolbar(userName: user.name) {
+        appState.set(token: nil, user: nil)
+      } onCreate: {
+        modal = .createNew
+      }
+    }
+    .frame(minWidth: 600, idealWidth: 800, minHeight: 400, idealHeight: 400)
+    .sheet(item: $modal) { modal in
+      switch modal {
+      case .createNew:
+        TaskCreate { _ in
+          self.modal = nil
+        }
+        .frame(minWidth: 300, maxWidth: 400)
+      case .details(let id):
+        TaskView(taskId: id)
+          .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+              Button {
+                self.modal = nil
+              } label: {
+                Text("Close")
+              }
+            }
+          }
+          .frame(minWidth: 400, maxWidth: 600, minHeight: 200, alignment: .top)
+      }
+    }
+    .onOpenURL { url in
+      modal = self.modal(for: url)
     }
   }
   

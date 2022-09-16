@@ -27,7 +27,6 @@ struct AuthorizationView: View {
   var body: some View {
     VStack(alignment: .center, spacing: 16) {
       if let error = error {
-        Spacer(minLength: 40)
         Text(error)
           .fixedSize(horizontal: false, vertical: true)
           .foregroundColor(.red)

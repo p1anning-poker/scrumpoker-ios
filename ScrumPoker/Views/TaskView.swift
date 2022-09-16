@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct TaskView: View {
-  @EnvironmentObject private var api: PokerAPI
   @EnvironmentObject private var taskService: TasksService
   @EnvironmentObject private var appState: AppState
   @Environment(\.openURL) var openURL
@@ -46,9 +45,8 @@ struct TaskView: View {
     .onAppear {
       if task?.finished == true {
         reloadVotes()
-      } else if task == nil {
-        reload()
       }
+      reload()
     }
   }
   
@@ -69,6 +67,7 @@ struct TaskView: View {
         }
         Spacer()
       }
+      .textSelection(.enabled)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
   }
@@ -133,6 +132,7 @@ struct TaskView: View {
         }
       }
     }
+    .textSelection(.enabled)
   }
   
   // MARK: - Functions
@@ -141,7 +141,7 @@ struct TaskView: View {
     error = nil
     Task {
       do {
-        task = try await api.task(id: taskId)
+        task = try await taskService.task(id: taskId)
       } catch {
         self.error = error.localizedDescription
       }
@@ -152,7 +152,7 @@ struct TaskView: View {
     error = nil
     Task {
       do {
-        try await api.vote(id: taskId, vote: vote)
+        try await taskService.vote(id: taskId, vote: vote)
         reload()
       } catch {
         self.error = error.localizedDescription
@@ -164,7 +164,7 @@ struct TaskView: View {
     error = nil
     Task {
       do {
-        votes = try await api.votes(id: taskId)
+        votes = try await taskService.votes(id: taskId)
       } catch {
         self.error = error.localizedDescription
       }
