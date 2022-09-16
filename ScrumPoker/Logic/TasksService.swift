@@ -8,6 +8,10 @@
 import Foundation
 import Cocoa
 
+private enum Keys {
+  static let recentlyViewed = "RECENTLY_VIEWED"
+}
+
 final class TasksService: ObservableObject {
   
   private let api: PokerAPI
@@ -19,12 +23,20 @@ final class TasksService: ObservableObject {
       objectWillChange.send()
     }
   }
+  private(set) var recentlyViewedTasks: [ApiTask] = [] {
+    didSet {
+      guard recentlyViewedTasks != oldValue else { return }
+      objectWillChange.send()
+    }
+  }
   
   init(api: PokerAPI, appState: AppState) {
     self.api = api
     self.appState = appState
     
     reload()
+    let data = UserDefaults.standard.data(forKey: Keys.recentlyViewed)
+    recentlyViewedTasks = data.flatMap { try? JSONDecoder().decode([ApiTask].self, from: $0) } ?? []
   }
   
   func reloadTasks() async throws {
@@ -41,6 +53,25 @@ final class TasksService: ObservableObject {
   @MainActor
   private func updates(tasks: [ApiTask]) {
     self.tasks = tasks
+  }
+  
+  @MainActor
+  func add(recentlyViewed task: ApiTask) {
+    guard recentlyViewedTasks.first != task else { return }
+    var tasks = self.recentlyViewedTasks.filter { $0.id != task.id }
+    tasks.insert(task, at: 0)
+    if tasks.count > 5 {
+      tasks = Array(tasks.prefix(5))
+    }
+    update(recentlyViewed: tasks, store: true)
+  }
+  
+  private func update(recentlyViewed: [ApiTask], store: Bool) {
+    self.recentlyViewedTasks = recentlyViewed
+    if store {
+      let data = try? JSONEncoder().encode(recentlyViewed)
+      UserDefaults.standard.set(data, forKey: Keys.recentlyViewed)
+    }
   }
 }
 

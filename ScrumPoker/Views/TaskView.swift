@@ -12,18 +12,21 @@ struct TaskView: View {
   @EnvironmentObject private var appState: AppState
   @Environment(\.openURL) var openURL
   
+  let addToRecentlyViewed: Bool
   @State private var task: ApiTask?
   private let taskId: ApiTask.ID
   @State private var votes: [VoteInfo] = []
   @State private var error: String?
   
-  init(task: ApiTask) {
+  init(task: ApiTask, addToRecentlyViewed: Bool) {
     self.taskId = task.id
+    self.addToRecentlyViewed = addToRecentlyViewed
     _task = State(initialValue: task)
   }
   
-  init(taskId: ApiTask.ID) {
+  init(taskId: ApiTask.ID, addToRecentlyViewed: Bool) {
     self.taskId = taskId
+    self.addToRecentlyViewed = addToRecentlyViewed
   }
   
   var body: some View {
@@ -141,7 +144,11 @@ struct TaskView: View {
     error = nil
     Task {
       do {
-        task = try await taskService.task(id: taskId)
+        let task = try await taskService.task(id: taskId)
+        if addToRecentlyViewed {
+          taskService.add(recentlyViewed: task)
+        }
+        self.task = task
       } catch {
         self.error = error.localizedDescription
       }
@@ -200,7 +207,8 @@ struct TaskView_Previews: PreviewProvider {
           url: URL(string: "https://google.com"),
           finished: false,
           votesCount: 0
-        )
+        ),
+        addToRecentlyViewed: false
       )
     }
   }

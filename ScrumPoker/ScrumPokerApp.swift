@@ -91,7 +91,7 @@ private struct MainView: View {
         }
         .frame(minWidth: 300, maxWidth: 400)
       case .details(let id):
-        TaskView(taskId: id)
+        TaskView(taskId: id, addToRecentlyViewed: true)
           .toolbar {
             ToolbarItem(placement: .cancellationAction) {
               Button {

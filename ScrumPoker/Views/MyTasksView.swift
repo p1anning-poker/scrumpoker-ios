@@ -15,15 +15,17 @@ struct MyTasksView: View {
   
   @State private var tasks: [ApiTask] = []
   @State private var error: String?
-  @State private var displayCreate: Bool = false
-  @State private var selection: Int?
   @State private var content: ContentType = .empty
+  @State private var tasksListType: TasksLiskType = .my
   
   var body: some View {
     VStack(alignment: .center) {
+      picker()
+        .padding()
       if let error = error {
         Text(error)
           .foregroundColor(.red)
+          .padding()
       } else if tasks.isEmpty {
         Text("You have no tasks")
       } else {
@@ -32,54 +34,40 @@ struct MyTasksView: View {
         }
       }
       Spacer()
-      NavigationLink(isActive: .constant(content == .empty)) {
-        switch content {
-        case .empty:
-          Text("Nothing to display")
-        case .details(let apiTask):
-          TaskView(task: apiTask)
-        case .none:
-          EmptyView()
-        }
-      } label: {
-        EmptyView()
-      }
-      .frame(width: 0)
-      .opacity(0)
+//      NavigationLink(isActive: .constant(content == .empty)) {
+//        switch content {
+//        case .empty:
+//          Text("Nothing to display")
+//        case .details(let apiTask):
+//          TaskView(task: apiTask)
+//        case .none:
+//          EmptyView()
+//        }
+//      } label: {
+//        EmptyView()
+//      }
+//      .frame(width: 0)
+//      .opacity(0)
     }
     .onAppear {
       reload()
     }
     .onReceive(tasksService.objectWillChange) { _ in
-      updateTasks(animated: true)
-    }
-    .toolbar {
-      ToolbarItem(placement: .keyboard) {
-        Button("RELOAD") {
-          reload()
-        }
-      }
+      updateTasks(type: tasksListType, animated: true)
     }
   }
   
   @ViewBuilder
-  private func header() -> some View {
-    VStack(alignment: .leading) {
-      HStack {
-        Text(appState.currentUser?.name ?? "")
-          .contextMenu {
-            Button("Logout", action: logout)
-            Button("Exit", action: terminate)
-          }
-        Spacer()
-        NavigationLink("Add", isActive: $displayCreate) {
-          TaskCreate { _ in
-            displayCreate = false
-          }
-        }
-        Button("Refresh", action: reload)
-      }
-      Divider()
+  private func picker() -> some View {
+    Picker(selection: $tasksListType) {
+      Text("My tasks").tag(TasksLiskType.my)
+      Text("Recently viewed").tag(TasksLiskType.recent)
+    } label: {
+      EmptyView()
+    }
+    .pickerStyle(SegmentedPickerStyle())
+    .onChange(of: tasksListType) { newValue in
+      updateTasks(type: newValue, animated: false)
     }
   }
   
@@ -94,7 +82,7 @@ struct MyTasksView: View {
     }
 
     NavigationLink(isActive: binding) {
-      TaskView(task: task)
+      TaskView(task: task, addToRecentlyViewed: tasksListType != .recent)
     } label: {
       HStack {
         VStack(alignment: .leading) {
@@ -108,7 +96,12 @@ struct MyTasksView: View {
       }
     }
     .contextMenu {
-      Button("Delete") { delete(task: task) }
+      switch tasksListType {
+      case .my:
+        Button("Delete") { delete(task: task) }
+      case .recent:
+        EmptyView()
+      }
     }
   }
   
@@ -123,7 +116,7 @@ struct MyTasksView: View {
     Task {
       do {
         try await tasksService.reloadTasks()
-        updateTasks(animated: true)
+        updateTasks(type: tasksListType, animated: true)
       } catch {
         self.error = error.localizedDescription
       }
@@ -148,13 +141,21 @@ struct MyTasksView: View {
    exit(0)
   }
   
-  private func updateTasks(animated: Bool) {
+  private func updateTasks(type: TasksLiskType, animated: Bool) {
+    let newTasks: [ApiTask] = {
+      switch type {
+      case .my:
+        return tasksService.tasks
+      case .recent:
+        return tasksService.recentlyViewedTasks
+      }
+    }()
     if animated {
       withAnimation {
-        tasks = tasksService.tasks
+        tasks = newTasks
       }
     } else {
-      tasks = tasksService.tasks
+      tasks = newTasks
     }
   }
 }
@@ -177,6 +178,10 @@ extension MyTasksView {
         return false
       }
     }
+  }
+  
+  private enum TasksLiskType {
+    case my, recent
   }
 }
 

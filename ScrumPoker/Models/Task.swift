@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ApiTask: Decodable, Identifiable, Hashable {
+struct ApiTask: Codable, Identifiable, Hashable {
   var taskUuid: String
   var name: String
   var url: URL?
