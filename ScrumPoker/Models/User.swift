@@ -8,6 +8,7 @@
 import Foundation
 
 struct User: Equatable, Codable {
+  var userUuid: String
   var email: String
   var name: String
 }

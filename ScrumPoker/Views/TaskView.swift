@@ -49,7 +49,7 @@ struct TaskView: View {
       if task?.finished == true {
         reloadVotes()
       }
-      reload()
+      reload(animated: true)
     }
   }
   
@@ -83,7 +83,7 @@ struct TaskView: View {
           Text("Votes: \(task.votesCount)")
           Button("Share link", action: shareLink)
           Spacer()
-          if task.finished == false, task.userName != nil, task.userName == appState.currentUser?.name {
+          if task.finished == false, task.userUuid == appState.currentUser?.userUuid {
             Button("Complete") {
               complete()
             }
@@ -100,9 +100,6 @@ struct TaskView: View {
   
   @ViewBuilder
   private var voteActions: some View {
-    let selectedVote = votes.first {
-      $0.userNames.contains(appState.currentUser?.name ?? "")
-    }?.value
     let slices = Vote.allCases.reduce(into: [[Vote]]()) { partialResult, vote in
       if (partialResult.last?.count ?? 3) > 2 {
         partialResult.append([vote])
@@ -110,7 +107,7 @@ struct TaskView: View {
         partialResult[partialResult.count - 1].append(vote)
       }
     }
-    
+
     VStack {
       ForEach(0..<slices.count, id: \.self) { idx in
         HStack {
@@ -119,7 +116,18 @@ struct TaskView: View {
               Text(vote.name)
                 .frame(maxWidth: .infinity)
             }
-            .border(Color.accentColor, width: selectedVote == vote ? 2 : 0)
+            .disabled(task?.voteValue == vote)
+            .overlay(
+              RoundedRectangle(cornerRadius: 4, style: RoundedCornerStyle.continuous)
+                .stroke(
+                  Color.accentColor,
+                  style: StrokeStyle(
+                    lineWidth: task?.voteValue == vote ? 2 : 0
+                  )
+                )
+                .padding(1)
+                .animation(Animation.default, value: task?.voteValue)
+            )
           }
         }
       }
@@ -140,7 +148,7 @@ struct TaskView: View {
   
   // MARK: - Functions
   
-  private func reload() {
+  private func reload(animated: Bool) {
     error = nil
     Task {
       do {
@@ -148,9 +156,24 @@ struct TaskView: View {
         if addToRecentlyViewed {
           taskService.add(recentlyViewed: task)
         }
-        self.task = task
+        await MainActor.run {
+          setTask(task, animated: animated)
+        }
+        if task.finished {
+          reloadVotes()
+        }
       } catch {
         self.error = error.localizedDescription
+      }
+    }
+  }
+  
+  private func setTask(_ task: ApiTask, animated: Bool) {
+    if animated {
+      self.task = task
+    } else {
+      withAnimation {
+        self.task = task
       }
     }
   }
@@ -160,7 +183,7 @@ struct TaskView: View {
     Task {
       do {
         try await taskService.vote(id: taskId, vote: vote)
-        reload()
+        reload(animated: true)
       } catch {
         self.error = error.localizedDescription
       }
@@ -183,7 +206,7 @@ struct TaskView: View {
     Task {
       do {
         try await taskService.finish(taskId: taskId)
-        reload()
+        reload(animated: true)
         reloadVotes()
       } catch {
         self.error = error.localizedDescription
@@ -202,7 +225,8 @@ struct TaskView_Previews: PreviewProvider {
     NavigationView {
       TaskView(
         task: ApiTask(
-          taskUuid: "",
+          taskUuid: "task_id",
+          userUuid: "user_id",
           name: "Task name",
           url: URL(string: "https://google.com"),
           finished: false,

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Vote: RawRepresentable, CaseIterable, Decodable, Equatable {
+struct Vote: RawRepresentable, CaseIterable, Codable, Hashable {
   var rawValue: String
   
   // MARK: - Constants

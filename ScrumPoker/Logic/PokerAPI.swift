@@ -130,11 +130,6 @@ extension PokerAPI {
   
   func myTasks() async throws -> [ApiTask] {
     return try await perform(type: [ApiTask].self, path: "tasks")
-      .map { task in
-        var task = task
-        task.userName = task.userName ?? appState.currentUser?.name
-        return task
-      }
   }
   
   func finish(taskId: ApiTask.ID) async throws {

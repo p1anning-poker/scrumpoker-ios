@@ -19,6 +19,7 @@ struct ScrumPokerApp: App {
         .environmentObject(dependencies.appState)
         .environmentObject(dependencies.pokerApi)
         .environmentObject(dependencies.tasksService)
+        .environmentObject(dependencies.profileService)
     }
     .windowStyle(HiddenTitleBarWindowStyle())
     .windowToolbarStyle(UnifiedWindowToolbarStyle())
@@ -32,6 +33,7 @@ struct ScrumPokerApp: App {
 private struct MainView: View {
   
   @EnvironmentObject private var appState: AppState
+  @EnvironmentObject private var profileService: ProfileService
   @State private var modal: Modal?
   @State private var deferredModal: Modal?
   
@@ -77,7 +79,7 @@ private struct MainView: View {
     }
     .toolbar {
       Toolbar(userName: user.name) {
-        appState.set(token: nil, user: nil)
+        logout()
       } onCreate: {
         modal = .createNew
       }
@@ -101,7 +103,7 @@ private struct MainView: View {
               }
             }
           }
-          .frame(minWidth: 400, maxWidth: 600, minHeight: 200, alignment: .top)
+          .frame(minWidth: 500, maxWidth: 700, minHeight: 300, alignment: .top)
       }
     }
     .onOpenURL { url in
@@ -115,5 +117,11 @@ private struct MainView: View {
       return nil
     }
     return .details(taskId)
+  }
+  
+  private func logout() {
+    Task {
+      await profileService.logout()
+    }
   }
 }

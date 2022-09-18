@@ -14,7 +14,7 @@ struct AuthorizationView: View {
   }
   
   @EnvironmentObject private var appState: AppState
-  @EnvironmentObject private var api: PokerAPI
+  @EnvironmentObject private var profileService: ProfileService
   
   @State private(set) var content: Content
   @State private var email = ""
@@ -84,9 +84,7 @@ struct AuthorizationView: View {
     error = nil
     Task {
       do {
-        let token = try await api.authorize(email: email, password: password)
-        let user = try await api.myUser()
-        appState.set(token: token, user: user)
+        try await profileService.authorize(email: email, password: password)
         onAuthorize()
       } catch {
         self.error = error.localizedDescription
@@ -98,9 +96,7 @@ struct AuthorizationView: View {
     error = nil
     Task {
       do {
-        let token = try await api.register(email: email, name: name, password: password)
-        let user = User(email: email, name: name)
-        appState.set(token: token, user: user)
+        try await profileService.register(email: email, userName: name, password: password)
         onAuthorize()
       } catch {
         self.error = error.localizedDescription

@@ -9,11 +9,12 @@ import Foundation
 
 struct ApiTask: Codable, Identifiable, Hashable {
   var taskUuid: String
+  var userUuid: String
   var name: String
   var url: URL?
   var finished: Bool
   var votesCount: Int
-  var userName: String?
+  var voteValue: Vote?
   
   var id: String {
     return taskUuid

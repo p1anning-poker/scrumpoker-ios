@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		B43E4C4028D3B52F00ABD0D2 /* Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43E4C3F28D3B52F00ABD0D2 /* Toolbar.swift */; };
 		B43E4C4228D3C17800ABD0D2 /* TasksService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43E4C4128D3C17800ABD0D2 /* TasksService.swift */; };
+		B44B9ACD28D7875700B3E4EE /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44B9ACC28D7875700B3E4EE /* ProfileService.swift */; };
+		B44B9ACF28D787A400B3E4EE /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44B9ACE28D787A400B3E4EE /* Profile.swift */; };
 		B493D4D628D31C7F00B95A23 /* ScrumPokerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4D528D31C7F00B95A23 /* ScrumPokerApp.swift */; };
 		B493D4D828D31C7F00B95A23 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4D728D31C7F00B95A23 /* ContentView.swift */; };
 		B493D4DA28D31C8100B95A23 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B493D4D928D31C8100B95A23 /* Assets.xcassets */; };
@@ -21,18 +23,19 @@
 		B493D4F528D3322C00B95A23 /* AuthorizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4F428D3322C00B95A23 /* AuthorizationView.swift */; };
 		B493D4F728D3329D00B95A23 /* PokerAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4F628D3329D00B95A23 /* PokerAPI.swift */; };
 		B493D4F928D333DF00B95A23 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4F828D333DF00B95A23 /* NetworkService.swift */; };
-		B493D4FB28D3410D00B95A23 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4FA28D3410D00B95A23 /* Task.swift */; };
+		B493D4FB28D3410D00B95A23 /* ApiTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4FA28D3410D00B95A23 /* ApiTask.swift */; };
 		B493D4FF28D3475800B95A23 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4FE28D3475800B95A23 /* User.swift */; };
 		B493D50128D34AA200B95A23 /* TaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D50028D34AA200B95A23 /* TaskView.swift */; };
 		B493D50328D3541C00B95A23 /* Vote.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D50228D3541C00B95A23 /* Vote.swift */; };
 		B493D50528D3599500B95A23 /* VotesInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D50428D3599500B95A23 /* VotesInfo.swift */; };
 		B493D50728D3650C00B95A23 /* TaskCreate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D50628D3650C00B95A23 /* TaskCreate.swift */; };
-		B493D50A28D37F2200B95A23 /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D50928D37F2200B95A23 /* RegistrationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B43E4C3F28D3B52F00ABD0D2 /* Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toolbar.swift; sourceTree = "<group>"; };
 		B43E4C4128D3C17800ABD0D2 /* TasksService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksService.swift; sourceTree = "<group>"; };
+		B44B9ACC28D7875700B3E4EE /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
+		B44B9ACE28D787A400B3E4EE /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		B493D4D228D31C7F00B95A23 /* ScrumPoker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScrumPoker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B493D4D528D31C7F00B95A23 /* ScrumPokerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrumPokerApp.swift; sourceTree = "<group>"; };
 		B493D4D728D31C7F00B95A23 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -47,14 +50,13 @@
 		B493D4F428D3322C00B95A23 /* AuthorizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationView.swift; sourceTree = "<group>"; };
 		B493D4F628D3329D00B95A23 /* PokerAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokerAPI.swift; sourceTree = "<group>"; };
 		B493D4F828D333DF00B95A23 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
-		B493D4FA28D3410D00B95A23 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		B493D4FA28D3410D00B95A23 /* ApiTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiTask.swift; sourceTree = "<group>"; };
 		B493D4FE28D3475800B95A23 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		B493D50028D34AA200B95A23 /* TaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskView.swift; sourceTree = "<group>"; };
 		B493D50228D3541C00B95A23 /* Vote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vote.swift; sourceTree = "<group>"; };
 		B493D50428D3599500B95A23 /* VotesInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotesInfo.swift; sourceTree = "<group>"; };
 		B493D50628D3650C00B95A23 /* TaskCreate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCreate.swift; sourceTree = "<group>"; };
 		B493D50828D36DDC00B95A23 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		B493D50928D37F2200B95A23 /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +126,7 @@
 				B493D4F628D3329D00B95A23 /* PokerAPI.swift */,
 				B493D4F828D333DF00B95A23 /* NetworkService.swift */,
 				B43E4C4128D3C17800ABD0D2 /* TasksService.swift */,
+				B44B9ACC28D7875700B3E4EE /* ProfileService.swift */,
 			);
 			path = Logic;
 			sourceTree = "<group>";
@@ -133,10 +136,11 @@
 			children = (
 				B493D4EA28D31DC300B95A23 /* AppState.swift */,
 				B493D4EF28D32F5900B95A23 /* Dependencies.swift */,
-				B493D4FA28D3410D00B95A23 /* Task.swift */,
+				B493D4FA28D3410D00B95A23 /* ApiTask.swift */,
 				B493D4FE28D3475800B95A23 /* User.swift */,
 				B493D50228D3541C00B95A23 /* Vote.swift */,
 				B493D50428D3599500B95A23 /* VotesInfo.swift */,
+				B44B9ACE28D787A400B3E4EE /* Profile.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -157,7 +161,6 @@
 				B493D4F428D3322C00B95A23 /* AuthorizationView.swift */,
 				B493D50028D34AA200B95A23 /* TaskView.swift */,
 				B493D50628D3650C00B95A23 /* TaskCreate.swift */,
-				B493D50928D37F2200B95A23 /* RegistrationView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -235,19 +238,20 @@
 				B493D4FF28D3475800B95A23 /* User.swift in Sources */,
 				B493D50128D34AA200B95A23 /* TaskView.swift in Sources */,
 				B493D4F928D333DF00B95A23 /* NetworkService.swift in Sources */,
-				B493D50A28D37F2200B95A23 /* RegistrationView.swift in Sources */,
 				B43E4C4228D3C17800ABD0D2 /* TasksService.swift in Sources */,
 				B493D50728D3650C00B95A23 /* TaskCreate.swift in Sources */,
 				B493D4F028D32F5900B95A23 /* Dependencies.swift in Sources */,
 				B493D4EB28D31DC300B95A23 /* AppState.swift in Sources */,
-				B493D4FB28D3410D00B95A23 /* Task.swift in Sources */,
+				B493D4FB28D3410D00B95A23 /* ApiTask.swift in Sources */,
 				B493D50528D3599500B95A23 /* VotesInfo.swift in Sources */,
+				B44B9ACF28D787A400B3E4EE /* Profile.swift in Sources */,
 				B493D50328D3541C00B95A23 /* Vote.swift in Sources */,
 				B493D4F228D3320F00B95A23 /* MyTasksView.swift in Sources */,
 				B493D4D828D31C7F00B95A23 /* ContentView.swift in Sources */,
 				B493D4D628D31C7F00B95A23 /* ScrumPokerApp.swift in Sources */,
 				B493D4F728D3329D00B95A23 /* PokerAPI.swift in Sources */,
 				B493D4EE28D31F4200B95A23 /* PopoverHolderView.swift in Sources */,
+				B44B9ACD28D7875700B3E4EE /* ProfileService.swift in Sources */,
 				B493D4E628D31D7F00B95A23 /* MenuService.swift in Sources */,
 				B43E4C4028D3B52F00ABD0D2 /* Toolbar.swift in Sources */,
 				B493D4F528D3322C00B95A23 /* AuthorizationView.swift in Sources */,
@@ -379,7 +383,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_ASSET_PATHS = "\"ScrumPoker/Preview Content\"";
 				DEVELOPMENT_TEAM = DD57QBF5UM;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -408,7 +412,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_ASSET_PATHS = "\"ScrumPoker/Preview Content\"";
 				DEVELOPMENT_TEAM = DD57QBF5UM;
 				ENABLE_HARDENED_RUNTIME = YES;

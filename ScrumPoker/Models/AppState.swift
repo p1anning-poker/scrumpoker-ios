@@ -15,11 +15,6 @@ private struct Keys {
 
 typealias Token = String
 
-private struct Profile: Codable, Equatable {
-  var token: Token
-  var user: User
-}
-
 final class AppState: ObservableObject {
   /// Current API token
   private let profileSubject = CurrentValueSubject<Profile?, Never>(nil)
@@ -70,10 +65,9 @@ final class AppState: ObservableObject {
   
   // MARK: - Setters
   
-  func set(token: Token?, user: User?) {
-    let profile = user.map { Profile(token: token ?? "", user: $0) }
+  func set(profile: Profile?) {
     guard self.profileSubject.value != profile else { return }
-    set(lastLogin: user?.email ?? lastLogin)
+    set(lastLogin: profile?.user.email ?? lastLogin)
     
     let data = try? JSONEncoder().encode(profile)
     defaults.set(data, forKey: Keys.profile)

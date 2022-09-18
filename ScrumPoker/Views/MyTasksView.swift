@@ -10,7 +10,6 @@ import Cocoa
 
 struct MyTasksView: View {
   
-  @EnvironmentObject private var appState: AppState
   @EnvironmentObject private var tasksService: TasksService
   
   @State private var tasks: [ApiTask] = []
@@ -82,7 +81,7 @@ struct MyTasksView: View {
     }
 
     NavigationLink(isActive: binding) {
-      TaskView(task: task, addToRecentlyViewed: tasksListType != .recent)
+      TaskView(task: task, addToRecentlyViewed: false)
     } label: {
       HStack {
         VStack(alignment: .leading) {
@@ -106,10 +105,6 @@ struct MyTasksView: View {
   }
   
   // MARK: - Actions
-  
-  private func logout() {
-    appState.set(token: nil, user: nil)
-  }
   
   private func reload() {
     error = nil
@@ -190,7 +185,6 @@ struct MyTasksView_Previews: PreviewProvider {
     let appState = AppState.shared
     NavigationView {
       MyTasksView()
-        .environmentObject(appState)
         .environmentObject(TasksService(api: PokerAPI(networkService: NetworkService(), appState: appState), appState: appState))
     }
   }
