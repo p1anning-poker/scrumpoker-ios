@@ -80,7 +80,7 @@ extension TasksService {
   func task(id: ApiTask.ID) async throws -> ApiTask {
     let task = try await api.task(id: id)
     var tasks = await self.tasks
-    if task.userUuid == appState.currentUser?.userUuid,
+    if task.taskOwner.userUuid == appState.currentUser?.userUuid,
         let index = tasks.firstIndex(where: { $0.id == id }) {
       tasks[index] = task
       await updates(tasks: tasks)

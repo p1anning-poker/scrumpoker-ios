@@ -152,3 +152,19 @@ extension PokerAPI {
     _ = try await perform(path: "tasks/\(id)/votes", method: .PUT, params: ["value": vote.rawValue])
   }
 }
+
+// MARK: - Teams
+extension PokerAPI {
+  
+  func teams() async throws -> [Team] {
+    return try await perform(path: "teams")
+  }
+  
+  func createTeam(name: String) async throws -> Team {
+    try await perform(
+      path: "teams",
+      method: .POST,
+      params: ["teamName": name]
+    )
+  }
+}

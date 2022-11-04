@@ -20,6 +20,7 @@ struct ScrumPokerApp: App {
         .environmentObject(dependencies.pokerApi)
         .environmentObject(dependencies.tasksService)
         .environmentObject(dependencies.profileService)
+        .environmentObject(dependencies.teamsService)
     }
     .windowStyle(HiddenTitleBarWindowStyle())
     .windowToolbarStyle(UnifiedWindowToolbarStyle())
@@ -74,7 +75,7 @@ private struct MainView: View {
   @ViewBuilder
   private func contentView(user: User) -> some View {
     NavigationView {
-      MyTasksView()
+      TeamsView()
         .frame(minWidth: 250, maxWidth: 300)
     }
     .toolbar {

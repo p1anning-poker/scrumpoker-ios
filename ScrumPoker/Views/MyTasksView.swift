@@ -22,8 +22,7 @@ struct MyTasksView: View {
       picker()
         .padding()
       if let error = error {
-        Text(error)
-          .foregroundColor(.red)
+        ErrorView(error: error)
           .padding()
       } else if tasks.isEmpty {
         Text("You have no tasks")
@@ -33,20 +32,6 @@ struct MyTasksView: View {
         }
       }
       Spacer()
-//      NavigationLink(isActive: .constant(content == .empty)) {
-//        switch content {
-//        case .empty:
-//          Text("Nothing to display")
-//        case .details(let apiTask):
-//          TaskView(task: apiTask)
-//        case .none:
-//          EmptyView()
-//        }
-//      } label: {
-//        EmptyView()
-//      }
-//      .frame(width: 0)
-//      .opacity(0)
     }
     .onAppear {
       reload()

@@ -65,6 +65,8 @@ struct TaskView: View {
         if !task.finished {
           Spacer(minLength: 16)
           voteActions
+          Spacer(minLength: 16)
+          votedView
         } else {
           votesView
         }
@@ -80,10 +82,9 @@ struct TaskView: View {
     VStack {
       HStack {
         if let task = task {
-          Text("Votes: \(task.votesCount)")
           Button("Share link", action: shareLink)
           Spacer()
-          if task.finished == false, task.userUuid == appState.currentUser?.userUuid {
+          if task.finished == false, task.taskOwner.userUuid == appState.currentUser?.userUuid {
             Button("Complete") {
               complete()
             }
@@ -144,6 +145,19 @@ struct TaskView: View {
       }
     }
     .textSelection(.enabled)
+  }
+  
+  @ViewBuilder
+  private var votedView: some View {
+    VStack(alignment: .leading, spacing: 4) {
+      if let count = task?.votedUsers?.count, count > 0 {
+        Text("Voted \(count):")
+      }
+      ForEach(task?.votedUsers ?? [], id: \.userUuid) { user in
+        Text("✅ \(user.name)")
+          .textSelection(.enabled)
+      }
+    }
   }
   
   // MARK: - Functions
@@ -226,14 +240,25 @@ struct TaskView_Previews: PreviewProvider {
       TaskView(
         task: ApiTask(
           taskUuid: "task_id",
-          userUuid: "user_id",
+          taskOwner: PublicUser(userUuid: "id", name: "name"),
           name: "Task name",
           url: URL(string: "https://google.com"),
           finished: false,
-          votesCount: 0
+          voteValue: nil,
+          votedUsers: [
+            PublicUser(
+              userUuid: "1",
+              name: "Short name"
+            ),
+            PublicUser(
+              userUuid: "2",
+              name: "Long Long name"
+            )
+          ]
         ),
         addToRecentlyViewed: false
       )
+      .environmentObject(AppState.shared)
     }
   }
 }
