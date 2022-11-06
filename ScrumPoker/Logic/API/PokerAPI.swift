@@ -178,4 +178,12 @@ extension PokerAPI {
   func members(teamId: Team.ID) async throws -> [TeamMember] {
     return try await perform(path: "teams/\(teamId)/members")
   }
+  
+  func invite(member email: String, teamId: Team.ID) async throws {
+    try await perform(
+      path: "teams/\(teamId)/members/invite",
+      method: .POST,
+      params: ["email": email]
+    )
+  }
 }

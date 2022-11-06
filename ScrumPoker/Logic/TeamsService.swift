@@ -57,4 +57,8 @@ extension TeamsService {
   func members(teamId: Team.ID) async throws -> [TeamMember] {
     try await api.members(teamId: teamId)
   }
+  
+  func invite(member email: String, teamId: Team.ID) async throws {
+    try await api.invite(member: email, teamId: teamId)
+  }
 }

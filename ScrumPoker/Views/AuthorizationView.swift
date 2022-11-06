@@ -27,10 +27,7 @@ struct AuthorizationView: View {
   var body: some View {
     VStack(alignment: .center, spacing: 16) {
       if let error = error {
-        Text(error)
-          .fixedSize(horizontal: false, vertical: true)
-          .foregroundColor(.red)
-          .multilineTextAlignment(.center)
+        ErrorView(error: error)
       }
       switch content {
       case .authorization:

@@ -36,10 +36,7 @@ struct TaskView: View {
     VStack(alignment: .leading) {
       globalActions
       if let error = error {
-        Text(error)
-          .fixedSize(horizontal: false, vertical: true)
-          .foregroundColor(.red)
-          .multilineTextAlignment(.center)
+        ErrorView(error: error)
       } else if task != nil {
         taskBody
       } else {

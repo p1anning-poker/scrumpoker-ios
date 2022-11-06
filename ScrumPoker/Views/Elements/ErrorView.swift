@@ -12,6 +12,8 @@ struct ErrorView: View {
  
   var body: some View {
     return Text(error)
+      .fixedSize(horizontal: false, vertical: true)
       .foregroundColor(.red)
+      .multilineTextAlignment(.center)
   }
 }

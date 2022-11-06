@@ -14,6 +14,8 @@ struct TeamMembersView: View {
   @State var members: [TeamMember] = []
   @State private var error: String?
   
+  @State private var modal: Modal?
+  
   var body: some View {
     VStack {
       if let error = error {
@@ -25,9 +27,29 @@ struct TeamMembersView: View {
           memberView(member)
         }
       }
+      Spacer()
+      if team.membershipStatus == .owner {
+        Button {
+          modal = .addMember
+        } label: {
+          Text("Invite")
+        }
+      }
     }
     .onAppear {
       reload()
+    }
+    .sheet(item: $modal) { modal in
+      switch modal {
+      case .addMember:
+        InviteMemberView(team: team) { sent in
+          self.modal = nil
+          if sent {
+            reload()
+          }
+        }
+        .frame(minWidth: 300, maxWidth: 400)
+      }
     }
   }
   
@@ -65,6 +87,20 @@ struct TeamMembersView: View {
     }()
     Image(systemName: name)
       .frame(width: 20, alignment: .center)
+  }
+}
+
+// MARK: - Types
+extension TeamMembersView {
+  private enum Modal: Identifiable {
+    case addMember
+    
+    var id: Int {
+      switch self {
+      case .addMember:
+        return 0
+      }
+    }
   }
 }
 
