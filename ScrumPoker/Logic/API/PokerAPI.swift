@@ -112,9 +112,9 @@ extension PokerAPI {
 // MARK: - Tasks
 extension PokerAPI {
   
-  func createTask(name: String, url: URL) async throws -> ApiTask {
+  func createTask(name: String, url: URL, teamId: Team.ID) async throws -> ApiTask {
     return try await perform(
-      path: "tasks",
+      path: "teams/\(teamId)/tasks",
       method: .POST,
       params: [
         "scale": "FIBONACCI",
@@ -128,16 +128,19 @@ extension PokerAPI {
     return try await perform(path: "tasks/\(id)")
   }
   
-  func myTasks() async throws -> [ApiTask] {
-    return try await perform(type: [ApiTask].self, path: "tasks")
+  func tasks(teamId: Team.ID) async throws -> [ApiTask] {
+    return try await perform(
+      type: [ApiTask].self,
+      path: "teams/\(teamId)/tasks"
+    )
   }
   
-  func finish(taskId: ApiTask.ID) async throws {
-    _ = try await perform(path: "tasks/\(taskId)/finish", method: .POST)
+  func finish(taskId: ApiTask.ID, teamId: Team.ID) async throws {
+    _ = try await perform(path: "teams/\(teamId)/tasks/\(taskId)/finish", method: .POST)
   }
   
-  func delete(taskId: ApiTask.ID) async throws {
-    _ = try await perform(path: "tasks/\(taskId)", method: .DELETE)
+  func delete(taskId: ApiTask.ID, teamId: Team.ID) async throws {
+    _ = try await perform(path: "teams/\(teamId)/tasks/\(taskId)", method: .DELETE)
   }
 }
 

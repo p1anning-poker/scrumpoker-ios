@@ -13,11 +13,12 @@ private enum Keys {
 }
 
 final class TasksService: ObservableObject {
-  
+  // MARK: Properties
   private let api: PokerAPI
   private let appState: AppState
+  
   @MainActor
-  private(set) var tasks: [ApiTask] = [] {
+  private(set) var tasks: [Team.ID: [ApiTask]] = [:] {
     didSet {
       guard tasks != oldValue else { return }
       objectWillChange.send()
@@ -30,29 +31,32 @@ final class TasksService: ObservableObject {
     }
   }
   
+  // MARK: - Lifecycle
+  
   init(api: PokerAPI, appState: AppState) {
     self.api = api
     self.appState = appState
     
-    reload()
     let data = UserDefaults.standard.data(forKey: Keys.recentlyViewed)
     recentlyViewedTasks = data.flatMap { try? JSONDecoder().decode([ApiTask].self, from: $0) } ?? []
   }
   
-  func reloadTasks() async throws {
-    let tasks = try await api.myTasks()
-    await updates(tasks: tasks)
-  }
-  
-  private func reload() {
-    Task {
-      try await reloadTasks()
-    }
-  }
+  // MARK: - Functions
   
   @MainActor
-  private func updates(tasks: [ApiTask]) {
-    self.tasks = tasks
+  func tasks(teamId: Team.ID, filter: TasksFilter) -> [ApiTask] {
+    var tasks = self.tasks[teamId] ?? []
+    if let completed = filter.completed {
+      tasks = tasks.filter {
+        $0.finished == completed
+      }
+    }
+    return tasks
+  }
+  
+  func reloadTasks(teamId: Team.ID) async throws {
+    let tasks = try await api.tasks(teamId: teamId)
+    await update(tasks: tasks, teamId: teamId)
   }
   
   @MainActor
@@ -64,6 +68,19 @@ final class TasksService: ObservableObject {
       tasks = Array(tasks.prefix(5))
     }
     update(recentlyViewed: tasks, store: true)
+  }
+  
+  // MARK: - Private
+  
+  private func reload(teamId: Team.ID) {
+    Task {
+      try await reloadTasks(teamId: teamId)
+    }
+  }
+  
+  @MainActor
+  private func update(tasks: [ApiTask], teamId: Team.ID) {
+    self.tasks[teamId] = tasks
   }
   
   private func update(recentlyViewed: [ApiTask], store: Bool) {
@@ -79,29 +96,23 @@ extension TasksService {
   
   func task(id: ApiTask.ID) async throws -> ApiTask {
     let task = try await api.task(id: id)
-    var tasks = await self.tasks
-    if task.taskOwner.userUuid == appState.currentUser?.userUuid,
-        let index = tasks.firstIndex(where: { $0.id == id }) {
-      tasks[index] = task
-      await updates(tasks: tasks)
-    }
     return task
   }
   
-  func createTask(name: String, url: URL) async throws -> ApiTask {
-    let task = try await api.createTask(name: name, url: url)
-    reload()
+  func createTask(name: String, url: URL, teamId: Team.ID) async throws -> ApiTask {
+    let task = try await api.createTask(name: name, url: url, teamId: teamId)
+    reload(teamId: teamId)
     return task
   }
   
-  func finish(taskId: ApiTask.ID) async throws {
-    try await api.finish(taskId: taskId)
-    reload()
+  func finish(taskId: ApiTask.ID, teamId: Team.ID) async throws {
+    try await api.finish(taskId: taskId, teamId: teamId)
+    reload(teamId: teamId)
   }
   
-  func delete(taskId: ApiTask.ID) async throws {
-    try await api.delete(taskId: taskId)
-    reload()
+  func delete(taskId: ApiTask.ID, teamId: Team.ID) async throws {
+    try await api.delete(taskId: taskId, teamId: teamId)
+    reload(teamId: teamId)
   }
   
   func share(task: ApiTask) {
@@ -121,6 +132,6 @@ extension TasksService {
   
   func vote(id: ApiTask.ID, vote: Vote) async throws {
     try await api.vote(id: id, vote: vote)
-    reload()
+//    reload()
   }
 }

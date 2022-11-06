@@ -10,6 +10,7 @@ import SwiftUI
 struct TaskCreate: View {
   @EnvironmentObject private var taskService: TasksService
   
+  let team: Team
   @State private var name = ""
   @State private var url = ""
   @State private var error: String?
@@ -17,6 +18,7 @@ struct TaskCreate: View {
   
   var body: some View {
     VStack {
+      Text("Create task for \(team.teamName)")
       if let error = error {
         Text(error)
           .foregroundColor(.red)
@@ -42,7 +44,7 @@ struct TaskCreate: View {
     error = nil
     Task {
       do {
-        let task = try await taskService.createTask(name: name, url: url)
+        let task = try await taskService.createTask(name: name, url: url, teamId: team.id)
         taskService.share(task: task)
         onFinish(task)
       } catch {
@@ -54,7 +56,7 @@ struct TaskCreate: View {
 
 struct TaskCreate_Previews: PreviewProvider {
   static var previews: some View {
-    TaskCreate { _ in
+    TaskCreate(team: .sample(id: "1")) { _ in
       
     }
   }

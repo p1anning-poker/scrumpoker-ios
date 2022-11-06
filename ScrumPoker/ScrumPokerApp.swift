@@ -77,7 +77,9 @@ private struct MainView: View {
     NavigationView {
       TeamsView()
         .frame(minWidth: 250, maxWidth: 300)
+      EmptyView()
     }
+    .frame(minWidth: 600, idealWidth: 800, minHeight: 400, idealHeight: 400)
     .toolbar {
       Toolbar(userName: user.name) {
         logout()
@@ -85,16 +87,17 @@ private struct MainView: View {
         modal = .createNew
       }
     }
-    .frame(minWidth: 600, idealWidth: 800, minHeight: 400, idealHeight: 400)
     .sheet(item: $modal) { modal in
       switch modal {
       case .createNew:
-        TaskCreate { _ in
+        // TODO: Delete
+        TaskCreate(team: .sample(id: "1")) { _ in
           self.modal = nil
         }
         .frame(minWidth: 300, maxWidth: 400)
       case .details(let id):
-        TaskView(taskId: id, addToRecentlyViewed: true)
+        // TODO: Delete
+        TaskView(taskId: id, teamId: "1", addToRecentlyViewed: true)
           .toolbar {
             ToolbarItem(placement: .cancellationAction) {
               Button {

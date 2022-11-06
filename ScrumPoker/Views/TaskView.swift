@@ -13,19 +13,22 @@ struct TaskView: View {
   @Environment(\.openURL) var openURL
   
   let addToRecentlyViewed: Bool
+  let teamId: Team.ID
   @State private var task: ApiTask?
   private let taskId: ApiTask.ID
   @State private var votes: [VoteInfo] = []
   @State private var error: String?
   
-  init(task: ApiTask, addToRecentlyViewed: Bool) {
+  init(task: ApiTask, teamId: Team.ID, addToRecentlyViewed: Bool) {
     self.taskId = task.id
+    self.teamId = teamId
     self.addToRecentlyViewed = addToRecentlyViewed
     _task = State(initialValue: task)
   }
   
-  init(taskId: ApiTask.ID, addToRecentlyViewed: Bool) {
+  init(taskId: ApiTask.ID, teamId: Team.ID, addToRecentlyViewed: Bool) {
     self.taskId = taskId
+    self.teamId = teamId
     self.addToRecentlyViewed = addToRecentlyViewed
   }
   
@@ -138,9 +141,9 @@ struct TaskView: View {
   @ViewBuilder
   private var votesView: some View {
     ForEach(votes, id: \.value.id) { vote in
-      Section(vote.value.name + ": \(vote.userNames.count)") {
-        ForEach(vote.userNames, id: \.self) { userName in
-          Text("- " + userName)
+      Section(vote.value.name + ": \(vote.votedUsers.count)") {
+        ForEach(vote.votedUsers, id: \.userUuid) { user in
+          Text("- " + user.name)
         }
       }
     }
@@ -219,7 +222,7 @@ struct TaskView: View {
     error = nil
     Task {
       do {
-        try await taskService.finish(taskId: taskId)
+        try await taskService.finish(taskId: taskId, teamId: teamId)
         reload(animated: true)
         reloadVotes()
       } catch {
@@ -256,6 +259,7 @@ struct TaskView_Previews: PreviewProvider {
             )
           ]
         ),
+        teamId: "1",
         addToRecentlyViewed: false
       )
       .environmentObject(AppState.shared)

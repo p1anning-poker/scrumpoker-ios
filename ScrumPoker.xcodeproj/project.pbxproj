@@ -13,11 +13,15 @@
 		B44B9ACF28D787A400B3E4EE /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44B9ACE28D787A400B3E4EE /* Profile.swift */; };
 		B490CD232915BFE200EEAD4C /* TeamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD222915BFE200EEAD4C /* TeamsView.swift */; };
 		B490CD252915C01500EEAD4C /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD242915C01500EEAD4C /* Team.swift */; };
-		B490CD272915C24300EEAD4C /* TeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD262915C24300EEAD4C /* TeamView.swift */; };
+		B490CD272915C24300EEAD4C /* TeamListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD262915C24300EEAD4C /* TeamListView.swift */; };
 		B490CD2A2915C26900EEAD4C /* Team+Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD292915C26900EEAD4C /* Team+Sample.swift */; };
 		B490CD2C2915C84700EEAD4C /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD2B2915C84700EEAD4C /* ErrorView.swift */; };
 		B490CD2F2915C90500EEAD4C /* TeamsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD2E2915C90500EEAD4C /* TeamsService.swift */; };
 		B490CD312915CAA900EEAD4C /* TeamCreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD302915CAA900EEAD4C /* TeamCreateView.swift */; };
+		B490CD34291652BE00EEAD4C /* PublicUser+Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD33291652BE00EEAD4C /* PublicUser+Sample.swift */; };
+		B490CD392917F74100EEAD4C /* TeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD382917F74100EEAD4C /* TeamView.swift */; };
+		B490CD3B291801FC00EEAD4C /* TasksFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD3A291801FC00EEAD4C /* TasksFilter.swift */; };
+		B490CD3D291804D800EEAD4C /* Task+Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD3C291804D800EEAD4C /* Task+Sample.swift */; };
 		B493D4D628D31C7F00B95A23 /* ScrumPokerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4D528D31C7F00B95A23 /* ScrumPokerApp.swift */; };
 		B493D4D828D31C7F00B95A23 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4D728D31C7F00B95A23 /* ContentView.swift */; };
 		B493D4DA28D31C8100B95A23 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B493D4D928D31C8100B95A23 /* Assets.xcassets */; };
@@ -26,7 +30,7 @@
 		B493D4EB28D31DC300B95A23 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4EA28D31DC300B95A23 /* AppState.swift */; };
 		B493D4EE28D31F4200B95A23 /* PopoverHolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4ED28D31F4200B95A23 /* PopoverHolderView.swift */; };
 		B493D4F028D32F5900B95A23 /* Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4EF28D32F5900B95A23 /* Dependencies.swift */; };
-		B493D4F228D3320F00B95A23 /* MyTasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4F128D3320F00B95A23 /* MyTasksView.swift */; };
+		B493D4F228D3320F00B95A23 /* TasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4F128D3320F00B95A23 /* TasksView.swift */; };
 		B493D4F528D3322C00B95A23 /* AuthorizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4F428D3322C00B95A23 /* AuthorizationView.swift */; };
 		B493D4F728D3329D00B95A23 /* PokerAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4F628D3329D00B95A23 /* PokerAPI.swift */; };
 		B493D4F928D333DF00B95A23 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4F828D333DF00B95A23 /* NetworkService.swift */; };
@@ -46,11 +50,15 @@
 		B44B9ACE28D787A400B3E4EE /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		B490CD222915BFE200EEAD4C /* TeamsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsView.swift; sourceTree = "<group>"; };
 		B490CD242915C01500EEAD4C /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
-		B490CD262915C24300EEAD4C /* TeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamView.swift; sourceTree = "<group>"; };
+		B490CD262915C24300EEAD4C /* TeamListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamListView.swift; sourceTree = "<group>"; };
 		B490CD292915C26900EEAD4C /* Team+Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Team+Sample.swift"; sourceTree = "<group>"; };
 		B490CD2B2915C84700EEAD4C /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		B490CD2E2915C90500EEAD4C /* TeamsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsService.swift; sourceTree = "<group>"; };
 		B490CD302915CAA900EEAD4C /* TeamCreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamCreateView.swift; sourceTree = "<group>"; };
+		B490CD33291652BE00EEAD4C /* PublicUser+Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PublicUser+Sample.swift"; sourceTree = "<group>"; };
+		B490CD382917F74100EEAD4C /* TeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamView.swift; sourceTree = "<group>"; };
+		B490CD3A291801FC00EEAD4C /* TasksFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksFilter.swift; sourceTree = "<group>"; };
+		B490CD3C291804D800EEAD4C /* Task+Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+Sample.swift"; sourceTree = "<group>"; };
 		B493D4D228D31C7F00B95A23 /* ScrumPoker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScrumPoker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B493D4D528D31C7F00B95A23 /* ScrumPokerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrumPokerApp.swift; sourceTree = "<group>"; };
 		B493D4D728D31C7F00B95A23 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -61,7 +69,7 @@
 		B493D4EA28D31DC300B95A23 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		B493D4ED28D31F4200B95A23 /* PopoverHolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverHolderView.swift; sourceTree = "<group>"; };
 		B493D4EF28D32F5900B95A23 /* Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dependencies.swift; sourceTree = "<group>"; };
-		B493D4F128D3320F00B95A23 /* MyTasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTasksView.swift; sourceTree = "<group>"; };
+		B493D4F128D3320F00B95A23 /* TasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksView.swift; sourceTree = "<group>"; };
 		B493D4F428D3322C00B95A23 /* AuthorizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationView.swift; sourceTree = "<group>"; };
 		B493D4F628D3329D00B95A23 /* PokerAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokerAPI.swift; sourceTree = "<group>"; };
 		B493D4F828D333DF00B95A23 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
@@ -99,7 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				B490CD222915BFE200EEAD4C /* TeamsView.swift */,
-				B490CD262915C24300EEAD4C /* TeamView.swift */,
+				B490CD262915C24300EEAD4C /* TeamListView.swift */,
 				B490CD302915CAA900EEAD4C /* TeamCreateView.swift */,
 			);
 			path = Teams;
@@ -109,6 +117,8 @@
 			isa = PBXGroup;
 			children = (
 				B490CD292915C26900EEAD4C /* Team+Sample.swift */,
+				B490CD33291652BE00EEAD4C /* PublicUser+Sample.swift */,
+				B490CD3C291804D800EEAD4C /* Task+Sample.swift */,
 			);
 			path = Samples;
 			sourceTree = "<group>";
@@ -119,6 +129,22 @@
 				B493D4F628D3329D00B95A23 /* PokerAPI.swift */,
 			);
 			path = API;
+			sourceTree = "<group>";
+		};
+		B490CD322915CD7300EEAD4C /* Tasks */ = {
+			isa = PBXGroup;
+			children = (
+				B493D4F128D3320F00B95A23 /* TasksView.swift */,
+			);
+			path = Tasks;
+			sourceTree = "<group>";
+		};
+		B490CD352917F72B00EEAD4C /* Team */ = {
+			isa = PBXGroup;
+			children = (
+				B490CD382917F74100EEAD4C /* TeamView.swift */,
+			);
+			path = Team;
 			sourceTree = "<group>";
 		};
 		B493D4C928D31C7F00B95A23 = {
@@ -188,6 +214,7 @@
 				B44B9ACE28D787A400B3E4EE /* Profile.swift */,
 				B4E0E24028F202EF00471A32 /* PublicUser.swift */,
 				B490CD242915C01500EEAD4C /* Team.swift */,
+				B490CD3A291801FC00EEAD4C /* TasksFilter.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -203,9 +230,10 @@
 		B493D4F328D3321300B95A23 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B490CD352917F72B00EEAD4C /* Team */,
+				B490CD322915CD7300EEAD4C /* Tasks */,
 				B490CD212915BFD300EEAD4C /* Teams */,
 				B43E4C3E28D3B51B00ABD0D2 /* Elements */,
-				B493D4F128D3320F00B95A23 /* MyTasksView.swift */,
 				B493D4F428D3322C00B95A23 /* AuthorizationView.swift */,
 				B493D50028D34AA200B95A23 /* TaskView.swift */,
 				B493D50628D3650C00B95A23 /* TaskCreate.swift */,
@@ -295,17 +323,21 @@
 				B490CD232915BFE200EEAD4C /* TeamsView.swift in Sources */,
 				B493D4FB28D3410D00B95A23 /* ApiTask.swift in Sources */,
 				B493D50528D3599500B95A23 /* VotesInfo.swift in Sources */,
+				B490CD3D291804D800EEAD4C /* Task+Sample.swift in Sources */,
 				B490CD2C2915C84700EEAD4C /* ErrorView.swift in Sources */,
 				B44B9ACF28D787A400B3E4EE /* Profile.swift in Sources */,
-				B490CD272915C24300EEAD4C /* TeamView.swift in Sources */,
+				B490CD272915C24300EEAD4C /* TeamListView.swift in Sources */,
+				B490CD34291652BE00EEAD4C /* PublicUser+Sample.swift in Sources */,
 				B4E0E24128F202EF00471A32 /* PublicUser.swift in Sources */,
+				B490CD392917F74100EEAD4C /* TeamView.swift in Sources */,
 				B490CD2F2915C90500EEAD4C /* TeamsService.swift in Sources */,
 				B493D50328D3541C00B95A23 /* Vote.swift in Sources */,
-				B493D4F228D3320F00B95A23 /* MyTasksView.swift in Sources */,
+				B493D4F228D3320F00B95A23 /* TasksView.swift in Sources */,
 				B493D4D828D31C7F00B95A23 /* ContentView.swift in Sources */,
 				B493D4D628D31C7F00B95A23 /* ScrumPokerApp.swift in Sources */,
 				B493D4F728D3329D00B95A23 /* PokerAPI.swift in Sources */,
 				B493D4EE28D31F4200B95A23 /* PopoverHolderView.swift in Sources */,
+				B490CD3B291801FC00EEAD4C /* TasksFilter.swift in Sources */,
 				B44B9ACD28D7875700B3E4EE /* ProfileService.swift in Sources */,
 				B490CD252915C01500EEAD4C /* Team.swift in Sources */,
 				B493D4E628D31D7F00B95A23 /* MenuService.swift in Sources */,

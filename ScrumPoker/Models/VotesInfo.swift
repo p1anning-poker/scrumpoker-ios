@@ -9,5 +9,5 @@ import Foundation
 
 struct VoteInfo: Decodable {
   var value: Vote
-  var userNames: [String]
+  var votedUsers: [PublicUser]
 }

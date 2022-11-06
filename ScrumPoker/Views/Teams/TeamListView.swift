@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TeamView: View {
+struct TeamListView: View {
   @Binding
   var team: Team
   
@@ -27,8 +27,8 @@ struct TeamView: View {
   }
 }
 
-struct TeamView_Previews: PreviewProvider {
+struct TeamListView_Previews: PreviewProvider {
   static var previews: some View {
-    TeamView(team: .constant(.sample(id: "1", membership: .member)))
+    TeamListView(team: .constant(.sample(id: "1", membership: .member)))
   }
 }

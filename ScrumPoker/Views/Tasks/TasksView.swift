@@ -1,5 +1,5 @@
 //
-//  MyTasksView.swift
+//  TasksView.swift
 //  ScrumPoker
 //
 //  Created by Aleksey Konshin on 15.09.2022.
@@ -8,19 +8,18 @@
 import SwiftUI
 import Cocoa
 
-struct MyTasksView: View {
+struct TasksView: View {
   
   @EnvironmentObject private var tasksService: TasksService
   
+  let team: Team
+  let filter: TasksFilter
   @State private var tasks: [ApiTask] = []
   @State private var error: String?
-  @State private var content: ContentType = .empty
-  @State private var tasksListType: TasksLiskType = .my
+  @State private var content: ContentType?
   
   var body: some View {
-    VStack(alignment: .center) {
-      picker()
-        .padding()
+    VStack(alignment: .leading) {
       if let error = error {
         ErrorView(error: error)
           .padding()
@@ -37,22 +36,9 @@ struct MyTasksView: View {
       reload()
     }
     .onReceive(tasksService.objectWillChange) { _ in
-      updateTasks(type: tasksListType, animated: true)
+      updateTasks(animated: true)
     }
-  }
-  
-  @ViewBuilder
-  private func picker() -> some View {
-    Picker(selection: $tasksListType) {
-      Text("My tasks").tag(TasksLiskType.my)
-      Text("Recently viewed").tag(TasksLiskType.recent)
-    } label: {
-      EmptyView()
-    }
-    .pickerStyle(SegmentedPickerStyle())
-    .onChange(of: tasksListType) { newValue in
-      updateTasks(type: newValue, animated: false)
-    }
+    .frame(width: 300)
   }
   
   @ViewBuilder
@@ -66,7 +52,7 @@ struct MyTasksView: View {
     }
 
     NavigationLink(isActive: binding) {
-      TaskView(task: task, addToRecentlyViewed: false)
+      TaskView(task: task, teamId: team.id, addToRecentlyViewed: false)
     } label: {
       HStack {
         VStack(alignment: .leading) {
@@ -80,12 +66,7 @@ struct MyTasksView: View {
       }
     }
     .contextMenu {
-      switch tasksListType {
-      case .my:
-        Button("Delete") { delete(task: task) }
-      case .recent:
-        EmptyView()
-      }
+      Button("Delete") { delete(task: task) }
     }
   }
   
@@ -95,8 +76,8 @@ struct MyTasksView: View {
     error = nil
     Task {
       do {
-        try await tasksService.reloadTasks()
-        updateTasks(type: tasksListType, animated: true)
+        try await tasksService.reloadTasks(teamId: team.id)
+        updateTasks(animated: true)
       } catch {
         self.error = error.localizedDescription
       }
@@ -107,29 +88,19 @@ struct MyTasksView: View {
     error = nil
     Task {
       do {
-        try await tasksService.delete(taskId: task.id)
+        try await tasksService.delete(taskId: task.id, teamId: team.id)
         if content == .details(task) {
-          content = .empty
+          content = nil
         }
       } catch {
         self.error = error.localizedDescription
       }
     }
   }
-  
-  private func terminate() {
-   exit(0)
-  }
-  
-  private func updateTasks(type: TasksLiskType, animated: Bool) {
-    let newTasks: [ApiTask] = {
-      switch type {
-      case .my:
-        return tasksService.tasks
-      case .recent:
-        return tasksService.recentlyViewedTasks
-      }
-    }()
+
+  private func updateTasks(animated: Bool) {
+    let newTasks: [ApiTask] = tasksService.tasks(teamId: team.id,
+                                                 filter: filter)
     if animated {
       withAnimation {
         tasks = newTasks
@@ -141,21 +112,15 @@ struct MyTasksView: View {
 }
 
 // MARK: - Types
-extension MyTasksView {
+extension TasksView {
   
   private enum ContentType: Equatable {
-    case empty
     case details(ApiTask)
-    case none
     
     static func == (lhs: Self, rhs: Self) -> Bool {
       switch (lhs, rhs) {
-      case (.empty, .empty), (.none, .none):
-        return true
       case (.details(let l), .details(let r)):
         return l.id == r.id
-      default:
-        return false
       }
     }
   }
@@ -169,8 +134,19 @@ struct MyTasksView_Previews: PreviewProvider {
   static var previews: some View {
     let appState = AppState.shared
     NavigationView {
-      MyTasksView()
-        .environmentObject(TasksService(api: PokerAPI(networkService: NetworkService(), appState: appState), appState: appState))
+      TasksView(
+        team: .sample(id: "1"),
+        filter: TasksFilter()
+      )
+        .environmentObject(
+          TasksService(
+            api: PokerAPI(
+              networkService: NetworkService(),
+              appState: appState
+            ),
+            appState: appState
+          )
+        )
     }
   }
 }

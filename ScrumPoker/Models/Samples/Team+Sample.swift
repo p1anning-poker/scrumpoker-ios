@@ -8,12 +8,11 @@
 import Foundation
 
 extension Team {
-  
   static func sample(id: String, membership: Team.MembershipStatus = .owner) -> Team {
     Team(
       teamUuid: String(id),
       teamName: "Team #\(id)",
-      userUuid: PublicUser(userUuid: "id", name: "Test user"),
+      userUuid: .sample(),
       membershipStatus: membership
     )
   }

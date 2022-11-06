@@ -12,6 +12,7 @@ struct TeamsView: View {
   @EnvironmentObject private var teamsService: TeamsService
   @State private var modal: Modal?
   @State private var error: String?
+  @State private var content: ContentType = .empty
   
   var body: some View {
     VStack {
@@ -23,10 +24,10 @@ struct TeamsView: View {
       } else {
         List(teamsService.teams) { team in
           VStack {
-            TeamView(team: .constant(team))
-            Divider()
+            teamView(team)
           }
         }
+        .listStyle(SidebarListStyle.sidebar)
       }
       Spacer()
       bottomBar()
@@ -58,6 +59,30 @@ struct TeamsView: View {
     .frame(height: 30)
   }
   
+  @ViewBuilder
+  private func teamView(_ team: Team) -> some View {
+    let binding = Binding<Bool> {
+      content == .tasks(team)
+    } set: { active in
+      if active {
+        content = .tasks(team)
+      }
+    }
+
+    VStack {
+      NavigationLink(isActive: binding) {
+        TeamView(team: .constant(team))
+          .navigationTitle(team.teamName)
+      } label: {
+        TeamListView(team: .constant(team))
+      }
+      .contextMenu {
+        Button("Delete") { delete(team: team) }
+      }
+      Divider()
+    }
+  }
+  
   private func addTeam() {
     modal = .createNew
   }
@@ -71,21 +96,41 @@ struct TeamsView: View {
       }
     }
   }
+  
+  private func delete(team: Team) {
+    
+  }
 }
 
 // MARK: - Types
 extension TeamsView {
   
-  enum Modal: Identifiable {
-      case createNew
-      
-      var id: Int {
-        switch self {
-        case .createNew:
-          return 0
-        }
+  private enum Modal: Identifiable {
+    case createNew
+    
+    var id: Int {
+      switch self {
+      case .createNew:
+        return 0
       }
     }
+  }
+  
+  private enum ContentType: Equatable {
+    case empty
+    case tasks(Team)
+    
+    static func == (lhs: Self, rhs: Self) -> Bool {
+      switch (lhs, rhs) {
+      case (.empty, .empty):
+        return true
+      case (.tasks(let l), .tasks(let r)):
+        return l.id == r.id
+      default:
+        return false
+      }
+    }
+  }
 }
 
 //struct TeamsView_Previews: PreviewProvider {
