@@ -12,7 +12,7 @@ struct TeamsView: View {
   @EnvironmentObject private var teamsService: TeamsService
   @State private var modal: Modal?
   @State private var error: String?
-  @State private var content: ContentType = .empty
+  @Binding var selectedTeam: Team?
   
   var body: some View {
     VStack {
@@ -62,17 +62,16 @@ struct TeamsView: View {
   @ViewBuilder
   private func teamView(_ team: Team) -> some View {
     let binding = Binding<Bool> {
-      content == .tasks(team)
+      selectedTeam?.id == team.id
     } set: { active in
       if active {
-        content = .tasks(team)
+        selectedTeam = team
       }
     }
 
     VStack {
       NavigationLink(isActive: binding) {
         TeamView(team: .constant(team))
-          .navigationTitle(team.teamName)
       } label: {
         TeamListView(team: .constant(team))
       }
@@ -91,6 +90,9 @@ struct TeamsView: View {
     Task {
       do {
         try await teamsService.reloadTeams()
+        if selectedTeam == nil {
+          selectedTeam = teamsService.teams.first
+        }
       } catch {
         self.error = error.localizedDescription
       }

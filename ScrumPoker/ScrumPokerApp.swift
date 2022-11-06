@@ -37,6 +37,7 @@ private struct MainView: View {
   @EnvironmentObject private var profileService: ProfileService
   @State private var modal: Modal?
   @State private var deferredModal: Modal?
+  @State private var selectedTeam: Team?
   
   enum Modal: Identifiable {
     case createNew
@@ -75,17 +76,13 @@ private struct MainView: View {
   @ViewBuilder
   private func contentView(user: User) -> some View {
     NavigationView {
-      TeamsView()
+      TeamsView(selectedTeam: $selectedTeam)
         .frame(minWidth: 250, maxWidth: 300)
       EmptyView()
     }
     .frame(minWidth: 600, idealWidth: 800, minHeight: 400, idealHeight: 400)
     .toolbar {
-      Toolbar(userName: user.name) {
-        logout()
-      } onCreate: {
-        modal = .createNew
-      }
+      Toolbar(teamName: selectedTeam?.teamName ?? "No Team Selected")
     }
     .sheet(item: $modal) { modal in
       switch modal {

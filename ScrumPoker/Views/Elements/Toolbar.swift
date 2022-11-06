@@ -8,26 +8,18 @@
 import SwiftUI
 
 struct Toolbar: View {
-  
-  let userName: String
-  let onExit: () -> Void
-  let onCreate: () -> Void
+  var teamName: String
   
   var body: some View {
-    Text(userName)
-      .font(.title)
     Button {
-      onExit()
+      NSApp.keyWindow?.firstResponder?.tryToPerform(
+        #selector(NSSplitViewController.toggleSidebar(_:)), with: nil
+      )
     } label: {
-      Image(systemName: "person.crop.circle.fill.badge.minus")
+      Label("Toggle sidebar", systemImage: "sidebar.left")
     }
     .help("Logout")
-    Spacer()
-    Button {
-      onCreate()
-    } label: {
-      Image(systemName: "plus.circle.fill")
-    }
-    .help("Create new Task")
+    Text(teamName)
+      .font(.title)
   }
 }
