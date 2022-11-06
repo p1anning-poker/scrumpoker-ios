@@ -97,7 +97,6 @@ struct TaskView: View {
         }
       }
       Spacer()
-      Divider()
     }
     .frame(height: 30)
   }

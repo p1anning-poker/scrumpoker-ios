@@ -27,7 +27,7 @@ struct TeamsView: View {
             teamView(team)
           }
         }
-        .listStyle(SidebarListStyle.sidebar)
+        .listStyle(.sidebar)
       }
       Spacer()
       bottomBar()

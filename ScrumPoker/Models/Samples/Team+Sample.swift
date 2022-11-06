@@ -12,7 +12,7 @@ extension Team {
     Team(
       teamUuid: String(id),
       teamName: "Team #\(id)",
-      userUuid: .sample(),
+      user: .sample(),
       membershipStatus: membership
     )
   }

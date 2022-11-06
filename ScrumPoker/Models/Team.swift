@@ -10,7 +10,7 @@ import Foundation
 struct Team: Codable, Identifiable, Equatable {
   var teamUuid: String
   var teamName: String
-  var userUuid: PublicUser
+  var user: PublicUser
   var membershipStatus: MembershipStatus
   
   var id: String {

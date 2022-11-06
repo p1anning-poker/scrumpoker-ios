@@ -28,7 +28,7 @@ struct TeamView: View {
         .tabItem {
           Label("Completed", systemImage: "checklist.checked")
         }
-        Text("Members")
+        TeamMembersView(team: team)
           .tabItem {
             Label("Members", systemImage: "person.3.sequence")
           }

@@ -171,3 +171,11 @@ extension PokerAPI {
     )
   }
 }
+
+// MARK: - Team Members
+extension PokerAPI {
+  
+  func members(teamId: Team.ID) async throws -> [TeamMember] {
+    return try await perform(path: "teams/\(teamId)/members")
+  }
+}

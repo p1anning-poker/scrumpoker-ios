@@ -51,3 +51,10 @@ final class TeamsService: ObservableObject {
     self.teams = teams
   }
 }
+
+extension TeamsService {
+  
+  func members(teamId: Team.ID) async throws -> [TeamMember] {
+    try await api.members(teamId: teamId)
+  }
+}

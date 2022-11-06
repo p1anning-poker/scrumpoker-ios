@@ -11,7 +11,7 @@ extension PublicUser {
   static func sample(id: String = "1") -> PublicUser {
     PublicUser(
       userUuid: id,
-      name: "Test user"
+      name: "Test user #\(id)"
     )
   }
 }
