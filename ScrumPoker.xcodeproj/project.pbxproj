@@ -22,6 +22,8 @@
 		B490CD392917F74100EEAD4C /* TeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD382917F74100EEAD4C /* TeamView.swift */; };
 		B490CD3B291801FC00EEAD4C /* TasksFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD3A291801FC00EEAD4C /* TasksFilter.swift */; };
 		B490CD3D291804D800EEAD4C /* Task+Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD3C291804D800EEAD4C /* Task+Sample.swift */; };
+		B490CD402918100E00EEAD4C /* SideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD3F2918100E00EEAD4C /* SideBar.swift */; };
+		B490CD42291810EA00EEAD4C /* User+Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD41291810EA00EEAD4C /* User+Sample.swift */; };
 		B493D4D628D31C7F00B95A23 /* ScrumPokerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4D528D31C7F00B95A23 /* ScrumPokerApp.swift */; };
 		B493D4D828D31C7F00B95A23 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4D728D31C7F00B95A23 /* ContentView.swift */; };
 		B493D4DA28D31C8100B95A23 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B493D4D928D31C8100B95A23 /* Assets.xcassets */; };
@@ -59,6 +61,8 @@
 		B490CD382917F74100EEAD4C /* TeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamView.swift; sourceTree = "<group>"; };
 		B490CD3A291801FC00EEAD4C /* TasksFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksFilter.swift; sourceTree = "<group>"; };
 		B490CD3C291804D800EEAD4C /* Task+Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+Sample.swift"; sourceTree = "<group>"; };
+		B490CD3F2918100E00EEAD4C /* SideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBar.swift; sourceTree = "<group>"; };
+		B490CD41291810EA00EEAD4C /* User+Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+Sample.swift"; sourceTree = "<group>"; };
 		B493D4D228D31C7F00B95A23 /* ScrumPoker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScrumPoker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B493D4D528D31C7F00B95A23 /* ScrumPokerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrumPokerApp.swift; sourceTree = "<group>"; };
 		B493D4D728D31C7F00B95A23 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -119,6 +123,7 @@
 				B490CD292915C26900EEAD4C /* Team+Sample.swift */,
 				B490CD33291652BE00EEAD4C /* PublicUser+Sample.swift */,
 				B490CD3C291804D800EEAD4C /* Task+Sample.swift */,
+				B490CD41291810EA00EEAD4C /* User+Sample.swift */,
 			);
 			path = Samples;
 			sourceTree = "<group>";
@@ -145,6 +150,14 @@
 				B490CD382917F74100EEAD4C /* TeamView.swift */,
 			);
 			path = Team;
+			sourceTree = "<group>";
+		};
+		B490CD3E2918100000EEAD4C /* SideBar */ = {
+			isa = PBXGroup;
+			children = (
+				B490CD3F2918100E00EEAD4C /* SideBar.swift */,
+			);
+			path = SideBar;
 			sourceTree = "<group>";
 		};
 		B493D4C928D31C7F00B95A23 = {
@@ -230,6 +243,7 @@
 		B493D4F328D3321300B95A23 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B490CD3E2918100000EEAD4C /* SideBar */,
 				B490CD352917F72B00EEAD4C /* Team */,
 				B490CD322915CD7300EEAD4C /* Tasks */,
 				B490CD212915BFD300EEAD4C /* Teams */,
@@ -313,6 +327,7 @@
 			files = (
 				B493D4FF28D3475800B95A23 /* User.swift in Sources */,
 				B490CD312915CAA900EEAD4C /* TeamCreateView.swift in Sources */,
+				B490CD42291810EA00EEAD4C /* User+Sample.swift in Sources */,
 				B493D50128D34AA200B95A23 /* TaskView.swift in Sources */,
 				B493D4F928D333DF00B95A23 /* NetworkService.swift in Sources */,
 				B43E4C4228D3C17800ABD0D2 /* TasksService.swift in Sources */,
@@ -339,6 +354,7 @@
 				B493D4EE28D31F4200B95A23 /* PopoverHolderView.swift in Sources */,
 				B490CD3B291801FC00EEAD4C /* TasksFilter.swift in Sources */,
 				B44B9ACD28D7875700B3E4EE /* ProfileService.swift in Sources */,
+				B490CD402918100E00EEAD4C /* SideBar.swift in Sources */,
 				B490CD252915C01500EEAD4C /* Team.swift in Sources */,
 				B493D4E628D31D7F00B95A23 /* MenuService.swift in Sources */,
 				B43E4C4028D3B52F00ABD0D2 /* Toolbar.swift in Sources */,

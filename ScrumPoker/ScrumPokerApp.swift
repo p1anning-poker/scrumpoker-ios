@@ -76,8 +76,12 @@ private struct MainView: View {
   @ViewBuilder
   private func contentView(user: User) -> some View {
     NavigationView {
-      TeamsView(selectedTeam: $selectedTeam)
-        .frame(minWidth: 250, maxWidth: 300)
+      SideBar(profile: user) {
+        logout()
+      } content: {
+        TeamsView(selectedTeam: $selectedTeam)
+      }
+      .frame(minWidth: 250, maxWidth: 300)
       EmptyView()
     }
     .frame(minWidth: 600, idealWidth: 800, minHeight: 400, idealHeight: 400)
