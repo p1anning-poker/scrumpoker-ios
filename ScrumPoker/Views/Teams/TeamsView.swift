@@ -71,7 +71,7 @@ struct TeamsView: View {
 
     VStack {
       NavigationLink(isActive: binding) {
-        TeamView(team: .constant(team))
+        TeamView(team: team)
       } label: {
         TeamListView(team: .constant(team))
       }

@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct TeamView: View {
-  @Binding
-  var team: Team
+  @EnvironmentObject private var teamsService: TeamsService
+  @State var team: Team
+  @State private var error: String?
   
   var body: some View {
-    //    NavigationView {
     switch team.membershipStatus {
     case .member, .owner:
       TabView {
@@ -35,17 +35,34 @@ struct TeamView: View {
       }
       .padding()
     case .invited:
-      Text("")
+      VStack {
+        if let error = error {
+          ErrorView(error: error)
+        }
+        Button(action: acceptInvite) {
+          Label("Accept", systemImage: "checkmark")
+        }
+      }
     }
-    //    }
+  }
+  
+  private func acceptInvite() {
+    error = nil
+    Task {
+      do {
+        self.team = try await teamsService.acceptInvite(team: team)
+      } catch {
+        self.error = error.localizedDescription
+      }
+    }
   }
 }
 
 struct TeamView_Previews: PreviewProvider {
   static var previews: some View {
-    let team = Team.sample(id: "1")
+    let team = Team.sample(id: "1", membership: .invited)
     NavigationView {
-      TeamView(team: .constant(team))
+      TeamView(team: team)
       EmptyView()
     }
   }

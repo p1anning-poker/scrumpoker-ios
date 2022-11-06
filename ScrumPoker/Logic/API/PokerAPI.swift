@@ -37,6 +37,7 @@ final class PokerAPI: ObservableObject {
     self.appState = appState
   }
  
+  @discardableResult
   private func perform(
     path: String,
     method: Method = .GET,
@@ -184,6 +185,12 @@ extension PokerAPI {
       path: "teams/\(teamId)/members/invite",
       method: .POST,
       params: ["email": email]
+    )
+  }
+  
+  func acceptInvite(teamId: Team.ID) async throws {
+    try await perform(
+      path: "teams/\(teamId)/members/accept"
     )
   }
 }

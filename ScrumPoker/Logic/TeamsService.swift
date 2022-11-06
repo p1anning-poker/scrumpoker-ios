@@ -61,4 +61,14 @@ extension TeamsService {
   func invite(member email: String, teamId: Team.ID) async throws {
     try await api.invite(member: email, teamId: teamId)
   }
+  
+  func acceptInvite(team: Team) async throws -> Team {
+    try await api.acceptInvite(teamId: team.id)
+    var team = team
+    team.membershipStatus = .member
+    if let index = teams.firstIndex(where: { $0.id == team.id }) {
+      teams[index] = team
+    }
+    return team
+  }
 }
