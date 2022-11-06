@@ -35,39 +35,28 @@ private struct MainView: View {
   
   @EnvironmentObject private var appState: AppState
   @EnvironmentObject private var profileService: ProfileService
-  @State private var modal: Modal?
-  @State private var deferredModal: Modal?
-  @State private var selectedTeam: Team?
+  @EnvironmentObject private var teamsService: TeamsService
+  @EnvironmentObject private var tasksService: TasksService
   
-  enum Modal: Identifiable {
-    case createNew
-    case details(ApiTask.ID)
-    
-    var id: Int {
-      switch self {
-      case .createNew:
-        return 0
-      case .details(let id):
-        return id.hashValue
-      }
-    }
-  }
+  @State private var modal: Modal?
+  @State private var selectedTeam: Team?
+  @State private var taskToOpen: ApiTask?
   
   var body: some View {
     if let user = appState.currentUser {
       contentView(user: user)
     } else {
       AuthorizationView(content: appState.lastLogin == nil ? .registration : .authorization) {
-        if let modal = deferredModal {
-          deferredModal = nil
-          self.modal = modal
-        }
+        
       }
       .frame(width: 350, alignment: .center)
       .onOpenURL { url in
-        if let modal = self.modal(for: url) {
+        if let route = self.route(from: url) {
           // waiting for the authorization
-          deferredModal = modal
+          switch route {
+          case .taskDetails(let taskId, let teamId):
+            self.modal = .details(taskId, teamId: teamId)
+          }
         }
       }
     }
@@ -79,7 +68,7 @@ private struct MainView: View {
       SideBar(profile: user) {
         logout()
       } content: {
-        TeamsView(selectedTeam: $selectedTeam)
+        TeamsView(selectedTeam: $selectedTeam, taskToOpen: $taskToOpen)
       }
       .frame(minWidth: 250, maxWidth: 300)
       EmptyView()
@@ -96,9 +85,9 @@ private struct MainView: View {
           self.modal = nil
         }
         .frame(minWidth: 300, maxWidth: 400)
-      case .details(let id):
+      case .details(let id, let teamId):
         // TODO: Delete
-        TaskView(taskId: id, teamId: "1", addToRecentlyViewed: true)
+        TaskView(taskId: id, teamId: teamId ?? user.userUuid, addToRecentlyViewed: true)
           .toolbar {
             ToolbarItem(placement: .cancellationAction) {
               Button {
@@ -112,21 +101,63 @@ private struct MainView: View {
       }
     }
     .onOpenURL { url in
-      modal = self.modal(for: url)
+      modal = nil
+      guard let route = self.route(from: url) else { return }
+      switch route {
+      case .taskDetails(let taskId, let teamId):
+        if let teamId = teamId, let team = teamsService.teams.first(where: { $0.id == teamId }) {
+          Task {
+            do {
+              taskToOpen = try await tasksService.task(id: taskId, teamId: teamId)
+              selectedTeam = team
+            } catch {
+              await MainActor.run {
+                modal = .details(taskId, teamId: teamId)
+              }
+            }
+          }
+        } else {
+          modal = .details(taskId, teamId: teamId)
+        }
+      }
     }
   }
   
-  private func modal(for deeplink: URL) -> Modal? {
+  private func route(from deeplink: URL) -> Route? {
     guard let components = URLComponents(url: deeplink, resolvingAgainstBaseURL: false),
-          let taskId = components.queryItems?.first(where: { $0.name == "taskId" })?.value else {
+          let queryItems = components.queryItems,
+          let taskId = queryItems.first(where: { $0.name == "taskId" })?.value else {
       return nil
     }
-    return .details(taskId)
+    let teamId = queryItems.first(where: { $0.name == "teamId" })?.value
+    return .taskDetails(taskId: taskId, teamId: teamId)
   }
   
   private func logout() {
     Task {
       await profileService.logout()
     }
+  }
+}
+
+// MARK: - Types
+private extension MainView {
+  
+  enum Modal: Identifiable {
+    case createNew
+    case details(ApiTask.ID, teamId: Team.ID?)
+    
+    var id: Int {
+      switch self {
+      case .createNew:
+        return 0
+      case .details(let id, _):
+        return id.hashValue
+      }
+    }
+  }
+  
+  enum Route {
+    case taskDetails(taskId: ApiTask.ID, teamId: Team.ID?)
   }
 }

@@ -14,6 +14,8 @@ struct TasksView: View {
   
   let team: Team
   let filter: TasksFilter
+  @Binding var taskToOpen: ApiTask?
+  
   @State private var tasks: [ApiTask] = []
   @State private var error: String?
   @State private var content: ContentType?
@@ -102,12 +104,20 @@ struct TasksView: View {
   private func updateTasks(animated: Bool) {
     let newTasks: [ApiTask] = tasksService.tasks(teamId: team.id,
                                                  filter: filter)
+    let action = {
+      self.tasks = newTasks
+      if let task = taskToOpen, let newTask = newTasks.first(where: { $0.id == task.id }) {
+        content = .details(newTask)
+        self.taskToOpen = nil
+      }
+    }
+    
     if animated {
       withAnimation {
-        tasks = newTasks
+        action()
       }
     } else {
-      tasks = newTasks
+      action()
     }
   }
 }
@@ -137,7 +147,8 @@ struct MyTasksView_Previews: PreviewProvider {
     NavigationView {
       TasksView(
         team: .sample(id: "1"),
-        filter: TasksFilter()
+        filter: TasksFilter(),
+        taskToOpen: .constant(nil)
       )
         .environmentObject(
           TasksService(

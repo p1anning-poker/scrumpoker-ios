@@ -45,7 +45,7 @@ struct TaskCreate: View {
     Task {
       do {
         let task = try await taskService.createTask(name: name, url: url, teamId: team.id)
-        taskService.share(task: task)
+        taskService.share(task: task, teamId: team.id)
         onFinish(task)
       } catch {
         self.error = error.localizedDescription

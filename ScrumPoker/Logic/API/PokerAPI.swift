@@ -125,8 +125,8 @@ extension PokerAPI {
     )
   }
   
-  func task(id: ApiTask.ID) async throws -> ApiTask {
-    return try await perform(path: "tasks/\(id)")
+  func task(id: ApiTask.ID, teamId: Team.ID) async throws -> ApiTask {
+    return try await perform(path: "teams/\(teamId)/tasks/\(id)")
   }
   
   func tasks(teamId: Team.ID) async throws -> [ApiTask] {
@@ -148,12 +148,12 @@ extension PokerAPI {
 // MARK: - Votes
 extension PokerAPI {
   
-  func votes(id: ApiTask.ID) async throws -> [VoteInfo] {
-    return try await perform(path: "tasks/\(id)/votes")
+  func votes(taskId: ApiTask.ID, teamId: Team.ID) async throws -> [VoteInfo] {
+    return try await perform(path: "teams/\(teamId)/tasks/\(taskId)/votes")
   }
   
-  func vote(id: ApiTask.ID, vote: Vote) async throws {
-    _ = try await perform(path: "tasks/\(id)/votes", method: .PUT, params: ["value": vote.rawValue])
+  func vote(taskId: ApiTask.ID, teamId: Team.ID, vote: Vote) async throws {
+    _ = try await perform(path: "teams/\(teamId)/tasks/\(taskId)/votes", method: .PUT, params: ["value": vote.rawValue])
   }
 }
 

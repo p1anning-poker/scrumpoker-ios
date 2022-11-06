@@ -94,8 +94,8 @@ final class TasksService: ObservableObject {
 
 extension TasksService {
   
-  func task(id: ApiTask.ID) async throws -> ApiTask {
-    let task = try await api.task(id: id)
+  func task(id: ApiTask.ID, teamId: Team.ID) async throws -> ApiTask {
+    let task = try await api.task(id: id, teamId: teamId)
     return task
   }
   
@@ -115,8 +115,8 @@ extension TasksService {
     reload(teamId: teamId)
   }
   
-  func share(task: ApiTask) {
-    let text = "[\(task.name)](scrumpoker://?taskId=\(task.id))"
+  func share(task: ApiTask, teamId: Team.ID) {
+    let text = "[\(task.name)](scrumpoker://?teamId=\(teamId)&taskId=\(task.id))"
     let pasteboard = NSPasteboard.general
     pasteboard.declareTypes([.string], owner: nil)
     pasteboard.setString(text, forType: .string)
@@ -126,12 +126,12 @@ extension TasksService {
 // MARK: - Votes
 extension TasksService {
   
-  func votes(id: ApiTask.ID) async throws -> [VoteInfo] {
-    return try await api.votes(id: id)
+  func votes(taskId: ApiTask.ID, teamId: Team.ID) async throws -> [VoteInfo] {
+    return try await api.votes(taskId: taskId, teamId: teamId)
   }
   
-  func vote(id: ApiTask.ID, vote: Vote) async throws {
-    try await api.vote(id: id, vote: vote)
-//    reload()
+  func vote(taskId: ApiTask.ID, teamId: Team.ID, vote: Vote) async throws {
+    try await api.vote(taskId: taskId, teamId: teamId, vote: vote)
+    reload(teamId: teamId)
   }
 }

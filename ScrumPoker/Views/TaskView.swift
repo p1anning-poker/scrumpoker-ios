@@ -84,9 +84,9 @@ struct TaskView: View {
         if let task = task {
           Button("Share link", action: shareLink)
           Spacer()
-          if task.finished == false, task.taskOwner.userUuid == appState.currentUser?.userUuid {
-            Button("Complete") {
-              complete()
+          if task.finished == false {
+            Button("Finish") {
+              finish()
             }
           }
         } else {
@@ -165,7 +165,7 @@ struct TaskView: View {
     error = nil
     Task {
       do {
-        let task = try await taskService.task(id: taskId)
+        let task = try await taskService.task(id: taskId, teamId: teamId)
         if addToRecentlyViewed {
           taskService.add(recentlyViewed: task)
         }
@@ -195,7 +195,7 @@ struct TaskView: View {
     error = nil
     Task {
       do {
-        try await taskService.vote(id: taskId, vote: vote)
+        try await taskService.vote(taskId: taskId, teamId: teamId, vote: vote)
         reload(animated: true)
       } catch {
         self.error = error.localizedDescription
@@ -207,14 +207,14 @@ struct TaskView: View {
     error = nil
     Task {
       do {
-        votes = try await taskService.votes(id: taskId)
+        votes = try await taskService.votes(taskId: taskId, teamId: teamId)
       } catch {
         self.error = error.localizedDescription
       }
     }
   }
   
-  private func complete() {
+  private func finish() {
     error = nil
     Task {
       do {
@@ -229,7 +229,7 @@ struct TaskView: View {
   
   private func shareLink() {
     guard let task = task else { return }
-    taskService.share(task: task)
+    taskService.share(task: task, teamId: teamId)
   }
 }
 

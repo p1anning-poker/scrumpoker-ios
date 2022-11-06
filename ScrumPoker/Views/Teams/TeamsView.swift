@@ -10,9 +10,12 @@ import SwiftUI
 struct TeamsView: View {
   // MARK: - Properties
   @EnvironmentObject private var teamsService: TeamsService
+  
+  @Binding var selectedTeam: Team?
+  @Binding var taskToOpen: ApiTask?
+  
   @State private var modal: Modal?
   @State private var error: String?
-  @Binding var selectedTeam: Team?
   
   var body: some View {
     VStack {
@@ -71,7 +74,7 @@ struct TeamsView: View {
 
     VStack {
       NavigationLink(isActive: binding) {
-        TeamView(team: team)
+        TeamView(team: team, taskToOpen: $taskToOpen)
       } label: {
         TeamListView(team: .constant(team))
       }
