@@ -71,6 +71,7 @@ struct TeamMembersView: View {
       Spacer()
       statusView(member.membershipStatus)
     }
+    .listDivider()
   }
   
   @ViewBuilder

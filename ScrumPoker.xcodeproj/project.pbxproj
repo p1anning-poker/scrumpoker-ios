@@ -29,6 +29,7 @@
 		B490CD4929181E9100EEAD4C /* TeamMember+Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD4829181E9100EEAD4C /* TeamMember+Sample.swift */; };
 		B490CD4B2918284D00EEAD4C /* NSTableView+RemoveBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD4A2918284D00EEAD4C /* NSTableView+RemoveBackground.swift */; };
 		B490CD4D29182A6C00EEAD4C /* InviteMemberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD4C29182A6C00EEAD4C /* InviteMemberView.swift */; };
+		B490CD4F29182DF700EEAD4C /* List+Divider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD4E29182DF700EEAD4C /* List+Divider.swift */; };
 		B493D4D628D31C7F00B95A23 /* ScrumPokerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4D528D31C7F00B95A23 /* ScrumPokerApp.swift */; };
 		B493D4D828D31C7F00B95A23 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4D728D31C7F00B95A23 /* ContentView.swift */; };
 		B493D4DA28D31C8100B95A23 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B493D4D928D31C8100B95A23 /* Assets.xcassets */; };
@@ -73,6 +74,7 @@
 		B490CD4829181E9100EEAD4C /* TeamMember+Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TeamMember+Sample.swift"; sourceTree = "<group>"; };
 		B490CD4A2918284D00EEAD4C /* NSTableView+RemoveBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+RemoveBackground.swift"; sourceTree = "<group>"; };
 		B490CD4C29182A6C00EEAD4C /* InviteMemberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteMemberView.swift; sourceTree = "<group>"; };
+		B490CD4E29182DF700EEAD4C /* List+Divider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "List+Divider.swift"; sourceTree = "<group>"; };
 		B493D4D228D31C7F00B95A23 /* ScrumPoker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScrumPoker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B493D4D528D31C7F00B95A23 /* ScrumPokerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrumPokerApp.swift; sourceTree = "<group>"; };
 		B493D4D728D31C7F00B95A23 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 			children = (
 				B493D4ED28D31F4200B95A23 /* PopoverHolderView.swift */,
 				B490CD4A2918284D00EEAD4C /* NSTableView+RemoveBackground.swift */,
+				B490CD4E29182DF700EEAD4C /* List+Divider.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -351,6 +354,7 @@
 				B490CD4D29182A6C00EEAD4C /* InviteMemberView.swift in Sources */,
 				B493D4FF28D3475800B95A23 /* User.swift in Sources */,
 				B490CD312915CAA900EEAD4C /* TeamCreateView.swift in Sources */,
+				B490CD4F29182DF700EEAD4C /* List+Divider.swift in Sources */,
 				B490CD4729181C9700EEAD4C /* TeamMember.swift in Sources */,
 				B490CD42291810EA00EEAD4C /* User+Sample.swift in Sources */,
 				B493D50128D34AA200B95A23 /* TaskView.swift in Sources */,

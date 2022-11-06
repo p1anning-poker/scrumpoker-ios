@@ -21,7 +21,7 @@ struct TeamListView: View {
       case .member:
         EmptyView()
       case .invited:
-        Text("INVITED")
+        Image(systemName: "person.fill.questionmark")
       }
     }
   }

@@ -28,6 +28,7 @@ struct TasksView: View {
       } else {
         List(tasks) { task in
           taskView(task)
+            .listDivider()
         }
       }
       Spacer()

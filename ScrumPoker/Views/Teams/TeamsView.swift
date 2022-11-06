@@ -78,8 +78,8 @@ struct TeamsView: View {
       .contextMenu {
         Button("Delete") { delete(team: team) }
       }
-      Divider()
     }
+    .listDivider(yOffset: 6)
   }
   
   private func addTeam() {
