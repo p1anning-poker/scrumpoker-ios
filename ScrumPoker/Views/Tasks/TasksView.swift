@@ -14,19 +14,28 @@ struct TasksView: View {
   
   let team: Team
   let filter: TasksFilter
+  let allowedToCreate: Bool
   @Binding var taskToOpen: ApiTask?
   
   @State private var tasks: [ApiTask] = []
   @State private var error: String?
   @State private var content: ContentType?
+  @State private var modal: Modal?
   
   var body: some View {
     VStack(alignment: .leading) {
+      if allowedToCreate {
+        Button(action: createTask) {
+          Label("Add task", systemImage: "rectangle.badge.plus")
+        }
+        .padding(.leading)
+      }
       if let error = error {
         ErrorView(error: error)
           .padding()
       } else if tasks.isEmpty {
         Text("You have no tasks")
+          .padding()
       } else {
         List(tasks) { task in
           taskView(task)
@@ -35,11 +44,21 @@ struct TasksView: View {
       }
       Spacer()
     }
+    .frame(maxWidth: .infinity, alignment: .leading)
     .onAppear {
       reload()
     }
     .onReceive(tasksService.objectWillChange) { _ in
       updateTasks(animated: true)
+    }
+    .sheet(item: $modal) { modal in
+      switch modal {
+      case .createNewTask:
+        TaskCreate(teamId: team.id, teamName: team.teamName) { _ in
+          self.modal = nil
+        }
+        .frame(minWidth: 300, maxWidth: 400)
+      }
     }
     .frame(width: 300)
   }
@@ -74,6 +93,10 @@ struct TasksView: View {
   }
   
   // MARK: - Actions
+  
+  private func createTask() {
+    modal = .createNewTask
+  }
   
   private func reload() {
     error = nil
@@ -125,6 +148,17 @@ struct TasksView: View {
 // MARK: - Types
 extension TasksView {
   
+  enum Modal: Identifiable {
+    case createNewTask
+    
+    var id: Int {
+      switch self {
+      case .createNewTask:
+        return 0
+      }
+    }
+  }
+  
   private enum ContentType: Equatable {
     case details(ApiTask)
     
@@ -135,10 +169,6 @@ extension TasksView {
       }
     }
   }
-  
-  private enum TasksLiskType {
-    case my, recent
-  }
 }
 
 struct MyTasksView_Previews: PreviewProvider {
@@ -148,6 +178,7 @@ struct MyTasksView_Previews: PreviewProvider {
       TasksView(
         team: .sample(id: "1"),
         filter: TasksFilter(),
+        allowedToCreate: false,
         taskToOpen: .constant(nil)
       )
         .environmentObject(

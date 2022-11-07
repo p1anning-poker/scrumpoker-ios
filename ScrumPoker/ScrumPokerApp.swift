@@ -79,12 +79,6 @@ private struct MainView: View {
     }
     .sheet(item: $modal) { modal in
       switch modal {
-      case .createNew:
-        // TODO: Delete
-        TaskCreate(team: .sample(id: "1")) { _ in
-          self.modal = nil
-        }
-        .frame(minWidth: 300, maxWidth: 400)
       case .details(let id, let teamId):
         // TODO: Delete
         TaskView(taskId: id, teamId: teamId ?? user.userUuid, addToRecentlyViewed: true)
@@ -144,13 +138,10 @@ private struct MainView: View {
 private extension MainView {
   
   enum Modal: Identifiable {
-    case createNew
     case details(ApiTask.ID, teamId: Team.ID?)
     
     var id: Int {
       switch self {
-      case .createNew:
-        return 0
       case .details(let id, _):
         return id.hashValue
       }

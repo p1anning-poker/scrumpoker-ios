@@ -24,6 +24,7 @@ struct TeamView: View {
         NavigationView {
           TasksView(team: team,
                     filter: TasksFilter(completed: false),
+                    allowedToCreate: true,
                     taskToOpen: $taskToOpen)
         }
         .tabItem {
@@ -33,6 +34,7 @@ struct TeamView: View {
         NavigationView {
           TasksView(team: team,
                     filter: TasksFilter(completed: true),
+                    allowedToCreate: false,
                     taskToOpen: $taskToOpen)
         }
         .tabItem {

@@ -37,7 +37,7 @@ struct SideBar<T: View>: View {
     }
     .frame(maxWidth: .infinity, alignment: .leading)
     .padding(12)
-    .background(Color.white)
+    .background(.quaternary)
     .cornerRadius(16)
     .padding()
   }
@@ -50,6 +50,7 @@ struct SideBar_Previews: PreviewProvider {
     } content: {
       Text("Content")
     }
+    .preferredColorScheme(.dark)
     .previewLayout(PreviewLayout.fixed(width: 300, height: 300))
   }
 }
