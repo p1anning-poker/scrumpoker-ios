@@ -7,21 +7,29 @@
 
 import Foundation
 
+private enum Keys {
+  static let latestOpenedTeamId = "LATEST_OPENED_TEAM_ID"
+}
+
 final class TeamsService: ObservableObject {
   // MARK: - Properties
   private let api: PokerAPI
+  private let defaults = UserDefaults.standard
+  
   private(set) var teams: [Team] = [] {
     didSet {
       guard teams != oldValue else { return }
       objectWillChange.send()
     }
   }
+  private(set) var latestOpenedTeamId: Team.ID?
   
   // MARK: - Lifecycle
   
   init(api: PokerAPI) {
     self.api = api
     
+    latestOpenedTeamId = defaults.string(forKey: Keys.latestOpenedTeamId)
     reload()
   }
   
@@ -32,10 +40,10 @@ final class TeamsService: ObservableObject {
     await update(teams: teams)
   }
   
-  func createTeam(name: String) async throws -> Team {
-    let team = try await api.createTeam(name: name)
-    reload()
-    return team
+  func setLatestOpenedTeamId(_ id: Team.ID) {
+    guard latestOpenedTeamId != id else { return }
+    latestOpenedTeamId = id
+    defaults.set(id, forKey: Keys.latestOpenedTeamId)
   }
   
   // MARK: - Private
@@ -52,7 +60,14 @@ final class TeamsService: ObservableObject {
   }
 }
 
+// MARK: - Actions
 extension TeamsService {
+  
+  func createTeam(name: String) async throws -> Team {
+    let team = try await api.createTeam(name: name)
+    reload()
+    return team
+  }
   
   func members(teamId: Team.ID) async throws -> [TeamMember] {
     try await api.members(teamId: teamId)

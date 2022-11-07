@@ -94,7 +94,9 @@ struct TeamsView: View {
       do {
         try await teamsService.reloadTeams()
         if selectedTeam == nil {
-          selectedTeam = teamsService.teams.first
+          selectedTeam = teamsService.latestOpenedTeamId.flatMap { id in
+            teamsService.teams.first(where: { $0.id == id })
+          } ?? teamsService.teams.first
         }
       } catch {
         self.error = error.localizedDescription

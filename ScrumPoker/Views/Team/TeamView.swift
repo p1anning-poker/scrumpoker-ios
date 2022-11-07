@@ -18,7 +18,16 @@ struct TeamView: View {
   @State private var error: String?
   
   var body: some View {
-    switch team.membershipStatus {
+    content(membershipStatus: team.membershipStatus)
+      .padding()
+      .onAppear {
+        teamsService.setLatestOpenedTeamId(team.id)
+      }
+  }
+  
+  @ViewBuilder
+  private func content(membershipStatus: Team.MembershipStatus) -> some View {
+    switch membershipStatus {
     case .member, .owner:
       TabView(selection: $tab) {
         NavigationView {
@@ -47,7 +56,6 @@ struct TeamView: View {
           }
           .tag(Tab.members)
       }
-      .padding()
       .onChange(of: taskToOpen) { newValue in
         if let task = newValue {
           tab = task.finished ? .completed : .tasks
@@ -62,7 +70,6 @@ struct TeamView: View {
           Label("Accept", systemImage: "checkmark")
         }
       }
-      .padding()
     }
   }
   
