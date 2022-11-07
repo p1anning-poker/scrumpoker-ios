@@ -5,7 +5,8 @@
 //  Created by Aleksey Konshin on 05.11.2022.
 //
 
-import Foundation
+import AppKit
+import Combine
 
 private enum Keys {
   static let latestOpenedTeamId = "LATEST_OPENED_TEAM_ID"
@@ -15,6 +16,7 @@ final class TeamsService: ObservableObject {
   // MARK: - Properties
   private let api: PokerAPI
   private let defaults = UserDefaults.standard
+  private var cancellables: Set<AnyCancellable> = []
   
   private(set) var teams: [Team] = [] {
     didSet {
@@ -29,8 +31,7 @@ final class TeamsService: ObservableObject {
   init(api: PokerAPI) {
     self.api = api
     
-    latestOpenedTeamId = defaults.string(forKey: Keys.latestOpenedTeamId)
-    reload()
+    configure()
   }
   
   // MARK: - Functions
@@ -47,6 +48,17 @@ final class TeamsService: ObservableObject {
   }
   
   // MARK: - Private
+  
+  private func configure() {
+    latestOpenedTeamId = defaults.string(forKey: Keys.latestOpenedTeamId)
+    reload()
+    
+    NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)
+      .sink { [weak self] _ in
+        self?.reload()
+      }
+      .store(in: &cancellables)
+  }
   
   private func reload() {
     Task {
@@ -67,6 +79,11 @@ extension TeamsService {
     let team = try await api.createTeam(name: name)
     reload()
     return team
+  }
+  
+  func deleteTeam(id: Team.ID) async throws {
+    try await api.deleteTeam(id: id)
+    teams.removeAll(where: { $0.id == id })
   }
   
   func members(teamId: Team.ID) async throws -> [TeamMember] {

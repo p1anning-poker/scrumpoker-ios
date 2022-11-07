@@ -15,6 +15,7 @@ struct TeamsView: View {
   @Binding var taskToOpen: ApiTask?
   
   @State private var modal: Modal?
+  @State private var alert: Alert?
   @State private var error: String?
   
   var body: some View {
@@ -31,6 +32,9 @@ struct TeamsView: View {
           }
         }
         .listStyle(.sidebar)
+        .refreshable {
+          reload()
+        }
       }
       Spacer()
       bottomBar()
@@ -42,6 +46,21 @@ struct TeamsView: View {
           self.modal = nil
         }
           .frame(minWidth: 300, maxWidth: 400)
+      }
+    }
+    .alert(item: $alert) { alert in
+      switch alert {
+      case .error(let text):
+        return SwiftUI.Alert(title: Text("Failed to delete team"),
+                             message: Text(text),
+                             dismissButton: SwiftUI.Alert.Button.cancel())
+      case .askToDelete(let team, let accept):
+        return SwiftUI.Alert(
+          title: Text("Delete \(team.teamName)?"),
+          primaryButton: .destructive(Text("Delete"),
+                                      action: accept),
+          secondaryButton: .cancel()
+        )
       }
     }
     .onAppear {
@@ -79,7 +98,11 @@ struct TeamsView: View {
         TeamListView(team: .constant(team))
       }
       .contextMenu {
-        Button("Delete") { delete(team: team) }
+        Button("Delete") {
+          alert = .askToDelete(team: team) {
+            delete(team: team)
+          }
+        }
       }
     }
     .listDivider(yOffset: 6)
@@ -105,12 +128,32 @@ struct TeamsView: View {
   }
   
   private func delete(team: Team) {
-    
+    Task {
+      do {
+        try await teamsService.deleteTeam(id: team.id)
+      } catch {
+        alert = .error(error.localizedDescription)
+      }
+    }
   }
 }
 
 // MARK: - Types
 extension TeamsView {
+  
+  private enum Alert: Identifiable {
+    case error(String)
+    case askToDelete(team: Team, accept: () -> Void)
+    
+    var id: Int {
+      switch self {
+      case .error:
+        return 0
+      case .askToDelete:
+        return 1
+      }
+    }
+  }
   
   private enum Modal: Identifiable {
     case createNew

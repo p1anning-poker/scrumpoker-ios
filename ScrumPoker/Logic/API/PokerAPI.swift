@@ -171,6 +171,13 @@ extension PokerAPI {
       params: ["teamName": name]
     )
   }
+  
+  func deleteTeam(id: Team.ID) async throws {
+    try await perform(
+      path: "teams/\(id)",
+      method: .DELETE
+    )
+  }
 }
 
 // MARK: - Team Members
