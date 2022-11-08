@@ -17,7 +17,7 @@ struct TasksView: View {
   let allowedToCreate: Bool
   @Binding var taskToOpen: ApiTask?
   
-  @State private var tasks: [ApiTask] = []
+  @State var tasks: [ApiTask] = []
   @State private var error: String?
   @State private var content: ContentType?
   @State private var modal: Modal?
@@ -77,9 +77,17 @@ struct TasksView: View {
       TaskView(task: task, teamId: team.id, addToRecentlyViewed: false)
     } label: {
       HStack {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 2) {
           Text(task.name)
           Text(task.url?.absoluteString ?? "No URL")
+            .font(.caption2)
+            .foregroundColor(.secondary)
+          HStack {
+            Text("\(task.votedUsers?.count ?? 0) voted")
+            Spacer()
+            Image(systemName: task.voteValue == nil ? "circle" : "checkmark.circle")
+          }
+          .font(.caption2)
         }
         Spacer()
         if task.finished {
@@ -125,8 +133,13 @@ struct TasksView: View {
   }
 
   private func updateTasks(animated: Bool) {
-    let newTasks: [ApiTask] = tasksService.tasks(teamId: team.id,
-                                                 filter: filter)
+    let newTasks: [ApiTask] = tasksService.tasks(
+      teamId: team.id,
+      filter: filter
+    )
+      .sorted { l, r in
+        return l.voteValue == nil && r.voteValue != nil
+      }
     let action = {
       self.tasks = newTasks
       if let task = taskToOpen, let newTask = newTasks.first(where: { $0.id == task.id }) {
@@ -174,12 +187,20 @@ extension TasksView {
 struct MyTasksView_Previews: PreviewProvider {
   static var previews: some View {
     let appState = AppState.shared
+    let tasks = (0..<5).map { id in
+      ApiTask.sample(
+        id: "id",
+        vote: Bool.random() ? Vote.one : nil
+      )
+    }
+    
     NavigationView {
       TasksView(
         team: .sample(id: "1"),
         filter: TasksFilter(),
         allowedToCreate: false,
-        taskToOpen: .constant(nil)
+        taskToOpen: .constant(nil),
+        tasks: tasks
       )
         .environmentObject(
           TasksService(

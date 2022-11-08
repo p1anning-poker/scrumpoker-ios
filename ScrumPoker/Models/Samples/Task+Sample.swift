@@ -8,12 +8,13 @@
 import Foundation
 
 extension ApiTask {
-  static func sample(id: String, finished: Bool = false) -> ApiTask {
+  static func sample(id: String, finished: Bool = false, vote: Vote? = nil) -> ApiTask {
     ApiTask(
       taskUuid: id,
       taskOwner: .sample(),
       name: "Task \(id)",
-      finished: finished
+      finished: finished,
+      voteValue: vote
     )
   }
 }
