@@ -30,6 +30,21 @@ struct SideBar<T: View>: View {
       VStack(alignment: .leading, spacing: 2) {
         Text(profile.name)
           .font(.title)
+        Button {
+          let pasteboard = NSPasteboard.general
+          pasteboard.declareTypes([.string], owner: nil)
+          pasteboard.setString(profile.email, forType: .string)
+        } label: {
+          HStack(spacing: 4) {
+            Text(profile.email)
+            Image(systemName: "doc.on.doc")
+          }
+        }
+        .font(.body)
+        .lineLimit(1)
+        .minimumScaleFactor(0.5)
+        .padding(.bottom, 4)
+        .buttonStyle(.plain)
         Button(action: onLogout) {
           Text("Sign Out")
         }
