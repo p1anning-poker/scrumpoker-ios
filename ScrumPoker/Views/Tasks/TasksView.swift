@@ -44,6 +44,7 @@ struct TasksView: View {
       }
       Spacer()
     }
+    .frame(maxWidth: .infinity, alignment: .leading)
     .onAppear {
       reload()
     }
@@ -131,13 +132,18 @@ struct TasksView: View {
   }
 
   private func updateTasks(animated: Bool) {
-    let newTasks: [ApiTask] = tasksService.tasks(
+    var newTasks: [ApiTask] = tasksService.tasks(
       teamId: team.id,
       filter: filter
     )
       .sorted { l, r in
         return l.voteValue == nil && r.voteValue != nil
       }
+    if let detailedTask = content?.task, !newTasks.contains(where: { $0.id == detailedTask.id }) {
+      // Displayed task must be in the list
+      newTasks.append(detailedTask)
+    }
+    
     let action = {
       self.tasks = newTasks
       if let task = taskToOpen, let newTask = newTasks.first(where: { $0.id == task.id }) {
@@ -172,6 +178,13 @@ extension TasksView {
   
   private enum ContentType: Equatable {
     case details(ApiTask)
+    
+    var task: ApiTask {
+      switch self {
+      case .details(let task):
+        return task
+      }
+    }
     
     static func == (lhs: Self, rhs: Self) -> Bool {
       switch (lhs, rhs) {
