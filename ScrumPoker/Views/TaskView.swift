@@ -43,7 +43,7 @@ struct TaskView: View {
         Text("Loading...")
       }
     }
-    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+    .frame(minWidth: 300, maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     .padding()
     .onAppear {
       if task?.finished == true {

@@ -44,7 +44,6 @@ struct TasksView: View {
       }
       Spacer()
     }
-    .frame(maxWidth: .infinity, alignment: .leading)
     .onAppear {
       reload()
     }
@@ -60,7 +59,6 @@ struct TasksView: View {
         .frame(minWidth: 300, maxWidth: 400)
       }
     }
-    .frame(width: 300)
   }
   
   @ViewBuilder
@@ -194,7 +192,7 @@ struct MyTasksView_Previews: PreviewProvider {
       )
     }
     
-    NavigationView {
+//    NavigationView {
       TasksView(
         team: .sample(id: "1"),
         filter: TasksFilter(),
@@ -211,6 +209,7 @@ struct MyTasksView_Previews: PreviewProvider {
             appState: appState
           )
         )
-    }
+        .frame(width: 600)
+//    }
   }
 }

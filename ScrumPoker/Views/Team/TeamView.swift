@@ -35,6 +35,7 @@ struct TeamView: View {
                     filter: TasksFilter(completed: false),
                     allowedToCreate: true,
                     taskToOpen: $taskToOpen)
+          .frame(minWidth: 300)
         }
         .tabItem {
           Label("Tasks", systemImage: "checklist.unchecked")
@@ -45,6 +46,7 @@ struct TeamView: View {
                     filter: TasksFilter(completed: true),
                     allowedToCreate: false,
                     taskToOpen: $taskToOpen)
+          .frame(minWidth: 300)
         }
         .tabItem {
           Label("Completed", systemImage: "checklist.checked")

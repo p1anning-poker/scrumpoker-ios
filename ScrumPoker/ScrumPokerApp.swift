@@ -45,6 +45,7 @@ private struct MainView: View {
   var body: some View {
     if let user = appState.currentUser {
       contentView(user: user)
+        .frame(minWidth: 1000, minHeight: 500)
     } else {
       AuthorizationView(content: appState.lastLogin == nil ? .registration : .authorization) {
         
@@ -73,25 +74,14 @@ private struct MainView: View {
       .frame(minWidth: 250, maxWidth: 300)
       EmptyView()
     }
-    .frame(minWidth: 600, idealWidth: 800, minHeight: 400, idealHeight: 400)
     .toolbar {
       Toolbar(teamName: selectedTeam?.teamName ?? "No Team Selected")
     }
     .sheet(item: $modal) { modal in
       switch modal {
       case .details(let id, let teamId):
-        // TODO: Delete
-        TaskView(taskId: id, teamId: teamId ?? user.userUuid, addToRecentlyViewed: true)
-          .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-              Button {
-                self.modal = nil
-              } label: {
-                Text("Close")
-              }
-            }
-          }
-          .frame(minWidth: 500, maxWidth: 700, minHeight: 300, alignment: .top)
+        // userUuid used for user's default team
+        taskDetails(id: id, teamId: teamId ?? user.userUuid)
       }
     }
     .onOpenURL { url in
@@ -125,6 +115,21 @@ private struct MainView: View {
     }
     let teamId = queryItems.first(where: { $0.name == "teamId" })?.value
     return .taskDetails(taskId: taskId, teamId: teamId)
+  }
+  
+  @ViewBuilder
+  private func taskDetails(id: ApiTask.ID, teamId: Team.ID) -> some View {
+    TaskView(taskId: id, teamId: teamId, addToRecentlyViewed: true)
+      .toolbar {
+        ToolbarItem(placement: .cancellationAction) {
+          Button {
+            self.modal = nil
+          } label: {
+            Text("Close")
+          }
+        }
+      }
+      .frame(minWidth: 500, maxWidth: 800, minHeight: 300, alignment: .top)
   }
   
   private func logout() {
