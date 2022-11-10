@@ -47,7 +47,9 @@ final class AppState: ObservableObject {
   }
   
   var numberOfTasks: AnyPublisher<Int, Never> {
-    return numberOfTasksSubject.eraseToAnyPublisher()
+    return numberOfTasksSubject
+      .receive(on: DispatchQueue.main)
+      .eraseToAnyPublisher()
   }
   
   var token: Token? {

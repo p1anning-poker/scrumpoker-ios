@@ -16,7 +16,7 @@ final class TeamsService: ObservableObject {
   // MARK: - Properties
   private let api: PokerAPI
   private let defaults = UserDefaults.standard
-  private var cancellables: Set<AnyCancellable> = []
+  private var reloadTask: Task<Void, Error>?
   
   private(set) var teams: [Team] = [] {
     didSet {
@@ -37,8 +37,17 @@ final class TeamsService: ObservableObject {
   // MARK: - Functions
   
   func reloadTeams() async throws {
-    let teams = try await api.teams()
-    await update(teams: teams)
+    if let reloadTask {
+      _ = try await reloadTask.value
+    } else {
+      let task = Task {
+        let teams = try await api.teams()
+        await update(teams: teams)
+        reloadTask = nil
+      }
+      reloadTask = task
+      try await task.value
+    }
   }
   
   func setLatestOpenedTeamId(_ id: Team.ID) {
@@ -53,11 +62,12 @@ final class TeamsService: ObservableObject {
     latestOpenedTeamId = defaults.string(forKey: Keys.latestOpenedTeamId)
     reload()
     
-    NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)
-      .sink { [weak self] _ in
-        self?.reload()
+    Task {
+      let didBecomePublisher = await NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)
+      for await _ in didBecomePublisher.values {
+        reload()
       }
-      .store(in: &cancellables)
+    }
   }
   
   private func reload() {

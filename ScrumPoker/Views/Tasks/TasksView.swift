@@ -223,6 +223,8 @@ struct MyTasksView_Previews: PreviewProvider {
       )
     }
     
+    let deeplinkService = DeeplinkService()
+    
 //    NavigationView {
       TasksView(
         team: .sample(id: "1"),
@@ -237,7 +239,11 @@ struct MyTasksView_Previews: PreviewProvider {
               networkService: NetworkService(),
               appState: appState
             ),
-            appState: appState
+            appState: appState,
+            notificationsService: NotificationsService(
+              deeplinkService: deeplinkService
+            ),
+            deeplinkService: deeplinkService
           )
         )
         .frame(width: 600)

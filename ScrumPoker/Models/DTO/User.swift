@@ -7,8 +7,12 @@
 
 import Foundation
 
-struct User: Equatable, Codable {
+struct User: Equatable, Codable, Identifiable {
   var userUuid: String
   var email: String
   var name: String
+  
+  var id: String {
+    return userUuid
+  }
 }

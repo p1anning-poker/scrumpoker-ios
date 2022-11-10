@@ -21,9 +21,12 @@ struct ScrumPokerApp: App {
         .environmentObject(dependencies.tasksService)
         .environmentObject(dependencies.profileService)
         .environmentObject(dependencies.teamsService)
+        .environmentObject(dependencies.deeplinkService)
         .onAppear {
           // init menu
           _ = self.dependencies.menuService
+          // init watching
+          _ = self.dependencies.watchingService
         }
     }
     .windowStyle(HiddenTitleBarWindowStyle())
@@ -41,6 +44,7 @@ private struct MainView: View {
   @EnvironmentObject private var profileService: ProfileService
   @EnvironmentObject private var teamsService: TeamsService
   @EnvironmentObject private var tasksService: TasksService
+  @EnvironmentObject private var deeplinkService: DeeplinkService
   
   @State private var modal: Modal?
   @State private var selectedTeam: Team?
@@ -56,7 +60,7 @@ private struct MainView: View {
       }
       .frame(width: 350, alignment: .center)
       .onOpenURL { url in
-        if let route = self.route(from: url) {
+        if let route = deeplinkService.appRoute(from: url) {
           // waiting for the authorization
           switch route {
           case .taskDetails(let taskId, let teamId):
@@ -90,10 +94,10 @@ private struct MainView: View {
     }
     .onOpenURL { url in
       modal = nil
-      guard let route = self.route(from: url) else { return }
+      guard let route = deeplinkService.appRoute(from: url) else { return }
       switch route {
       case .taskDetails(let taskId, let teamId):
-        if let teamId = teamId, let team = teamsService.teams.first(where: { $0.id == teamId }) {
+        if let team = teamsService.teams.first(where: { $0.id == teamId }) {
           Task {
             do {
               let task = try await tasksService.task(id: taskId, teamId: teamId)
@@ -113,16 +117,6 @@ private struct MainView: View {
         }
       }
     }
-  }
-  
-  private func route(from deeplink: URL) -> Route? {
-    guard let components = URLComponents(url: deeplink, resolvingAgainstBaseURL: false),
-          let queryItems = components.queryItems,
-          let taskId = queryItems.first(where: { $0.name == "taskId" })?.value else {
-      return nil
-    }
-    let teamId = queryItems.first(where: { $0.name == "teamId" })?.value
-    return .taskDetails(taskId: taskId, teamId: teamId)
   }
   
   @ViewBuilder
@@ -159,9 +153,5 @@ private extension MainView {
         return id.hashValue
       }
     }
-  }
-  
-  enum Route {
-    case taskDetails(taskId: ApiTask.ID, teamId: Team.ID?)
   }
 }

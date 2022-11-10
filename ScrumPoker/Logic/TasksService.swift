@@ -16,8 +16,11 @@ final class TasksService: ObservableObject {
   // MARK: Properties
   private let api: PokerAPI
   private let appState: AppState
+  private let notificationsService: NotificationsService
+  private let deeplinkService: DeeplinkService
   
-  @MainActor
+  private var reloadTask: Task<[ApiTask], Error>?
+  
   private(set) var tasks: [Team.ID: [ApiTask]] = [:] {
     didSet {
       guard tasks != oldValue else { return }
@@ -33,13 +36,18 @@ final class TasksService: ObservableObject {
   
   // MARK: - Lifecycle
   
-  init(api: PokerAPI, appState: AppState) {
+  init(api: PokerAPI, appState: AppState, notificationsService: NotificationsService, deeplinkService: DeeplinkService) {
     self.api = api
     self.appState = appState
+    self.notificationsService = notificationsService
+    self.deeplinkService = deeplinkService
     
     let data = UserDefaults.standard.data(forKey: Keys.recentlyViewed)
     recentlyViewedTasks = data.flatMap { try? JSONDecoder().decode([ApiTask].self, from: $0) } ?? []
+    configure()
   }
+  
+  // MARK: - Getters
   
   // MARK: - Functions
   
@@ -55,8 +63,24 @@ final class TasksService: ObservableObject {
   }
   
   func reloadTasks(teamId: Team.ID) async throws {
-    let tasks = try await api.tasks(teamId: teamId)
-    await update(tasks: tasks, teamId: teamId)
+    //    if let task = reloadTask {
+    //      _ = try await task.value
+    //    } else {
+    let task = Task {
+      try await api.tasks(teamId: teamId)
+    }
+    self.reloadTask = task
+    let result = try await task.value
+    await update(newTasks: [teamId: result])
+//    }
+  }
+  
+  func reloadTasks(teamIds: [Team.ID]) async throws {
+    var tasks = [Team.ID: [ApiTask]]()
+    for teamId in teamIds {
+      tasks[teamId] = try? await api.tasks(teamId: teamId)
+    }
+    await update(newTasks: tasks)
   }
   
   @MainActor
@@ -72,34 +96,97 @@ final class TasksService: ObservableObject {
   
   // MARK: - Private
   
+  @MainActor
+  private func update(newTasks: [Team.ID: [ApiTask]]) {
+    tasks.merge(newTasks, uniquingKeysWith: { l, r in
+      return r
+    })
+  }
+  
   private func reload(teamId: Team.ID) {
     Task {
       try await reloadTasks(teamId: teamId)
     }
   }
   
-  @MainActor
-  private func update(tasks: [ApiTask], teamId: Team.ID) {
-    guard self.tasks[teamId] != tasks else { return }
-    self.tasks[teamId] = tasks
-    
-    guard let userId = appState.currentUser?.userUuid else { return }
-    let numberOfNotVotedTasks = self.tasks.values
-      .flatMap { tasks in
-        tasks.filter { task in
-          // not finished and not voted
-          task.finished == false && task.votedUsers?.contains(where: { $0.userUuid == userId }) == false
-        }
-      }
-      .count
-    appState.set(numberOfTasks: numberOfNotVotedTasks)
+  private func configure() {
+//    let reloadTrigger = AsyncStream<Int> { continuation in
+//      var counter = 0
+//      let timer = Timer.scheduledTimer(
+//        withTimeInterval: 30,
+//        repeats: true
+//      ) { timer in
+//        continuation.yield(counter)
+//        counter += 1
+//      }
+//
+//      continuation.onTermination = { _ in
+//        timer.invalidate()
+//      }
+//    }
+//    Task { [weak self] in
+//      for await _ in reloadTrigger {
+//        self?.reload(teamId: <#T##Team.ID#>)
+//      }
+//    }
   }
+  
+//  @MainActor
+//  private func update(tasks: [ApiTask], teamId: Team.ID) {
+//
+//    let previousTasks = self.tasks
+//    guard self.tasks[teamId] != tasks else { return }
+//    self.tasks[teamId] = tasks
+//
+//    guard let userId = appState.currentUser?.userUuid else { return }
+//    let observedTeamIds = Set(self.tasks.keys)
+//    let notVotedTasks = self.notVotedTasks(from: self.tasks, userId: userId, teamIds: observedTeamIds)
+//    appState.set(numberOfTasks: notVotedTasks.count)
+//
+//    let previousNotVotedTasks = self.notVotedTasks(from: previousTasks, userId: userId, teamIds: observedTeamIds)
+//    notifyIfNeeded(newNotVotedTasks: notVotedTasks, previousNotVotedTasks: previousNotVotedTasks, tasksMap: self.tasks)
+//  }
   
   private func update(recentlyViewed: [ApiTask], store: Bool) {
     self.recentlyViewedTasks = recentlyViewed
     if store {
       let data = try? JSONEncoder().encode(recentlyViewed)
       UserDefaults.standard.set(data, forKey: Keys.recentlyViewed)
+    }
+  }
+  
+  private func notVotedTasks(from tasksMap: [Team.ID: [ApiTask]], userId: User.ID, teamIds: Set<Team.ID>) -> [ApiTask] {
+    return tasksMap
+      .filter { teamIds.contains($0.key) }
+      .flatMap { pair in
+        pair.value.filter { task in
+          // not finished and not voted
+          task.finished == false && task.votedUsers?.contains(where: { $0.userUuid == userId }) == false
+        }
+      }
+  }
+  
+  private func notifyIfNeeded(newNotVotedTasks: [ApiTask], previousNotVotedTasks: [ApiTask], tasksMap: [Team.ID: [ApiTask]]) {
+    let oldIds = Set(previousNotVotedTasks.map { $0.id })
+    let newTasks = newNotVotedTasks
+      .filter { !oldIds.contains($0.id) }
+    guard !newTasks.isEmpty else { return }
+    
+    let taskForRoute = newTasks[0]
+    var body = taskForRoute.name
+    if newTasks.count > 1 {
+      body += " and \(newTasks.count - 1) more..."
+    }
+    let teamId = tasksMap.filter { $0.value.contains(where: { $0.id == taskForRoute.id }) }.first?.key
+    
+    let notification = NotificationItem(
+      id: .newTasks,
+      title: "New \(newTasks.count == 1 ? "task" : "tasks") to vote",
+      body: body,
+      appRoute: teamId.map { .taskDetails(taskId: taskForRoute.id, teamId: $0) }
+    )
+    Task {
+      try await notificationsService.schedule(notification: notification)
     }
   }
 }
@@ -128,7 +215,8 @@ extension TasksService {
   }
   
   func share(task: ApiTask, teamId: Team.ID) {
-    let text = "[\(task.name)](scrumpoker://?teamId=\(teamId)&taskId=\(task.id))"
+    let deeplink = deeplinkService.deeplink(from: .taskDetails(taskId: task.id, teamId: teamId))
+    let text = "[\(task.name)](\(deeplink.absoluteString)"
     let pasteboard = NSPasteboard.general
     pasteboard.declareTypes([.string], owner: nil)
     pasteboard.setString(text, forType: .string)

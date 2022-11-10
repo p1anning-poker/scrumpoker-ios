@@ -8,8 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		B4184C40291A719300AE0FD9 /* View+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4184C3F291A719300AE0FD9 /* View+Helpers.swift */; };
+		B4184C5C291D4E3C00AE0FD9 /* NotificationsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4184C5B291D4E3C00AE0FD9 /* NotificationsService.swift */; };
+		B4184C5E291D515F00AE0FD9 /* DeeplinkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4184C5D291D515F00AE0FD9 /* DeeplinkService.swift */; };
+		B4184C61291D518B00AE0FD9 /* AppRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4184C60291D518B00AE0FD9 /* AppRoute.swift */; };
 		B43E4C4028D3B52F00ABD0D2 /* Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43E4C3F28D3B52F00ABD0D2 /* Toolbar.swift */; };
 		B43E4C4228D3C17800ABD0D2 /* TasksService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43E4C4128D3C17800ABD0D2 /* TasksService.swift */; };
+		B43FE2E0291D8A6400E5A124 /* WatchingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43FE2DF291D8A6400E5A124 /* WatchingService.swift */; };
 		B44B9ACD28D7875700B3E4EE /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44B9ACC28D7875700B3E4EE /* ProfileService.swift */; };
 		B44B9ACF28D787A400B3E4EE /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44B9ACE28D787A400B3E4EE /* Profile.swift */; };
 		B490CD232915BFE200EEAD4C /* TeamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD222915BFE200EEAD4C /* TeamsView.swift */; };
@@ -54,8 +58,12 @@
 
 /* Begin PBXFileReference section */
 		B4184C3F291A719300AE0FD9 /* View+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Helpers.swift"; sourceTree = "<group>"; };
+		B4184C5B291D4E3C00AE0FD9 /* NotificationsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsService.swift; sourceTree = "<group>"; };
+		B4184C5D291D515F00AE0FD9 /* DeeplinkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkService.swift; sourceTree = "<group>"; };
+		B4184C60291D518B00AE0FD9 /* AppRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRoute.swift; sourceTree = "<group>"; };
 		B43E4C3F28D3B52F00ABD0D2 /* Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toolbar.swift; sourceTree = "<group>"; };
 		B43E4C4128D3C17800ABD0D2 /* TasksService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksService.swift; sourceTree = "<group>"; };
+		B43FE2DF291D8A6400E5A124 /* WatchingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchingService.swift; sourceTree = "<group>"; };
 		B44B9ACC28D7875700B3E4EE /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
 		B44B9ACE28D787A400B3E4EE /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		B490CD222915BFE200EEAD4C /* TeamsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsView.swift; sourceTree = "<group>"; };
@@ -112,6 +120,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B4184C5F291D516D00AE0FD9 /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				B493D4FA28D3410D00B95A23 /* ApiTask.swift */,
+				B493D4FE28D3475800B95A23 /* User.swift */,
+				B493D50228D3541C00B95A23 /* Vote.swift */,
+				B44B9ACE28D787A400B3E4EE /* Profile.swift */,
+				B490CD242915C01500EEAD4C /* Team.swift */,
+				B490CD4629181C9700EEAD4C /* TeamMember.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
 		B43E4C3E28D3B51B00ABD0D2 /* Elements */ = {
 			isa = PBXGroup;
 			children = (
@@ -234,6 +255,9 @@
 				B43E4C4128D3C17800ABD0D2 /* TasksService.swift */,
 				B44B9ACC28D7875700B3E4EE /* ProfileService.swift */,
 				B490CD2E2915C90500EEAD4C /* TeamsService.swift */,
+				B4184C5B291D4E3C00AE0FD9 /* NotificationsService.swift */,
+				B4184C5D291D515F00AE0FD9 /* DeeplinkService.swift */,
+				B43FE2DF291D8A6400E5A124 /* WatchingService.swift */,
 			);
 			path = Logic;
 			sourceTree = "<group>";
@@ -241,18 +265,14 @@
 		B493D4E928D31DBC00B95A23 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B4184C5F291D516D00AE0FD9 /* DTO */,
 				B490CD282915C24900EEAD4C /* Samples */,
 				B493D4EA28D31DC300B95A23 /* AppState.swift */,
 				B493D4EF28D32F5900B95A23 /* Dependencies.swift */,
-				B493D4FA28D3410D00B95A23 /* ApiTask.swift */,
-				B493D4FE28D3475800B95A23 /* User.swift */,
-				B493D50228D3541C00B95A23 /* Vote.swift */,
 				B493D50428D3599500B95A23 /* VotesInfo.swift */,
-				B44B9ACE28D787A400B3E4EE /* Profile.swift */,
 				B4E0E24028F202EF00471A32 /* PublicUser.swift */,
-				B490CD242915C01500EEAD4C /* Team.swift */,
 				B490CD3A291801FC00EEAD4C /* TasksFilter.swift */,
-				B490CD4629181C9700EEAD4C /* TeamMember.swift */,
+				B4184C60291D518B00AE0FD9 /* AppRoute.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -354,6 +374,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B4184C5C291D4E3C00AE0FD9 /* NotificationsService.swift in Sources */,
 				B490CD4D29182A6C00EEAD4C /* InviteMemberView.swift in Sources */,
 				B493D4FF28D3475800B95A23 /* User.swift in Sources */,
 				B490CD312915CAA900EEAD4C /* TeamCreateView.swift in Sources */,
@@ -363,12 +384,14 @@
 				B493D50128D34AA200B95A23 /* TaskView.swift in Sources */,
 				B493D4F928D333DF00B95A23 /* NetworkService.swift in Sources */,
 				B43E4C4228D3C17800ABD0D2 /* TasksService.swift in Sources */,
+				B4184C5E291D515F00AE0FD9 /* DeeplinkService.swift in Sources */,
 				B490CD2A2915C26900EEAD4C /* Team+Sample.swift in Sources */,
 				B493D50728D3650C00B95A23 /* TaskCreate.swift in Sources */,
 				B493D4F028D32F5900B95A23 /* Dependencies.swift in Sources */,
 				B493D4EB28D31DC300B95A23 /* AppState.swift in Sources */,
 				B490CD4529181C3D00EEAD4C /* TeamMembersView.swift in Sources */,
 				B490CD232915BFE200EEAD4C /* TeamsView.swift in Sources */,
+				B4184C61291D518B00AE0FD9 /* AppRoute.swift in Sources */,
 				B490CD4929181E9100EEAD4C /* TeamMember+Sample.swift in Sources */,
 				B490CD4B2918284D00EEAD4C /* NSTableView+RemoveBackground.swift in Sources */,
 				B493D4FB28D3410D00B95A23 /* ApiTask.swift in Sources */,
@@ -383,6 +406,7 @@
 				B490CD2F2915C90500EEAD4C /* TeamsService.swift in Sources */,
 				B493D50328D3541C00B95A23 /* Vote.swift in Sources */,
 				B493D4F228D3320F00B95A23 /* TasksView.swift in Sources */,
+				B43FE2E0291D8A6400E5A124 /* WatchingService.swift in Sources */,
 				B493D4D828D31C7F00B95A23 /* ContentView.swift in Sources */,
 				B493D4D628D31C7F00B95A23 /* ScrumPokerApp.swift in Sources */,
 				B493D4F728D3329D00B95A23 /* PokerAPI.swift in Sources */,
