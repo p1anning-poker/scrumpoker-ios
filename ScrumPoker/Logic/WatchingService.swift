@@ -102,7 +102,7 @@ final class WatchingService {
       .flatMap { pair in
         pair.value.filter { task in
           // not finished and not voted
-          task.finished == false && /*task.taskOwner.userUuid != userId && */task.voteValue == nil
+          task.finished == false && task.taskOwner.userUuid != userId && task.voteValue == nil
         }
       }
   }
