@@ -21,6 +21,10 @@ struct ScrumPokerApp: App {
         .environmentObject(dependencies.tasksService)
         .environmentObject(dependencies.profileService)
         .environmentObject(dependencies.teamsService)
+        .onAppear {
+          // init menu
+          _ = self.dependencies.menuService
+        }
     }
     .windowStyle(HiddenTitleBarWindowStyle())
     .windowToolbarStyle(UnifiedWindowToolbarStyle())

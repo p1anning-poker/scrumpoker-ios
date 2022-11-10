@@ -32,6 +32,8 @@ final class MenuService: NSObject {
     if let button = statusItem.button {
       button.target = self
       button.action = #selector(tapToItem(button:))
+      button.image = NSImage(named: "menu_bg")
+      button.integerValue = -1
     }
     
     appState.numberOfTasks
@@ -42,18 +44,27 @@ final class MenuService: NSObject {
   }
   
   @objc func tapToItem(button: NSStatusBarButton) {
-    togglePopover(button: button)
+    NSApp.orderedWindows.first?.makeKeyAndOrderFront(nil)
+    NSApp.activate(ignoringOtherApps: true)
   }
   
-  func togglePopover(button: NSStatusBarButton) {
-//    if coordinator.isPopoverVisible {
-//      coordinator.dissmissPopover()
-//    } else {
-//      coordinator.showCurrentContentPopover(aroundButton: button)
-//    }
-  }
   /// Отображает количество реквестов на статус баре
   private func setNumberOfTasks(_ number: Int) {
-    statusItem.button?.image = NSImage(named: "unnamed")
+    guard statusItem.button?.integerValue != number else { return }
+    statusItem.button?.integerValue = number
+    let text: String
+    if number > 0 {
+      text = String(number)
+    } else {
+      text = "✔"
+    }
+    let title = NSAttributedString(
+      string: text,
+      attributes: [
+        .font: NSFont.menuBarFont(ofSize: 16),
+        .baselineOffset: -1
+      ]
+    )
+    statusItem.button?.attributedTitle = title
   }
 }

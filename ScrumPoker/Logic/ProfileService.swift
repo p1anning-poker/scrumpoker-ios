@@ -38,5 +38,6 @@ extension ProfileService {
   
   func logout() async {
     appState.set(profile: nil)
+    appState.set(numberOfTasks: 0)
   }
 }

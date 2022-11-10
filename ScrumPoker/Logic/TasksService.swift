@@ -80,7 +80,19 @@ final class TasksService: ObservableObject {
   
   @MainActor
   private func update(tasks: [ApiTask], teamId: Team.ID) {
+    guard self.tasks[teamId] != tasks else { return }
     self.tasks[teamId] = tasks
+    
+    guard let userId = appState.currentUser?.userUuid else { return }
+    let numberOfNotVotedTasks = self.tasks.values
+      .flatMap { tasks in
+        tasks.filter { task in
+          // not finished and not voted
+          task.finished == false && task.votedUsers?.contains(where: { $0.userUuid == userId }) == false
+        }
+      }
+      .count
+    appState.set(numberOfTasks: numberOfNotVotedTasks)
   }
   
   private func update(recentlyViewed: [ApiTask], store: Bool) {

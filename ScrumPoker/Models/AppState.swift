@@ -16,8 +16,9 @@ private struct Keys {
 typealias Token = String
 
 final class AppState: ObservableObject {
-  /// Current API token
+  /// Current User
   private let profileSubject = CurrentValueSubject<Profile?, Never>(nil)
+  private let numberOfTasksSubject = CurrentValueSubject<Int, Never>(0)
   
   private let defaults = UserDefaults.standard
   static let shared = AppState()
@@ -46,7 +47,7 @@ final class AppState: ObservableObject {
   }
   
   var numberOfTasks: AnyPublisher<Int, Never> {
-    return Just(3).eraseToAnyPublisher()
+    return numberOfTasksSubject.eraseToAnyPublisher()
   }
   
   var token: Token? {
@@ -73,6 +74,10 @@ final class AppState: ObservableObject {
     defaults.set(data, forKey: Keys.profile)
     self.profileSubject.send(profile)
     objectWillChange.send()
+  }
+  
+  func set(numberOfTasks: Int) {
+    numberOfTasksSubject.send(numberOfTasks)
   }
   
   private func set(lastLogin: String?) {
