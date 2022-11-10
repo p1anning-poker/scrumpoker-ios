@@ -39,7 +39,7 @@ struct TeamView: View {
           .frame(minWidth: 300)
         }
         .tabItem {
-          Label("Tasks", systemImage: "checklist.unchecked")
+          Text("Tasks")
         }
         .tag(Tab.tasks)
         NavigationView {
@@ -50,12 +50,12 @@ struct TeamView: View {
           .frame(minWidth: 300)
         }
         .tabItem {
-          Label("Completed", systemImage: "checklist.checked")
+          Text("Completed")
         }
         .tag(Tab.completed)
         TeamMembersView(team: team)
           .tabItem {
-            Label("Members", systemImage: "person.3.sequence")
+            Text("Members")
           }
           .tag(Tab.members)
       }

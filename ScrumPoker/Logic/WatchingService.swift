@@ -34,13 +34,14 @@ final class WatchingService {
   // MARK: - Functions
   
   private func configure() {
-//    let teams = teamsService.teams
-//      .filter { !ignoredTeams.contains($0.id) }
-//    Task {
-//      try? await tasksService.reloadTasks(teamIds: teams.map { $0.id })
-//      let tasks = tasksService.tasks
-//      await startWatching(teams: teams, tasks: tasks)
-//    }
+    Task {
+      try? await teamsService.reloadTeams()
+      let teams = teamsService.teams
+        .filter { !ignoredTeams.contains($0.id) }
+      try? await tasksService.reloadTasks(teamIds: teams.map { $0.id })
+      let tasks = tasksService.tasks
+      await startWatching(teams: teams, tasks: tasks)
+    }
   }
   
   @MainActor
@@ -55,16 +56,16 @@ final class WatchingService {
       }
       .store(in: &cancellables)
     
-//    Timer
-//      .publish(every: 5, on: .main, in: .common)
-//      .sink { [tasksService] _ in
-//        let teams = teams
-//        Task {
-//          print("RELOAD FROM WATHCER")
-//          try? await tasksService.reloadTasks(teamIds: teams.map { $0.id })
-//        }
-//      }
-//      .store(in: &cancellables)
+    Timer
+      .publish(every: 30, on: .main, in: .common)
+      .autoconnect()
+      .sink { [tasksService] _ in
+        let teams = teams
+        Task {
+          try? await tasksService.reloadTasks(teamIds: teams.map { $0.id })
+        }
+      }
+      .store(in: &cancellables)
     
     var tasks = tasks
     tasksService.objectWillChange
@@ -101,7 +102,7 @@ final class WatchingService {
       .flatMap { pair in
         pair.value.filter { task in
           // not finished and not voted
-          task.finished == false && task.taskOwner.userUuid != userId && task.votedUsers?.contains(where: { $0.userUuid == userId }) == false
+          task.finished == false && /*task.taskOwner.userUuid != userId && */task.voteValue == nil
         }
       }
   }

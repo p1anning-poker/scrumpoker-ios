@@ -63,8 +63,10 @@ final class TeamsService: ObservableObject {
     reload()
     
     Task {
-      let didBecomePublisher = await NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)
-      for await _ in didBecomePublisher.values {
+      let notifications = await MainActor.run {
+        NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification).values
+      }
+      for await _ in notifications {
         reload()
       }
     }

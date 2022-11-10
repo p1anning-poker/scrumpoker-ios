@@ -39,7 +39,7 @@ final class NotificationsService {
   func schedule(notification: NotificationItem) async throws {
     let content = UNMutableNotificationContent()
     content.title = notification.title
-    content.body = content.body
+    content.body = notification.body
     content.userInfo["url"] = notification.appRoute.map { deeplinkService.deeplink(from: $0).absoluteString }
     
     let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)

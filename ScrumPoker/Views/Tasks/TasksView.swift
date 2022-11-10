@@ -65,7 +65,7 @@ struct TasksView: View {
     .sheet(item: $modal) { modal in
       switch modal {
       case .createNewTask:
-        TaskCreate(teamId: team.id, teamName: team.teamName) { _ in
+        TaskCreateView(teamId: team.id, teamName: team.teamName) { _ in
           self.modal = nil
         }
         .frame(minWidth: 300, maxWidth: 400)

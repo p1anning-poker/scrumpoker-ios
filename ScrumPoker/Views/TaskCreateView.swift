@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TaskCreate: View {
+struct TaskCreateView: View {
   @EnvironmentObject private var taskService: TasksService
   
   let teamId: Team.ID
@@ -61,7 +61,7 @@ struct TaskCreate: View {
 
 struct TaskCreate_Previews: PreviewProvider {
   static var previews: some View {
-    TaskCreate(teamId: "1", teamName: "test") { _ in
+    TaskCreateView(teamId: "1", teamName: "test") { _ in
       
     }
   }
