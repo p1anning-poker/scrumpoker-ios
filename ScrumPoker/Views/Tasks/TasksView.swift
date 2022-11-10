@@ -37,9 +37,20 @@ struct TasksView: View {
         Text("You have no tasks")
           .padding()
       } else {
-        List(tasks) { task in
-          taskView(task)
-            .listDivider()
+        ScrollViewReader { proxy in
+          List(tasks) { task in
+            taskView(task)
+              .listDivider()
+          }
+          .onChange(of: tasks) { _ in
+            showTaskToOpenDetailsIfNeeded(scrollProxy: proxy)
+          }
+          .onChange(of: taskToOpen) { _ in
+            showTaskToOpenDetailsIfNeeded(scrollProxy: proxy)
+          }
+          .onAppear {
+            showTaskToOpenDetailsIfNeeded(scrollProxy: proxy)
+          }
         }
       }
       Spacer()
@@ -97,6 +108,7 @@ struct TasksView: View {
     .contextMenu {
       Button("Delete") { delete(task: task) }
     }
+    .id(task.id)
   }
   
   // MARK: - Actions
@@ -146,10 +158,6 @@ struct TasksView: View {
     
     let action = {
       self.tasks = newTasks
-      if let task = taskToOpen, let newTask = newTasks.first(where: { $0.id == task.id }) {
-        content = .details(newTask)
-        self.taskToOpen = nil
-      }
     }
     
     if animated {
@@ -158,6 +166,16 @@ struct TasksView: View {
       }
     } else {
       action()
+    }
+  }
+  
+  private func showTaskToOpenDetailsIfNeeded(scrollProxy: ScrollViewProxy) {
+    if let taskToOpen, let task = tasks.first(where: { $0.id == taskToOpen.id }) {
+      self.taskToOpen = nil
+      withAnimation(.default) {
+        scrollProxy.scrollTo(task.id)
+        content = .details(task)
+      }
     }
   }
 }

@@ -92,8 +92,12 @@ private struct MainView: View {
         if let teamId = teamId, let team = teamsService.teams.first(where: { $0.id == teamId }) {
           Task {
             do {
-              taskToOpen = try await tasksService.task(id: taskId, teamId: teamId)
-              selectedTeam = team
+              let task = try await tasksService.task(id: taskId, teamId: teamId)
+              await MainActor.run {
+                // set values
+                selectedTeam = team
+                taskToOpen = task
+              }
             } catch {
               await MainActor.run {
                 modal = .details(taskId, teamId: teamId)

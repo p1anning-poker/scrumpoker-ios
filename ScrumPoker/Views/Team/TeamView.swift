@@ -22,6 +22,7 @@ struct TeamView: View {
       .padding()
       .onAppear {
         teamsService.setLatestOpenedTeamId(team.id)
+        updateSelectedTabToShowTaskIfNeeded()
       }
   }
   
@@ -59,9 +60,7 @@ struct TeamView: View {
           .tag(Tab.members)
       }
       .onChange(of: taskToOpen) { newValue in
-        if let task = newValue {
-          tab = task.finished ? .completed : .tasks
-        }
+        updateSelectedTabToShowTaskIfNeeded()
       }
     case .invited:
       VStack {
@@ -83,6 +82,12 @@ struct TeamView: View {
       } catch {
         self.error = error.localizedDescription
       }
+    }
+  }
+  
+  private func updateSelectedTabToShowTaskIfNeeded() {
+    if let task = taskToOpen {
+      tab = task.finished ? .completed : .tasks
     }
   }
 }
