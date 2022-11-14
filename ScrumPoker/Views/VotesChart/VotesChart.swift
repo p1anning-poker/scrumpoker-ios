@@ -10,16 +10,30 @@ import Charts
 
 @available(macOS 13.0, *)
 struct VotesChart: View {
-  @State var data: Data
+  var data: Data
+  @State private var displayUsers: [String]?
   
   var body: some View {
     Chart {
       ForEach(data.stat, id: \.vote) { stat in
-        PointMark(
-          x: .value("Vote", stat.vote),
-          y: .value("Users", stat.users.count))
+        BarMark(
+          x: .value("Users", stat.users.count),
+          y: .value("Vote", "\(stat.vote) SP")
+        )
+        .annotation(position: .automatic, alignment: .trailing) {
+          annotation(users: stat.users)
+        }
       }
     }
+    .foregroundColor(.accentColor)
+    .chartXAxisLabel("Voted users", position: .trailing)
+  }
+  
+  @ViewBuilder
+  private func annotation(users: [String]) -> some View {
+    let text = users.joined(separator: ",")
+    Text(text)
+      .font(.caption2)
   }
 }
 
@@ -47,15 +61,16 @@ struct VotesChart_Previews: PreviewProvider {
           ]
         ),
         .init(
-          vote: "3",
+          vote: "2",
           users: [
-            "Denis",
-            "Elizaveta",
-            "Dmitry"
+            "Denis Dazhin",
+            "Elizaveta Petrovna",
+            "Dmitry Swarowski",
+            "Stas Mikhailov"
           ]
         ),
         .init(
-          vote: "8",
+          vote: "3",
           users: [
             "Anton",
           ]
@@ -64,5 +79,7 @@ struct VotesChart_Previews: PreviewProvider {
     )
     
     VotesChart(data: data)
+      .padding()
+      .frame(width: 300)
   }
 }

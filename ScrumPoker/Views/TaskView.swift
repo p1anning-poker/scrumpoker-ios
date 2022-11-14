@@ -136,6 +136,15 @@ struct TaskView: View {
   
   @ViewBuilder
   private var votesView: some View {
+    if #available(macOS 13.0, *) {
+      votesResultChart()
+    } else {
+      votesResultText()
+    }
+  }
+  
+  @ViewBuilder
+  private func votesResultText() -> some View {
     ForEach(votes, id: \.value.id) { vote in
       Section(vote.value.name + ": \(vote.votedUsers.count)") {
         ForEach(vote.votedUsers, id: \.userUuid) { user in
@@ -144,6 +153,24 @@ struct TaskView: View {
       }
     }
     .textSelection(.enabled)
+  }
+  
+  @available(macOS 13.0, *)
+  @ViewBuilder
+  private func votesResultChart() -> some View {
+    let data = VotesChart.Data(
+      stat: votes.map { vote in
+        VotesChart.VoteStat(
+          vote: vote.value.name,
+          users: vote.votedUsers.map { $0.name }
+        )
+      }
+    )
+    VStack(alignment: .leading) {
+      Divider()
+      VotesChart(data: data)
+        .frame(maxWidth: .infinity)
+    }
   }
   
   @ViewBuilder
