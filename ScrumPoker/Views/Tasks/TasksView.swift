@@ -57,6 +57,7 @@ struct TasksView: View {
     }
     .frame(maxWidth: .infinity, alignment: .leading)
     .onAppear {
+      updateTasks(animated: false)
       reload()
     }
     .onReceive(tasksService.objectWillChange) { _ in
