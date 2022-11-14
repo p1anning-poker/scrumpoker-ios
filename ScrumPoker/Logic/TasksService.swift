@@ -19,7 +19,7 @@ final class TasksService: ObservableObject {
   private let notificationsService: NotificationsService
   private let deeplinkService: DeeplinkService
   
-  private var reloadTask: Task<[ApiTask], Error>?
+  private var reloadTasks: [Team.ID: Task<[ApiTask], Error>] = [:]
   
   private(set) var tasks: [Team.ID: [ApiTask]] = [:] {
     didSet {
@@ -63,16 +63,17 @@ final class TasksService: ObservableObject {
   }
   
   func reloadTasks(teamId: Team.ID) async throws {
-    //    if let task = reloadTask {
-    //      _ = try await task.value
-    //    } else {
-    let task = Task {
-      try await api.tasks(teamId: teamId)
+    if let task = reloadTasks[teamId] {
+      _ = try await task.value
+    } else {
+      let task = Task {
+        try await api.tasks(teamId: teamId)
+      }
+      self.reloadTasks[teamId] = task
+      let result = try await task.value
+      await update(newTasks: [teamId: result])
+      reloadTasks[teamId] = nil
     }
-    self.reloadTask = task
-    let result = try await task.value
-    await update(newTasks: [teamId: result])
-//    }
   }
   
   func reloadTasks(teamIds: [Team.ID]) async throws {
@@ -109,44 +110,8 @@ final class TasksService: ObservableObject {
     }
   }
   
-  private func configure() {
-//    let reloadTrigger = AsyncStream<Int> { continuation in
-//      var counter = 0
-//      let timer = Timer.scheduledTimer(
-//        withTimeInterval: 30,
-//        repeats: true
-//      ) { timer in
-//        continuation.yield(counter)
-//        counter += 1
-//      }
-//
-//      continuation.onTermination = { _ in
-//        timer.invalidate()
-//      }
-//    }
-//    Task { [weak self] in
-//      for await _ in reloadTrigger {
-//        self?.reload(teamId: <#T##Team.ID#>)
-//      }
-//    }
-  }
-  
-//  @MainActor
-//  private func update(tasks: [ApiTask], teamId: Team.ID) {
-//
-//    let previousTasks = self.tasks
-//    guard self.tasks[teamId] != tasks else { return }
-//    self.tasks[teamId] = tasks
-//
-//    guard let userId = appState.currentUser?.userUuid else { return }
-//    let observedTeamIds = Set(self.tasks.keys)
-//    let notVotedTasks = self.notVotedTasks(from: self.tasks, userId: userId, teamIds: observedTeamIds)
-//    appState.set(numberOfTasks: notVotedTasks.count)
-//
-//    let previousNotVotedTasks = self.notVotedTasks(from: previousTasks, userId: userId, teamIds: observedTeamIds)
-//    notifyIfNeeded(newNotVotedTasks: notVotedTasks, previousNotVotedTasks: previousNotVotedTasks, tasksMap: self.tasks)
-//  }
-  
+  private func configure() {}
+
   private func update(recentlyViewed: [ApiTask], store: Bool) {
     self.recentlyViewedTasks = recentlyViewed
     if store {

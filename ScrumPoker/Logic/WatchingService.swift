@@ -41,6 +41,7 @@ final class WatchingService {
       try? await tasksService.reloadTasks(teamIds: teams.map { $0.id })
       let tasks = tasksService.tasks
       await startWatching(teams: teams, tasks: tasks)
+      updateNotVoted(tasks: tasks, observedTeamIds: Set(teams.map { $0.id }))
     }
   }
   
@@ -81,6 +82,12 @@ final class WatchingService {
       .store(in: &cancellables)
   }
   
+  private func updateNotVoted(tasks: [Team.ID: [ApiTask]], observedTeamIds: Set<Team.ID>) {
+    guard let userId = appState.currentUser?.userUuid else { return }
+    let notVotedTasks = self.notVotedTasks(from: tasks, userId: userId, teamIds: observedTeamIds, userIsNotOwner: false)
+    appState.set(numberOfTasks: notVotedTasks.count)
+  }
+  
   private func handleUpdate(tasks: [Team.ID: [ApiTask]],
                             previous: [Team.ID: [ApiTask]],
                             teams: [Team]) {
@@ -89,20 +96,31 @@ final class WatchingService {
     let tasks = tasksService.tasks
     let observedTeamIds = Set(teams.map({ $0.id }))
       .filter { !ignoredTeams.contains($0) }
-    let notVotedTasks = self.notVotedTasks(from: tasks, userId: userId, teamIds: observedTeamIds)
-    appState.set(numberOfTasks: notVotedTasks.count)
     
-    let previousNotVotedTasks = self.notVotedTasks(from: previous, userId: userId, teamIds: observedTeamIds)
+    let notVotedTasks = self.notVotedTasks(from: tasks, userId: userId, teamIds: observedTeamIds, userIsNotOwner: true)
+    let previousNotVotedTasks = self.notVotedTasks(from: previous, userId: userId, teamIds: observedTeamIds, userIsNotOwner: true)
     notifyIfNeeded(newNotVotedTasks: notVotedTasks, previousNotVotedTasks: previousNotVotedTasks, tasksMap: tasks)
+    
+    updateNotVoted(tasks: tasks, observedTeamIds: observedTeamIds)
   }
   
-  private func notVotedTasks(from tasksMap: [Team.ID: [ApiTask]], userId: User.ID, teamIds: Set<Team.ID>) -> [ApiTask] {
+  private func notVotedTasks(from tasksMap: [Team.ID: [ApiTask]],
+                             userId: User.ID,
+                             teamIds: Set<Team.ID>,
+                             userIsNotOwner: Bool) -> [ApiTask] {
     return tasksMap
       .filter { teamIds.contains($0.key) }
       .flatMap { pair in
         pair.value.filter { task in
           // not finished and not voted
-          task.finished == false && task.taskOwner.userUuid != userId && task.voteValue == nil
+          guard task.finished == false && task.voteValue == nil else {
+            return false
+          }
+          if userIsNotOwner {
+            return task.taskOwner.userUuid != userId
+          } else {
+            return true
+          }
         }
       }
   }

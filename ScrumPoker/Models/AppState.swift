@@ -5,7 +5,7 @@
 //  Created by Aleksey Konshin on 15.09.2022.
 //
 
-import Foundation
+import AppKit
 import Combine
 
 private struct Keys {
@@ -80,6 +80,9 @@ final class AppState: ObservableObject {
   
   func set(numberOfTasks: Int) {
     numberOfTasksSubject.send(numberOfTasks)
+    DispatchQueue.main.async {
+      NSApp.dockTile.badgeLabel = String(numberOfTasks)
+    }
   }
   
   private func set(lastLogin: String?) {

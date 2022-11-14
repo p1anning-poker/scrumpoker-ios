@@ -23,8 +23,6 @@ struct ScrumPokerApp: App {
         .environmentObject(dependencies.teamsService)
         .environmentObject(dependencies.deeplinkService)
         .onAppear {
-          // init menu
-          _ = self.dependencies.menuService
           // init watching
           _ = self.dependencies.watchingService
         }
