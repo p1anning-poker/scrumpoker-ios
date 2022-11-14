@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		B4184C40291A719300AE0FD9 /* View+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4184C3F291A719300AE0FD9 /* View+Helpers.swift */; };
+		B4184C5A291D3F2800AE0FD9 /* VotesChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4184C59291D3F2800AE0FD9 /* VotesChart.swift */; };
 		B4184C5C291D4E3C00AE0FD9 /* NotificationsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4184C5B291D4E3C00AE0FD9 /* NotificationsService.swift */; };
 		B4184C5E291D515F00AE0FD9 /* DeeplinkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4184C5D291D515F00AE0FD9 /* DeeplinkService.swift */; };
 		B4184C61291D518B00AE0FD9 /* AppRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4184C60291D518B00AE0FD9 /* AppRoute.swift */; };
-		B4184C5A291D3F2800AE0FD9 /* VotesChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4184C59291D3F2800AE0FD9 /* VotesChart.swift */; };
 		B43E4C4028D3B52F00ABD0D2 /* Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43E4C3F28D3B52F00ABD0D2 /* Toolbar.swift */; };
 		B43E4C4228D3C17800ABD0D2 /* TasksService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43E4C4128D3C17800ABD0D2 /* TasksService.swift */; };
 		B43FE2E0291D8A6400E5A124 /* WatchingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43FE2DF291D8A6400E5A124 /* WatchingService.swift */; };
@@ -59,10 +59,10 @@
 
 /* Begin PBXFileReference section */
 		B4184C3F291A719300AE0FD9 /* View+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Helpers.swift"; sourceTree = "<group>"; };
+		B4184C59291D3F2800AE0FD9 /* VotesChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotesChart.swift; sourceTree = "<group>"; };
 		B4184C5B291D4E3C00AE0FD9 /* NotificationsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsService.swift; sourceTree = "<group>"; };
 		B4184C5D291D515F00AE0FD9 /* DeeplinkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkService.swift; sourceTree = "<group>"; };
 		B4184C60291D518B00AE0FD9 /* AppRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRoute.swift; sourceTree = "<group>"; };
-		B4184C59291D3F2800AE0FD9 /* VotesChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotesChart.swift; sourceTree = "<group>"; };
 		B43E4C3F28D3B52F00ABD0D2 /* Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toolbar.swift; sourceTree = "<group>"; };
 		B43E4C4128D3C17800ABD0D2 /* TasksService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksService.swift; sourceTree = "<group>"; };
 		B43FE2DF291D8A6400E5A124 /* WatchingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchingService.swift; sourceTree = "<group>"; };
@@ -122,6 +122,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B4184C58291D3F1E00AE0FD9 /* VotesChart */ = {
+			isa = PBXGroup;
+			children = (
+				B4184C59291D3F2800AE0FD9 /* VotesChart.swift */,
+			);
+			path = VotesChart;
+			sourceTree = "<group>";
+		};
 		B4184C5F291D516D00AE0FD9 /* DTO */ = {
 			isa = PBXGroup;
 			children = (
@@ -133,14 +141,6 @@
 				B490CD4629181C9700EEAD4C /* TeamMember.swift */,
 			);
 			path = DTO;
-      sourceTree = "<group>";
-    };
-		B4184C58291D3F1E00AE0FD9 /* VotesChart */ = {
-			isa = PBXGroup;
-			children = (
-				B4184C59291D3F2800AE0FD9 /* VotesChart.swift */,
-			);
-			path = VotesChart;
 			sourceTree = "<group>";
 		};
 		B43E4C3E28D3B51B00ABD0D2 /* Elements */ = {
@@ -559,7 +559,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"ScrumPoker/Preview Content\"";
 				DEVELOPMENT_TEAM = DD57QBF5UM;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -588,7 +588,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"ScrumPoker/Preview Content\"";
 				DEVELOPMENT_TEAM = DD57QBF5UM;
 				ENABLE_HARDENED_RUNTIME = YES;
