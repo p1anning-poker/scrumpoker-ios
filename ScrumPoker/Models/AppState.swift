@@ -81,7 +81,7 @@ final class AppState: ObservableObject {
   func set(numberOfTasks: Int) {
     numberOfTasksSubject.send(numberOfTasks)
     DispatchQueue.main.async {
-      NSApp.dockTile.badgeLabel = String(numberOfTasks)
+      NSApp.dockTile.badgeLabel = numberOfTasks > 0 ? String(numberOfTasks) : nil
     }
   }
   

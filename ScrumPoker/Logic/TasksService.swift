@@ -181,7 +181,7 @@ extension TasksService {
   
   func share(task: ApiTask, teamId: Team.ID) {
     let deeplink = deeplinkService.deeplink(from: .taskDetails(taskId: task.id, teamId: teamId))
-    let text = "[\(task.name)](\(deeplink.absoluteString)"
+    let text = "[\(task.name)](\(deeplink.absoluteString))"
     let pasteboard = NSPasteboard.general
     pasteboard.declareTypes([.string], owner: nil)
     pasteboard.setString(text, forType: .string)
