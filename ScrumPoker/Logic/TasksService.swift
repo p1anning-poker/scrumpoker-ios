@@ -48,7 +48,7 @@ final class TasksService: ObservableObject {
       .map { tasks -> [Team.ID: [ApiTask]] in
         var result = [Team.ID: [ApiTask]]()
         tasks.forEach { element in
-          if teamIds.contains(element.key.teamId) {
+          if element.key.filter.completed == finished, teamIds.contains(element.key.teamId) {
             result[element.key.teamId] = element.value
           }
         }

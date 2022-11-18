@@ -11,11 +11,13 @@ import Cocoa
 struct TasksView: View {
   
   @EnvironmentObject private var tasksService: TasksService
+  @EnvironmentObject private var watchingService: WatchingService
   
   let team: Team
   let filter: TasksFilter
   let allowedToCreate: Bool
   @Binding var taskToOpen: ApiTask?
+  @State private var isSubscribed: Bool = true
   
   @State var tasks: [ApiTask] = []
   @State private var error: String?
@@ -25,10 +27,14 @@ struct TasksView: View {
   var body: some View {
     VStack(alignment: .leading) {
       if allowedToCreate {
-        Button(action: createTask) {
-          Label("Add task", systemImage: "rectangle.badge.plus")
+        HStack(alignment: .center) {
+          Button(action: createTask) {
+            Label("Add task", systemImage: "rectangle.badge.plus")
+          }
+          Spacer()
+          Toggle("Subscription", isOn: isSubscriptionOn())
         }
-        .padding(.leading)
+        .padding([.leading, .trailing])
       }
       if let error = error {
         ErrorView(error: error)
@@ -55,6 +61,9 @@ struct TasksView: View {
       }
       Spacer()
     }
+    .onReceive(watchingService.isSubscribed(teamId: team.id)) { subscribed in
+      self.isSubscribed = subscribed
+    }
     .onReceive(tasksService.subscribe(teamId: team.id,
                                       finished: filter.completed)) { tasks in
       update(tasks: tasks, animated: true)
@@ -71,6 +80,14 @@ struct TasksView: View {
         }
         .frame(minWidth: 300, maxWidth: 400)
       }
+    }
+  }
+  
+  private func isSubscriptionOn() -> Binding<Bool> {
+    return Binding {
+      isSubscribed
+    } set: { newValue in
+      watchingService.changeSubscription(enabled: newValue, for: team.id)
     }
   }
   
