@@ -119,7 +119,7 @@ private struct MainView: View {
   
   @ViewBuilder
   private func taskDetails(id: ApiTask.ID, teamId: Team.ID) -> some View {
-    TaskView(taskId: id, teamId: teamId, addToRecentlyViewed: true)
+    TaskView(taskId: id, teamId: teamId)
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
           Button {

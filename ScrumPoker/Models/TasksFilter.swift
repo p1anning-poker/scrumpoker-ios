@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct TasksFilter {
-  var completed: Bool?
+struct TasksFilter: Hashable {
+  var completed: Bool
 }

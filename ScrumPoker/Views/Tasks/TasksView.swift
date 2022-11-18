@@ -55,13 +55,13 @@ struct TasksView: View {
       }
       Spacer()
     }
+    .onReceive(tasksService.subscribe(teamId: team.id,
+                                      finished: filter.completed)) { tasks in
+      update(tasks: tasks, animated: true)
+    }
     .frame(maxWidth: .infinity, alignment: .leading)
     .onAppear {
-      updateTasks(animated: false)
       reload()
-    }
-    .onReceive(tasksService.objectWillChange) { _ in
-      updateTasks(animated: true)
     }
     .sheet(item: $modal) { modal in
       switch modal {
@@ -85,7 +85,7 @@ struct TasksView: View {
     }
 
     NavigationLink(isActive: binding) {
-      TaskView(task: task, teamId: team.id, addToRecentlyViewed: false)
+      TaskView(task: task, teamId: team.id)
     } label: {
       HStack {
         VStack(alignment: .leading, spacing: 2) {
@@ -122,8 +122,8 @@ struct TasksView: View {
     error = nil
     Task {
       do {
-        try await tasksService.reloadTasks(teamId: team.id)
-        updateTasks(animated: true)
+        let tasks = try await tasksService.reloadTasks(teamId: team.id, filter: filter)
+        update(tasks: tasks, animated: false)
       } catch {
         self.error = error.localizedDescription
       }
@@ -134,7 +134,7 @@ struct TasksView: View {
     error = nil
     Task {
       do {
-        try await tasksService.delete(taskId: task.id, teamId: team.id)
+        try await tasksService.delete(taskId: task.id, teamId: team.id, isFinished: task.finished)
         if content == .details(task) {
           content = nil
         }
@@ -144,11 +144,9 @@ struct TasksView: View {
     }
   }
 
-  private func updateTasks(animated: Bool) {
-    var newTasks: [ApiTask] = tasksService.tasks(
-      teamId: team.id,
-      filter: filter
-    )
+  private func update(tasks: [ApiTask], animated: Bool) {
+    error = nil
+    var newTasks: [ApiTask] = tasks
       .sorted { l, r in
         return l.voteValue == nil && r.voteValue != nil
       }
@@ -229,7 +227,7 @@ struct MyTasksView_Previews: PreviewProvider {
 //    NavigationView {
       TasksView(
         team: .sample(id: "1"),
-        filter: TasksFilter(),
+        filter: TasksFilter(completed: false),
         allowedToCreate: false,
         taskToOpen: .constant(nil),
         tasks: tasks

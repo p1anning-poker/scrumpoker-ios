@@ -41,10 +41,17 @@ final class PokerAPI: ObservableObject {
   private func perform(
     path: String,
     method: Method = .GET,
+    queryParams: [String: String]? = nil,
     params: [String: Any]? = nil,
     authorize: Bool = true
   ) async throws -> NetworkResponse {
-    let url = baseURL.appendingPathComponent(path)
+    var url = baseURL.appendingPathComponent(path)
+    if let queryParams, var components = URLComponents(url: url, resolvingAgainstBaseURL: false) {
+      components.queryItems = queryParams.map { pair in
+        URLQueryItem(name: pair.key, value: pair.value)
+      }
+      url = components.url ?? url
+    }
     var request = URLRequest(url: url)
     request.httpMethod = method.rawValue
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -63,12 +70,14 @@ final class PokerAPI: ObservableObject {
     type: T.Type = T.self,
     path: String,
     method: Method = .GET,
+    queryParams: [String: String]? = nil,
     params: [String: Any]? = nil,
     authorize: Bool = true
   ) async throws -> T {
     let response: NetworkResponse = try await perform(
       path: path,
       method: method,
+      queryParams: queryParams,
       params: params,
       authorize: authorize
     )
@@ -129,10 +138,13 @@ extension PokerAPI {
     return try await perform(path: "teams/\(teamId)/tasks/\(id)")
   }
   
-  func tasks(teamId: Team.ID) async throws -> [ApiTask] {
+  func tasks(teamId: Team.ID, finished: Bool?) async throws -> [ApiTask] {
+    var queryParams = [String: String]()
+    queryParams["finished"] = finished.map(String.init)
     return try await perform(
       type: [ApiTask].self,
-      path: "teams/\(teamId)/tasks"
+      path: "teams/\(teamId)/tasks",
+      queryParams: queryParams
     )
   }
   

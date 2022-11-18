@@ -18,7 +18,8 @@ final class WatchingService {
   private let appState: AppState
   
   private var cancellables: Set<AnyCancellable> = []
-  private var ignoredTeams: Set<Team.ID> = []
+  private var ignoredTeams: CurrentValueSubject<Set<Team.ID>, Never> = CurrentValueSubject([])
+  private var subscriptionCancellable: AnyCancellable?
   
   // MARK: - Lifecycle
   
@@ -34,82 +35,64 @@ final class WatchingService {
   // MARK: - Functions
   
   private func configure() {
-    Task {
-      try? await teamsService.reloadTeams()
-      let teams = teamsService.teams
-        .filter { !ignoredTeams.contains($0.id) }
-      try? await tasksService.reloadTasks(teamIds: teams.map { $0.id })
-      let tasks = tasksService.tasks
-      await startWatching(teams: teams, tasks: tasks)
-      updateNotVoted(tasks: tasks, observedTeamIds: Set(teams.map { $0.id }))
-    }
-  }
-  
-  @MainActor
-  private func startWatching(teams: [Team], tasks: [Team.ID: [ApiTask]]) {
-    var teams = teams
-    var previousUpdateTeams = teams
-    teamsService.objectWillChange
-      .sink { [teamsService] _ in
-        previousUpdateTeams = teams
-        teams = teamsService.teams
-          .filter { !self.ignoredTeams.contains($0.id) }
+    let teamIds = Publishers.CombineLatest(ignoredTeams, teamsService.objectWillChange.map { [teamsService] in teamsService.teams })
+      .map { ignoredTeams, teams in
+        return teams
+          .map { $0.id }
+          .filter { !ignoredTeams.contains($0) }
       }
-      .store(in: &cancellables)
-    
-    Timer
+      .removeDuplicates()
+      .share()
+    let timer = Timer
       .publish(every: 30, on: .main, in: .common)
       .autoconnect()
-      .sink { [tasksService] _ in
-        let teams = teams
+    
+    Publishers.CombineLatest(timer, teamIds)
+      .sink { [tasksService] _, teamIds in
         Task {
-          try? await tasksService.reloadTasks(teamIds: teams.map { $0.id })
+          do {
+            try await tasksService.reloadNotFinishedTasks(teamIds: teamIds)
+          } catch {
+            print("Failed to poll tasks: \(error)")
+          }
         }
       }
       .store(in: &cancellables)
     
-    var tasks = tasks
-    tasksService.objectWillChange
-      .sink { [tasksService] _ in
-        let newTasks = tasksService.tasks
-        self.handleUpdate(
-          tasks: newTasks,
-          previous: tasks,
-          teams: previousUpdateTeams
-        )
-        tasks = newTasks
+    teamIds
+      .flatMap(maxPublishers: .max(1)) { [tasksService] teamIds in
+        tasksService.subscribe(teamIds: Set(teamIds), finished: false)
+          .print("TASKS SUBSCRIPTION!")
       }
+      .scan(nil as [Team.ID: [ApiTask]]?) { [weak self] (previous, tasks) in
+        self?.handleUpdate(tasks: tasks, previous: previous ?? tasks)
+        return tasks
+      }
+      .sink(receiveValue: { _ in })
       .store(in: &cancellables)
   }
   
-  private func updateNotVoted(tasks: [Team.ID: [ApiTask]], observedTeamIds: Set<Team.ID>) {
+  private func updateNotVoted(tasks: [Team.ID: [ApiTask]]) {
     guard let userId = appState.currentUser?.userUuid else { return }
-    let notVotedTasks = self.notVotedTasks(from: tasks, userId: userId, teamIds: observedTeamIds, userIsNotOwner: false)
+    let notVotedTasks = self.notVotedTasks(from: tasks, userId: userId, userIsNotOwner: false)
     appState.set(numberOfTasks: notVotedTasks.count)
   }
   
   private func handleUpdate(tasks: [Team.ID: [ApiTask]],
-                            previous: [Team.ID: [ApiTask]],
-                            teams: [Team]) {
+                            previous: [Team.ID: [ApiTask]]) {
     guard let userId = appState.currentUser?.userUuid else { return }
     
-    let tasks = tasksService.tasks
-    let observedTeamIds = Set(teams.map({ $0.id }))
-      .filter { !ignoredTeams.contains($0) }
-    
-    let notVotedTasks = self.notVotedTasks(from: tasks, userId: userId, teamIds: observedTeamIds, userIsNotOwner: true)
-    let previousNotVotedTasks = self.notVotedTasks(from: previous, userId: userId, teamIds: observedTeamIds, userIsNotOwner: true)
+    let notVotedTasks = self.notVotedTasks(from: tasks, userId: userId, userIsNotOwner: true)
+    let previousNotVotedTasks = self.notVotedTasks(from: previous, userId: userId, userIsNotOwner: true)
     notifyIfNeeded(newNotVotedTasks: notVotedTasks, previousNotVotedTasks: previousNotVotedTasks, tasksMap: tasks)
     
-    updateNotVoted(tasks: tasks, observedTeamIds: observedTeamIds)
+    updateNotVoted(tasks: tasks)
   }
   
   private func notVotedTasks(from tasksMap: [Team.ID: [ApiTask]],
                              userId: User.ID,
-                             teamIds: Set<Team.ID>,
                              userIsNotOwner: Bool) -> [ApiTask] {
     return tasksMap
-      .filter { teamIds.contains($0.key) }
       .flatMap { pair in
         pair.value.filter { task in
           // not finished and not voted

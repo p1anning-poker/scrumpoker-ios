@@ -12,24 +12,21 @@ struct TaskView: View {
   @EnvironmentObject private var appState: AppState
   @Environment(\.openURL) var openURL
   
-  let addToRecentlyViewed: Bool
   let teamId: Team.ID
   @State private var task: ApiTask?
   private let taskId: ApiTask.ID
   @State private var votes: [VoteInfo] = []
   @State private var error: String?
   
-  init(task: ApiTask, teamId: Team.ID, addToRecentlyViewed: Bool) {
+  init(task: ApiTask, teamId: Team.ID) {
     self.taskId = task.id
     self.teamId = teamId
-    self.addToRecentlyViewed = addToRecentlyViewed
     _task = State(initialValue: task)
   }
   
-  init(taskId: ApiTask.ID, teamId: Team.ID, addToRecentlyViewed: Bool) {
+  init(taskId: ApiTask.ID, teamId: Team.ID) {
     self.taskId = taskId
     self.teamId = teamId
-    self.addToRecentlyViewed = addToRecentlyViewed
   }
   
   var body: some View {
@@ -193,9 +190,6 @@ struct TaskView: View {
     Task {
       do {
         let task = try await taskService.task(id: taskId, teamId: teamId)
-        if addToRecentlyViewed {
-          taskService.add(recentlyViewed: task)
-        }
         await MainActor.run {
           setTask(task, animated: animated)
         }
@@ -282,8 +276,7 @@ struct TaskView_Previews: PreviewProvider {
             )
           ]
         ),
-        teamId: "1",
-        addToRecentlyViewed: false
+        teamId: "1"
       )
       .environmentObject(AppState.shared)
     }
