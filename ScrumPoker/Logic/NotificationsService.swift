@@ -56,6 +56,9 @@ final class NotificationsService {
     let options: UNAuthorizationOptions = [.alert, .sound, .badge]
     Task {
       try await center.requestAuthorization(options: options)
+      await MainActor.run {
+        application.registerForRemoteNotifications()
+      }
     }
   }
 }

@@ -10,7 +10,8 @@ import SwiftUI
 @main
 struct ScrumPokerApp: App {
   
-  private let dependencies = Dependencies()
+  @NSApplicationDelegateAdaptor private var appDelegate: AppDelegate
+  private let dependencies = Dependencies.shared
   
   var body: some Scene {
     WindowGroup("viewer") {

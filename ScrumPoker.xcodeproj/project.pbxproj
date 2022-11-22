@@ -17,6 +17,8 @@
 		B43FE2E0291D8A6400E5A124 /* WatchingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43FE2DF291D8A6400E5A124 /* WatchingService.swift */; };
 		B44B9ACD28D7875700B3E4EE /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44B9ACC28D7875700B3E4EE /* ProfileService.swift */; };
 		B44B9ACF28D787A400B3E4EE /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44B9ACE28D787A400B3E4EE /* Profile.swift */; };
+		B45B130F292D078A0045E7DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45B130E292D078A0045E7DD /* AppDelegate.swift */; };
+		B45B1311292D081F0045E7DD /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45B1310292D081F0045E7DD /* App.swift */; };
 		B490CD232915BFE200EEAD4C /* TeamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD222915BFE200EEAD4C /* TeamsView.swift */; };
 		B490CD252915C01500EEAD4C /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD242915C01500EEAD4C /* Team.swift */; };
 		B490CD272915C24300EEAD4C /* TeamListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD262915C24300EEAD4C /* TeamListView.swift */; };
@@ -68,6 +70,8 @@
 		B43FE2DF291D8A6400E5A124 /* WatchingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchingService.swift; sourceTree = "<group>"; };
 		B44B9ACC28D7875700B3E4EE /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
 		B44B9ACE28D787A400B3E4EE /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		B45B130E292D078A0045E7DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B45B1310292D081F0045E7DD /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		B490CD222915BFE200EEAD4C /* TeamsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsView.swift; sourceTree = "<group>"; };
 		B490CD242915C01500EEAD4C /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		B490CD262915C24300EEAD4C /* TeamListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamListView.swift; sourceTree = "<group>"; };
@@ -244,6 +248,7 @@
 				B493D4D928D31C8100B95A23 /* Assets.xcassets */,
 				B493D4DE28D31C8100B95A23 /* ScrumPoker.entitlements */,
 				B493D4DB28D31C8100B95A23 /* Preview Content */,
+				B45B130E292D078A0045E7DD /* AppDelegate.swift */,
 			);
 			path = ScrumPoker;
 			sourceTree = "<group>";
@@ -283,6 +288,7 @@
 				B4E0E24028F202EF00471A32 /* PublicUser.swift */,
 				B490CD3A291801FC00EEAD4C /* TasksFilter.swift */,
 				B4184C60291D518B00AE0FD9 /* AppRoute.swift */,
+				B45B1310292D081F0045E7DD /* App.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -397,6 +403,7 @@
 				B43E4C4228D3C17800ABD0D2 /* TasksService.swift in Sources */,
 				B4184C5E291D515F00AE0FD9 /* DeeplinkService.swift in Sources */,
 				B490CD2A2915C26900EEAD4C /* Team+Sample.swift in Sources */,
+				B45B130F292D078A0045E7DD /* AppDelegate.swift in Sources */,
 				B493D50728D3650C00B95A23 /* TaskCreateView.swift in Sources */,
 				B493D4F028D32F5900B95A23 /* Dependencies.swift in Sources */,
 				B493D4EB28D31DC300B95A23 /* AppState.swift in Sources */,
@@ -405,6 +412,7 @@
 				B4184C61291D518B00AE0FD9 /* AppRoute.swift in Sources */,
 				B490CD4929181E9100EEAD4C /* TeamMember+Sample.swift in Sources */,
 				B490CD4B2918284D00EEAD4C /* NSTableView+RemoveBackground.swift in Sources */,
+				B45B1311292D081F0045E7DD /* App.swift in Sources */,
 				B493D4FB28D3410D00B95A23 /* ApiTask.swift in Sources */,
 				B493D50528D3599500B95A23 /* VotesInfo.swift in Sources */,
 				B490CD3D291804D800EEAD4C /* Task+Sample.swift in Sources */,
@@ -559,7 +567,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ScrumPoker/Preview Content\"";
 				DEVELOPMENT_TEAM = DD57QBF5UM;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -571,7 +579,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.4.0;
+				MARKETING_VERSION = 1.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.konshin.scrumpoker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -588,7 +596,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ScrumPoker/Preview Content\"";
 				DEVELOPMENT_TEAM = DD57QBF5UM;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -600,7 +608,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.4.0;
+				MARKETING_VERSION = 1.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.konshin.scrumpoker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

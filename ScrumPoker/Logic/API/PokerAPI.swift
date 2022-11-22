@@ -9,6 +9,10 @@ import Foundation
 
 final class PokerAPI: ObservableObject {
   
+  private enum Keys {
+    static let deviceUuid = "device_uuid"
+  }
+  
   private enum APIError: Error, LocalizedError {
     case invalidResponse
     case errorResponse(code: Int, data: Data)
@@ -31,10 +35,18 @@ final class PokerAPI: ObservableObject {
   private let baseURL = URL(string: "https://poker.pervush.in/api/v1/")!
   private let networkService: NetworkService
   private let appState: AppState
+  private let deviceUuid: String
   
   init(networkService: NetworkService, appState: AppState) {
     self.networkService = networkService
     self.appState = appState
+    
+    if let uuid = UserDefaults.standard.string(forKey: Keys.deviceUuid) {
+      deviceUuid = uuid
+    } else {
+      deviceUuid = UUID().uuidString
+      UserDefaults.standard.set(deviceUuid, forKey: Keys.deviceUuid)
+    }
   }
  
   @discardableResult
@@ -105,7 +117,7 @@ extension PokerAPI {
     _ = try await perform(
       path: "login",
       method: .POST,
-      params: ["email": email, "password": password],
+      params: ["email": email, "password": password, "deviceUuid": deviceUuid],
       authorize: false
     )
     guard let token = HTTPCookieStorage.shared.cookies?.first(where: { $0.name == "SESSIONID" })?.value else {
@@ -210,6 +222,18 @@ extension PokerAPI {
   func acceptInvite(teamId: Team.ID) async throws {
     try await perform(
       path: "teams/\(teamId)/members/accept"
+    )
+  }
+}
+
+// MARK: - Pushes
+extension PokerAPI {
+  
+  func register(pushToken: String) async throws {
+    try await perform(
+      path: "notifications/push/token",
+      method: .PUT,
+      params: ["token": pushToken]
     )
   }
 }

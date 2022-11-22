@@ -10,6 +10,9 @@ import Cocoa
 
 final class Dependencies {
   
+  static let shared = Dependencies()
+  private init() {}
+  
   private(set) lazy var appState = AppState.shared
   private(set) lazy var menuService = MenuService(
     statusBar: NSStatusBar.system,
