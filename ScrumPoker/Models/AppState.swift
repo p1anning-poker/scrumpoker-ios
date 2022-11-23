@@ -80,9 +80,10 @@ final class AppState: ObservableObject {
   
   func set(numberOfTasks: Int) {
     numberOfTasksSubject.send(numberOfTasks)
-    DispatchQueue.main.async {
-      NSApp.dockTile.badgeLabel = numberOfTasks > 0 ? String(numberOfTasks) : nil
-    }
+    // TODO: Disabled for push notifications
+//    DispatchQueue.main.async {
+//      NSApp.dockTile.badgeLabel = numberOfTasks > 0 ? String(numberOfTasks) : nil
+//    }
   }
   
   private func set(lastLogin: String?) {

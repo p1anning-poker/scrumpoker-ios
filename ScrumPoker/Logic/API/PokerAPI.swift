@@ -67,6 +67,7 @@ final class PokerAPI: ObservableObject {
     var request = URLRequest(url: url)
     request.httpMethod = method.rawValue
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    request.setValue(deviceUuid, forHTTPHeaderField: "x-device-uuid")
     request.httpBody = params.flatMap { params in
       try? JSONSerialization.data(withJSONObject: params)
     }
