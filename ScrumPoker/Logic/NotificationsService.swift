@@ -7,6 +7,8 @@
 
 import Foundation
 import UserNotifications
+import SwiftUI
+import Combine
 
 struct NotificationItem {
   var id: ID
@@ -21,15 +23,18 @@ extension NotificationItem {
   }
 }
 
-final class NotificationsService {
+final class NotificationsService: NSObject {
   
   private let center = UNUserNotificationCenter.current()
   private let deeplinkService: DeeplinkService
+  
+  let notifications = PassthroughSubject<UNNotificationResponse, Never>()
   
   // MARK: - Lifecycle
   
   init(deeplinkService: DeeplinkService) {
     self.deeplinkService = deeplinkService
+    super.init()
     
     configure()
   }
@@ -53,6 +58,8 @@ final class NotificationsService {
   // MARK: Private
   
   private func configure() {
+    center.delegate = self
+    
     let options: UNAuthorizationOptions = [.alert, .sound, .badge]
     Task {
       try await center.requestAuthorization(options: options)
@@ -60,6 +67,14 @@ final class NotificationsService {
         application.registerForRemoteNotifications()
       }
     }
+  }
+}
+
+// MARK: - UNUserNotificationCenterDelegate
+extension NotificationsService: UNUserNotificationCenterDelegate {
+  func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
+    print("new push notification: \(response.notification.request.content.userInfo)")
+    notifications.send(response)
   }
 }
 

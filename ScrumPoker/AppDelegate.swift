@@ -10,6 +10,10 @@ import Cocoa
 final class AppDelegate: NSObject, NSApplicationDelegate {
   private var sendPushTokenTask: Task<Void, Error>?
   
+  func applicationDidFinishLaunching(_ notification: Notification) {
+    print("notification: \(String(describing: notification.userInfo))")
+  }
+  
   func application(_ application: NSApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
     let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
     sendPushToken(token)

@@ -8,7 +8,7 @@
 import Foundation
 
 final class DeeplinkService: ObservableObject {
-  private let scheme = "scrumpoker"
+  static let scheme = "scrumpoker"
   
   func appRoute(from deeplink: URL) -> AppRoute? {
     guard let components = URLComponents(url: deeplink, resolvingAgainstBaseURL: false),
@@ -19,10 +19,17 @@ final class DeeplinkService: ObservableObject {
     }
     return .taskDetails(taskId: taskId, teamId: teamId)
   }
+  
+  func appRoute(from notificationRoute: String) -> AppRoute? {
+    let deeplinkString = "\(DeeplinkService.scheme)://\(notificationRoute)"
+    return URL(string: deeplinkString)
+      .flatMap(appRoute)
+  }
+  
   func deeplink(from appRoute: AppRoute) -> URL {
     switch appRoute {
     case .taskDetails(let taskId, let teamId):
-      return URL(string: "\(scheme)://?teamId=\(teamId)&taskId=\(taskId)")!
+      return URL(string: "\(Self.scheme)://?teamId=\(teamId)&taskId=\(taskId)")!
     }
   }
 }
