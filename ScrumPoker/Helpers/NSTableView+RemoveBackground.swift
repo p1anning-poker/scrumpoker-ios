@@ -5,6 +5,7 @@
 //  Created by Aleksey Konshin on 06.11.2022.
 //
 
+#if os(macOS)
 import AppKit
 
 extension NSTableView {
@@ -15,3 +16,4 @@ extension NSTableView {
     enclosingScrollView!.drawsBackground = false
   }
 }
+#endif

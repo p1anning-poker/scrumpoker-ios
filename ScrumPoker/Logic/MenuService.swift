@@ -5,6 +5,8 @@
 //  Created by Aleksey Konshin on 15.09.2022.
 //
 
+#if os(macOS)
+
 import Cocoa
 import Combine
 
@@ -68,3 +70,5 @@ final class MenuService: NSObject {
     statusItem.button?.attributedTitle = title
   }
 }
+
+#endif

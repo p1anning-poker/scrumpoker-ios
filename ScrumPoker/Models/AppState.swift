@@ -5,8 +5,8 @@
 //  Created by Aleksey Konshin on 15.09.2022.
 //
 
-import AppKit
 import Combine
+import Foundation
 
 private struct Keys {
   static let profile = "PROFILE"
@@ -75,7 +75,9 @@ final class AppState: ObservableObject {
     let data = try? JSONEncoder().encode(profile)
     defaults.set(data, forKey: Keys.profile)
     self.profileSubject.send(profile)
-    objectWillChange.send()
+    DispatchQueue.main.async {
+      self.objectWillChange.send()
+    }
   }
   
   func set(numberOfTasks: Int) {

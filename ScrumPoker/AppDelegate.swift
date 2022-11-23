@@ -5,21 +5,33 @@
 //  Created by Aleksey Konshin on 22.11.2022.
 //
 
+import Foundation
+#if os(macOS)
 import Cocoa
+#else
+import UIKit
+#endif
 
-final class AppDelegate: NSObject, NSApplicationDelegate {
+final class AppDelegate: NSObject, NSUIApplicationDelegate {
   private var sendPushTokenTask: Task<Void, Error>?
   
+#if os(macOS)
   func applicationDidFinishLaunching(_ notification: Notification) {
     print("notification: \(String(describing: notification.userInfo))")
   }
+#else
+  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    print("notification: \(String(describing: launchOptions))")
+    return true
+  }
+#endif
   
-  func application(_ application: NSApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+  func application(_ application: NSUIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
     let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
     sendPushToken(token)
   }
   
-  func application(_ application: NSApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+  func application(_ application: NSUIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
     print("Failed to register for remote notifications: \(error)")
   }
   

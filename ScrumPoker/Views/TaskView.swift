@@ -133,7 +133,7 @@ struct TaskView: View {
   
   @ViewBuilder
   private var votesView: some View {
-    if #available(macOS 13.0, *) {
+    if #available(macOS 13.0, iOS 16.0, *) {
       votesResultChart()
     } else {
       votesResultText()
@@ -152,7 +152,7 @@ struct TaskView: View {
     .textSelection(.enabled)
   }
   
-  @available(macOS 13.0, *)
+  @available(macOS 13.0, iOS 16.0, *)
   @ViewBuilder
   private func votesResultChart() -> some View {
     let data = VotesChart.Data(

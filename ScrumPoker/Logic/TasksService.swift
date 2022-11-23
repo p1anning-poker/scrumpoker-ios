@@ -7,7 +7,6 @@
 
 import Foundation
 import Combine
-import AppKit
 
 final class TasksService: ObservableObject {
   // MARK: Properties
@@ -133,9 +132,8 @@ extension TasksService {
   func share(task: ApiTask, teamId: Team.ID) {
     let deeplink = deeplinkService.deeplink(from: .taskDetails(taskId: task.id, teamId: teamId))
     let text = "[\(task.name)](\(deeplink.absoluteString))"
-    let pasteboard = NSPasteboard.general
-    pasteboard.declareTypes([.string], owner: nil)
-    pasteboard.setString(text, forType: .string)
+    let pasteboard = NSUIPasteboard.general
+    pasteboard.setString(text)
   }
 }
 

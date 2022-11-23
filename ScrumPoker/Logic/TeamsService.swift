@@ -5,7 +5,7 @@
 //  Created by Aleksey Konshin on 05.11.2022.
 //
 
-import AppKit
+import Foundation
 import Combine
 
 private enum Keys {
@@ -64,7 +64,7 @@ final class TeamsService: ObservableObject {
     
     Task {
       let notifications = await MainActor.run {
-        NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification).values
+        NotificationCenter.default.publisher(for: NSUIApplication.didBecomeActiveNotification).values
       }
       for await _ in notifications {
         reload()

@@ -31,9 +31,8 @@ struct SideBar<T: View>: View {
         Text(profile.name)
           .font(.title)
         Button {
-          let pasteboard = NSPasteboard.general
-          pasteboard.declareTypes([.string], owner: nil)
-          pasteboard.setString(profile.email, forType: .string)
+          let pasteboard = NSUIPasteboard.general
+          pasteboard.setString(profile.email)
         } label: {
           HStack(spacing: 4) {
             Text(profile.email)

@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct ScrumPokerApp: App {
   
-  @NSApplicationDelegateAdaptor private var appDelegate: AppDelegate
+  @NSUIApplicationDelegateAdaptor private var appDelegate: AppDelegate
   private let dependencies = Dependencies.shared
   
   var body: some Scene {
@@ -29,8 +29,10 @@ struct ScrumPokerApp: App {
           _ = self.dependencies.watchingService
         }
     }
+#if os(macOS)
     .windowStyle(HiddenTitleBarWindowStyle())
     .windowToolbarStyle(UnifiedWindowToolbarStyle())
+    #endif
     .commands {
       CommandGroup(replacing: CommandGroupPlacement.newItem, addition: {})
     }

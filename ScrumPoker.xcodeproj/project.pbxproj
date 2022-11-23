@@ -18,7 +18,7 @@
 		B44B9ACD28D7875700B3E4EE /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44B9ACC28D7875700B3E4EE /* ProfileService.swift */; };
 		B44B9ACF28D787A400B3E4EE /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44B9ACE28D787A400B3E4EE /* Profile.swift */; };
 		B45B130F292D078A0045E7DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45B130E292D078A0045E7DD /* AppDelegate.swift */; };
-		B45B1311292D081F0045E7DD /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45B1310292D081F0045E7DD /* App.swift */; };
+		B45B1311292D081F0045E7DD /* NSUIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45B1310292D081F0045E7DD /* NSUIApplication.swift */; };
 		B490CD232915BFE200EEAD4C /* TeamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD222915BFE200EEAD4C /* TeamsView.swift */; };
 		B490CD252915C01500EEAD4C /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD242915C01500EEAD4C /* Team.swift */; };
 		B490CD272915C24300EEAD4C /* TeamListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B490CD262915C24300EEAD4C /* TeamListView.swift */; };
@@ -44,7 +44,6 @@
 		B493D4DD28D31C8100B95A23 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B493D4DC28D31C8100B95A23 /* Preview Assets.xcassets */; };
 		B493D4E628D31D7F00B95A23 /* MenuService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4E528D31D7F00B95A23 /* MenuService.swift */; };
 		B493D4EB28D31DC300B95A23 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4EA28D31DC300B95A23 /* AppState.swift */; };
-		B493D4EE28D31F4200B95A23 /* PopoverHolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4ED28D31F4200B95A23 /* PopoverHolderView.swift */; };
 		B493D4F028D32F5900B95A23 /* Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4EF28D32F5900B95A23 /* Dependencies.swift */; };
 		B493D4F228D3320F00B95A23 /* TasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4F128D3320F00B95A23 /* TasksView.swift */; };
 		B493D4F528D3322C00B95A23 /* AuthorizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D4F428D3322C00B95A23 /* AuthorizationView.swift */; };
@@ -58,6 +57,7 @@
 		B493D50728D3650C00B95A23 /* TaskCreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B493D50628D3650C00B95A23 /* TaskCreateView.swift */; };
 		B4E0E24128F202EF00471A32 /* PublicUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E0E24028F202EF00471A32 /* PublicUser.swift */; };
 		B4FC2FD0292EC9CA00A7E04C /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FC2FCF292EC9CA00A7E04C /* MainView.swift */; };
+		B4FC2FD3292ED09B00A7E04C /* NSUIPasteboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4FC2FD2292ED09B00A7E04C /* NSUIPasteboard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,7 +72,7 @@
 		B44B9ACC28D7875700B3E4EE /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
 		B44B9ACE28D787A400B3E4EE /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		B45B130E292D078A0045E7DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B45B1310292D081F0045E7DD /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		B45B1310292D081F0045E7DD /* NSUIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSUIApplication.swift; sourceTree = "<group>"; };
 		B490CD222915BFE200EEAD4C /* TeamsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsView.swift; sourceTree = "<group>"; };
 		B490CD242915C01500EEAD4C /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		B490CD262915C24300EEAD4C /* TeamListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamListView.swift; sourceTree = "<group>"; };
@@ -100,7 +100,6 @@
 		B493D4DE28D31C8100B95A23 /* ScrumPoker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ScrumPoker.entitlements; sourceTree = "<group>"; };
 		B493D4E528D31D7F00B95A23 /* MenuService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuService.swift; sourceTree = "<group>"; };
 		B493D4EA28D31DC300B95A23 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
-		B493D4ED28D31F4200B95A23 /* PopoverHolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverHolderView.swift; sourceTree = "<group>"; };
 		B493D4EF28D32F5900B95A23 /* Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dependencies.swift; sourceTree = "<group>"; };
 		B493D4F128D3320F00B95A23 /* TasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksView.swift; sourceTree = "<group>"; };
 		B493D4F428D3322C00B95A23 /* AuthorizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationView.swift; sourceTree = "<group>"; };
@@ -115,6 +114,7 @@
 		B493D50828D36DDC00B95A23 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		B4E0E24028F202EF00471A32 /* PublicUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicUser.swift; sourceTree = "<group>"; };
 		B4FC2FCF292EC9CA00A7E04C /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		B4FC2FD2292ED09B00A7E04C /* NSUIPasteboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSUIPasteboard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -282,6 +282,7 @@
 		B493D4E928D31DBC00B95A23 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B4FC2FD1292ECEEB00A7E04C /* Universal */,
 				B4184C5F291D516D00AE0FD9 /* DTO */,
 				B490CD282915C24900EEAD4C /* Samples */,
 				B493D4EA28D31DC300B95A23 /* AppState.swift */,
@@ -290,7 +291,6 @@
 				B4E0E24028F202EF00471A32 /* PublicUser.swift */,
 				B490CD3A291801FC00EEAD4C /* TasksFilter.swift */,
 				B4184C60291D518B00AE0FD9 /* AppRoute.swift */,
-				B45B1310292D081F0045E7DD /* App.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -298,7 +298,6 @@
 		B493D4EC28D31F3400B95A23 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				B493D4ED28D31F4200B95A23 /* PopoverHolderView.swift */,
 				B490CD4A2918284D00EEAD4C /* NSTableView+RemoveBackground.swift */,
 				B490CD4E29182DF700EEAD4C /* List+Divider.swift */,
 				B4184C3F291A719300AE0FD9 /* View+Helpers.swift */,
@@ -322,6 +321,15 @@
 				B4FC2FCF292EC9CA00A7E04C /* MainView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		B4FC2FD1292ECEEB00A7E04C /* Universal */ = {
+			isa = PBXGroup;
+			children = (
+				B45B1310292D081F0045E7DD /* NSUIApplication.swift */,
+				B4FC2FD2292ED09B00A7E04C /* NSUIPasteboard.swift */,
+			);
+			path = Universal;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -413,9 +421,10 @@
 				B490CD4529181C3D00EEAD4C /* TeamMembersView.swift in Sources */,
 				B490CD232915BFE200EEAD4C /* TeamsView.swift in Sources */,
 				B4184C61291D518B00AE0FD9 /* AppRoute.swift in Sources */,
+				B4FC2FD3292ED09B00A7E04C /* NSUIPasteboard.swift in Sources */,
 				B490CD4929181E9100EEAD4C /* TeamMember+Sample.swift in Sources */,
 				B490CD4B2918284D00EEAD4C /* NSTableView+RemoveBackground.swift in Sources */,
-				B45B1311292D081F0045E7DD /* App.swift in Sources */,
+				B45B1311292D081F0045E7DD /* NSUIApplication.swift in Sources */,
 				B493D4FB28D3410D00B95A23 /* ApiTask.swift in Sources */,
 				B493D50528D3599500B95A23 /* VotesInfo.swift in Sources */,
 				B490CD3D291804D800EEAD4C /* Task+Sample.swift in Sources */,
@@ -433,7 +442,6 @@
 				B4FC2FD0292EC9CA00A7E04C /* MainView.swift in Sources */,
 				B493D4D628D31C7F00B95A23 /* ScrumPokerApp.swift in Sources */,
 				B493D4F728D3329D00B95A23 /* PokerAPI.swift in Sources */,
-				B493D4EE28D31F4200B95A23 /* PopoverHolderView.swift in Sources */,
 				B490CD3B291801FC00EEAD4C /* TasksFilter.swift in Sources */,
 				B4184C5A291D3F2800AE0FD9 /* VotesChart.swift in Sources */,
 				B44B9ACD28D7875700B3E4EE /* ProfileService.swift in Sources */,
@@ -579,6 +587,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ScrumPoker/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -586,8 +595,12 @@
 				MARKETING_VERSION = 1.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.konshin.scrumpoker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -608,6 +621,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ScrumPoker/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -615,8 +629,12 @@
 				MARKETING_VERSION = 1.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = net.konshin.scrumpoker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

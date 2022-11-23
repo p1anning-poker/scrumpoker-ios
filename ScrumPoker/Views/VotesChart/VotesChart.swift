@@ -8,7 +8,7 @@
 import SwiftUI
 import Charts
 
-@available(macOS 13.0, *)
+@available(macOS 13.0, iOS 16.0, *)
 struct VotesChart: View {
   var data: Data
   @State private var displayUsers: [String]?
@@ -37,7 +37,7 @@ struct VotesChart: View {
   }
 }
 
-@available(macOS 13.0, *)
+@available(macOS 13.0, iOS 16.0, *)
 extension VotesChart {
   struct VoteStat {
     let vote: String
@@ -48,7 +48,7 @@ extension VotesChart {
   }
 }
 
-@available(macOS 13.0, *)
+@available(macOS 13.0, iOS 16.0, *)
 struct VotesChart_Previews: PreviewProvider {
   static var previews: some View {
     let data = VotesChart.Data(

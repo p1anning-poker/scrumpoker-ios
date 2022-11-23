@@ -64,7 +64,7 @@ final class NotificationsService: NSObject {
     Task {
       try await center.requestAuthorization(options: options)
       await MainActor.run {
-        application.registerForRemoteNotifications()
+        NSUIApplication.shared.registerForRemoteNotifications()
       }
     }
   }
@@ -74,7 +74,9 @@ final class NotificationsService: NSObject {
 extension NotificationsService: UNUserNotificationCenterDelegate {
   func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
     print("new push notification: \(response.notification.request.content.userInfo)")
-    notifications.send(response)
+    await MainActor.run {
+      notifications.send(response)
+    }
   }
 }
 

@@ -11,6 +11,7 @@ struct Toolbar: View {
   var teamName: String
   
   var body: some View {
+#if os(macOS)
     Button {
       NSApp.keyWindow?.firstResponder?.tryToPerform(
         #selector(NSSplitViewController.toggleSidebar(_:)), with: nil
@@ -19,6 +20,7 @@ struct Toolbar: View {
       Label("Toggle sidebar", systemImage: "sidebar.left")
     }
     .help("Logout")
+#endif
     Text(teamName)
       .font(.title)
   }
