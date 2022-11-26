@@ -27,6 +27,7 @@ struct VotesChart: View {
     }
     .foregroundColor(.accentColor)
     .chartXAxisLabel("Voted users", position: .trailing)
+    .frame(minHeight: CGFloat(data.stat.count) * 40)
   }
   
   @ViewBuilder

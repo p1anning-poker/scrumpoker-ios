@@ -28,6 +28,16 @@ final class TestTasksService: TasksService {
   override func delete(taskId: ApiTask.ID, teamId: Team.ID, isFinished: Bool) async throws {
     testTasks.value.removeAll(where: { $0.id == taskId })
   }
+  
+  override func task(id: ApiTask.ID, teamId: Team.ID) async throws -> ApiTask {
+    return ApiTask.sample(id: id, finished: id == .finishedTaskId)
+  }
+  
+  override func votes(taskId: ApiTask.ID, teamId: Team.ID) async throws -> [VoteInfo] {
+    return (0..<4).map { id in
+      return VoteInfo.sample(vote: Vote("\(id)"), count: id + 1)
+    }
+  }
 }
 
 class TasksService: ObservableObject {
@@ -174,10 +184,8 @@ class TasksService: ObservableObject {
     let pasteboard = NSUIPasteboard.general
     pasteboard.setString(text)
   }
-}
-
-// MARK: - Votes
-extension TasksService {
+  
+  // MARK: - Votes
   
   func votes(taskId: ApiTask.ID, teamId: Team.ID) async throws -> [VoteInfo] {
     return try await api.votes(taskId: taskId, teamId: teamId)

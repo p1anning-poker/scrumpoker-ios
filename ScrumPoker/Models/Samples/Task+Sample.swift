@@ -13,8 +13,13 @@ extension ApiTask {
       taskUuid: id,
       taskOwner: .sample(),
       name: "Task \(id)",
+      url: URL(string: "https://sample.url.com/task/123")!,
       finished: finished,
       voteValue: vote
     )
   }
+}
+
+extension String {
+  static let finishedTaskId: ApiTask.ID = "finished"
 }

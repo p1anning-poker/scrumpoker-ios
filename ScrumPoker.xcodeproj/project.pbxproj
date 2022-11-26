@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B40B4D0D29328AC300E1C622 /* HBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40B4D0C29328AC300E1C622 /* HBar.swift */; };
 		B40B4D1029328F3300E1C622 /* InjectedValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40B4D0F29328F3300E1C622 /* InjectedValues.swift */; };
+		B40B4D122932B0DE00E1C622 /* VoteInfo+Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40B4D112932B0DE00E1C622 /* VoteInfo+Sample.swift */; };
 		B4184C40291A719300AE0FD9 /* View+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4184C3F291A719300AE0FD9 /* View+Helpers.swift */; };
 		B4184C5A291D3F2800AE0FD9 /* VotesChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4184C59291D3F2800AE0FD9 /* VotesChart.swift */; };
 		B4184C5C291D4E3C00AE0FD9 /* NotificationsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4184C5B291D4E3C00AE0FD9 /* NotificationsService.swift */; };
@@ -65,6 +66,7 @@
 /* Begin PBXFileReference section */
 		B40B4D0C29328AC300E1C622 /* HBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HBar.swift; sourceTree = "<group>"; };
 		B40B4D0F29328F3300E1C622 /* InjectedValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectedValues.swift; sourceTree = "<group>"; };
+		B40B4D112932B0DE00E1C622 /* VoteInfo+Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VoteInfo+Sample.swift"; sourceTree = "<group>"; };
 		B4184C3F291A719300AE0FD9 /* View+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Helpers.swift"; sourceTree = "<group>"; };
 		B4184C59291D3F2800AE0FD9 /* VotesChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotesChart.swift; sourceTree = "<group>"; };
 		B4184C5B291D4E3C00AE0FD9 /* NotificationsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsService.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 				B490CD3C291804D800EEAD4C /* Task+Sample.swift */,
 				B490CD41291810EA00EEAD4C /* User+Sample.swift */,
 				B490CD4829181E9100EEAD4C /* TeamMember+Sample.swift */,
+				B40B4D112932B0DE00E1C622 /* VoteInfo+Sample.swift */,
 			);
 			path = Samples;
 			sourceTree = "<group>";
@@ -450,6 +453,7 @@
 				B4E0E24128F202EF00471A32 /* PublicUser.swift in Sources */,
 				B490CD392917F74100EEAD4C /* TeamView.swift in Sources */,
 				B490CD2F2915C90500EEAD4C /* TeamsService.swift in Sources */,
+				B40B4D122932B0DE00E1C622 /* VoteInfo+Sample.swift in Sources */,
 				B493D50328D3541C00B95A23 /* Vote.swift in Sources */,
 				B493D4F228D3320F00B95A23 /* TasksView.swift in Sources */,
 				B43FE2E0291D8A6400E5A124 /* WatchingService.swift in Sources */,

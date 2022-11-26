@@ -114,6 +114,7 @@ struct TaskView: View {
           ForEach(slices[idx]) { vote in
             Button(action: { self.vote(vote) }) {
               Text(vote.name)
+                .foregroundColor(color(for: vote))
                 .frame(maxWidth: .infinity)
             }
             .disabled(task?.voteValue == vote)
@@ -184,6 +185,24 @@ struct TaskView: View {
           .textSelection(.enabled)
       }
     }
+  }
+  
+  private func color(for vote: Vote) -> Color {
+    // Commented for now
+//    switch vote {
+//    case .zero:
+//      return Color(.systemMint)
+//    case .one, .two:
+//      return Color(.systemGreen)
+//    case .three, .five:
+//      return .primary
+//    case .eight:
+//      return Color(.systemOrange)
+//    case .thirteen, .twentyOne:
+//      return Color(.systemRed)
+//    default:
+      return .primary
+//    }
   }
   
   // MARK: - Functions
@@ -269,29 +288,9 @@ struct TaskView: View {
 
 struct TaskView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
-      TaskView(
-        task: ApiTask(
-          taskUuid: "task_id",
-          taskOwner: PublicUser(userUuid: "id", name: "name"),
-          name: "Task name",
-          url: URL(string: "https://google.com"),
-          finished: false,
-          voteValue: nil,
-          votedUsers: [
-            PublicUser(
-              userUuid: "1",
-              name: "Short name"
-            ),
-            PublicUser(
-              userUuid: "2",
-              name: "Long Long name"
-            )
-          ]
-        ),
-        teamId: "1"
-      )
-    }
+    TaskView(
+      task: ApiTask.sample(id: ApiTask.ID.finishedTaskId), teamId: "teamId"
+    )
     .testDependences()
   }
 }

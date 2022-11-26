@@ -38,26 +38,29 @@ struct Vote: RawRepresentable, CaseIterable, Codable, Hashable {
   // MARK: - Getters
   
   var name: String {
-    switch self {
-    case .zero:
-      return "0"
-    case .one:
-      return "1"
-    case .two:
-      return "2"
-    case .three:
-      return "3"
-    case .five:
-      return "5"
-    case .eight:
-      return "8"
-    case .thirteen:
-      return "13"
-    case .twentyOne:
-      return "21"
-    default:
-      return rawValue
-    }
+    let base = {
+      switch self {
+      case .zero:
+        return "0"
+      case .one:
+        return "1"
+      case .two:
+        return "2"
+      case .three:
+        return "3"
+      case .five:
+        return "5"
+      case .eight:
+        return "8"
+      case .thirteen:
+        return "13"
+      case .twentyOne:
+        return "21"
+      default:
+        return rawValue
+      }
+    }()
+    return "\(base) SP"
   }
 }
 
