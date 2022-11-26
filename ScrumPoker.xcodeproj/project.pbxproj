@@ -10,6 +10,7 @@
 		B40B4D0D29328AC300E1C622 /* HBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40B4D0C29328AC300E1C622 /* HBar.swift */; };
 		B40B4D1029328F3300E1C622 /* InjectedValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40B4D0F29328F3300E1C622 /* InjectedValues.swift */; };
 		B40B4D122932B0DE00E1C622 /* VoteInfo+Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40B4D112932B0DE00E1C622 /* VoteInfo+Sample.swift */; };
+		B40B4D172932BBBF00E1C622 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40B4D162932BBBF00E1C622 /* SearchBar.swift */; };
 		B4184C40291A719300AE0FD9 /* View+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4184C3F291A719300AE0FD9 /* View+Helpers.swift */; };
 		B4184C5A291D3F2800AE0FD9 /* VotesChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4184C59291D3F2800AE0FD9 /* VotesChart.swift */; };
 		B4184C5C291D4E3C00AE0FD9 /* NotificationsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4184C5B291D4E3C00AE0FD9 /* NotificationsService.swift */; };
@@ -67,6 +68,7 @@
 		B40B4D0C29328AC300E1C622 /* HBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HBar.swift; sourceTree = "<group>"; };
 		B40B4D0F29328F3300E1C622 /* InjectedValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectedValues.swift; sourceTree = "<group>"; };
 		B40B4D112932B0DE00E1C622 /* VoteInfo+Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VoteInfo+Sample.swift"; sourceTree = "<group>"; };
+		B40B4D162932BBBF00E1C622 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		B4184C3F291A719300AE0FD9 /* View+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Helpers.swift"; sourceTree = "<group>"; };
 		B4184C59291D3F2800AE0FD9 /* VotesChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotesChart.swift; sourceTree = "<group>"; };
 		B4184C5B291D4E3C00AE0FD9 /* NotificationsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsService.swift; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 				B43E4C3F28D3B52F00ABD0D2 /* Toolbar.swift */,
 				B490CD2B2915C84700EEAD4C /* ErrorView.swift */,
 				B40B4D0C29328AC300E1C622 /* HBar.swift */,
+				B40B4D162932BBBF00E1C622 /* SearchBar.swift */,
 			);
 			path = Elements;
 			sourceTree = "<group>";
@@ -459,6 +462,7 @@
 				B43FE2E0291D8A6400E5A124 /* WatchingService.swift in Sources */,
 				B493D4D828D31C7F00B95A23 /* ContentView.swift in Sources */,
 				B4FC2FD0292EC9CA00A7E04C /* MainView.swift in Sources */,
+				B40B4D172932BBBF00E1C622 /* SearchBar.swift in Sources */,
 				B40B4D1029328F3300E1C622 /* InjectedValues.swift in Sources */,
 				B493D4D628D31C7F00B95A23 /* ScrumPokerApp.swift in Sources */,
 				B493D4F728D3329D00B95A23 /* PokerAPI.swift in Sources */,

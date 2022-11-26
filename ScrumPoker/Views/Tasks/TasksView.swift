@@ -15,7 +15,7 @@ struct TasksView: View {
   private var watchingService: WatchingService
   
   let team: Team
-  let filter: TasksFilter
+  let finished: Bool
   let allowedToCreate: Bool
   @Binding var taskToOpen: ApiTask?
   @State private var isSubscribed: Bool = true
@@ -24,9 +24,10 @@ struct TasksView: View {
   @State private var error: String?
   @State private var content: ContentType?
   @State private var modal: Modal?
+  @State private var searchText = ""
   
   var body: some View {
-    VStack(alignment: .leading) {
+    VStack(alignment: .leading, spacing: 4) {
       if allowedToCreate {
         HBar {
           Button(action: createTask) {
@@ -38,6 +39,8 @@ struct TasksView: View {
         }
         .padding([.leading, .trailing])
       }
+      SearchBar(text: $searchText, placeholder: "Task search", debounceInterval: 0.5)
+        .padding([.leading, .trailing])
       if let error = error {
         ErrorView(error: error)
           .padding()
@@ -63,12 +66,15 @@ struct TasksView: View {
       }
       Spacer()
     }
+    .onChange(of: searchText) { text in
+      reload()
+    }
     .onReceive(watchingService.isSubscribed(teamId: team.id)) { subscribed in
       self.isSubscribed = subscribed
     }
     .onReceive(tasksService.subscribe(teamId: team.id,
-                                      finished: filter.completed)) { tasks in
-      update(tasks: tasks, animated: true)
+                                      finished: finished)) { tasks in
+      update(tasks: tasks, animated: true, updateOnlyVisible: !searchText.isEmpty)
     }
     .frame(maxWidth: .infinity, alignment: .leading)
     .onBecomeForeground {
@@ -107,9 +113,8 @@ struct TasksView: View {
     } set: { active in
       if active {
         content = .details(task)
-      } 
+      }
     }
-
     NavigationLink(isActive: binding) {
       TaskView(task: task, teamId: team.id)
     } label: {
@@ -148,8 +153,14 @@ struct TasksView: View {
     error = nil
     Task {
       do {
-        let tasks = try await tasksService.reloadTasks(teamId: team.id, filter: filter)
-        update(tasks: tasks, animated: false)
+        let tasks = try await tasksService.reloadTasks(
+          teamId: team.id,
+          filter: TasksFilter(
+            completed: finished,
+            searchText: searchText
+          )
+        )
+        update(tasks: tasks, animated: false, updateOnlyVisible: false)
       } catch {
         self.error = error.localizedDescription
       }
@@ -169,10 +180,24 @@ struct TasksView: View {
       }
     }
   }
-
-  private func update(tasks: [ApiTask], animated: Bool) {
+  
+  /// Update current displayed tasks
+  /// - Parameters:
+  ///   - tasks: new tasks
+  ///   - animated: with animation
+  ///   - updateOnlyVisible: Update only currently visible tasks. Applicable when search filtred applied
+  private func update(tasks: [ApiTask], animated: Bool, updateOnlyVisible: Bool) {
     error = nil
+    lazy var currentTaskIds = Set(self.tasks.map { $0.id })
     var newTasks: [ApiTask] = tasks
+      .filter { task in
+        if updateOnlyVisible {
+          return currentTaskIds.contains(task.id)
+        } else {
+          return true
+        }
+            
+      }
       .sorted { l, r in
         return l.voteValue == nil && r.voteValue != nil
       }
@@ -242,7 +267,7 @@ struct MyTasksView_Previews: PreviewProvider {
   static var previews: some View {
     TasksView(
       team: .sample(id: "1"),
-      filter: TasksFilter(completed: false),
+      finished: false,
       allowedToCreate: true,
       taskToOpen: .constant(nil)
     )

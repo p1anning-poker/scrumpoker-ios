@@ -114,8 +114,8 @@ class TasksService: ObservableObject {
       .eraseToAnyPublisher()
   }
   
-  func cachedTasks(teamId: Team.ID, filter: TasksFilter) -> [ApiTask] {
-    let fetchParams = FetchParams(teamId: teamId, filter: filter)
+  func cachedTasks(teamId: Team.ID, finished: Bool) -> [ApiTask] {
+    let fetchParams = FetchParams(teamId: teamId, filter: .init(completed: finished))
     return self.cachedTasks.value[fetchParams] ?? []
   }
   
@@ -125,11 +125,14 @@ class TasksService: ObservableObject {
       return try await task.value
     } else {
       let task = Task {
-        try await api.tasks(teamId: teamId, finished: filter.completed)
+        try await api.tasks(teamId: teamId, finished: filter.completed, search: filter.searchText.isEmpty ? nil : filter.searchText)
       }
       await self.reloadTasks.add(task: task, params: fetchParams)
       let result = try await task.value
-      await update(newTasks: [fetchParams: result])
+      if filter.searchText.isEmpty {
+        // Reload cache only for non search requests
+        await update(newTasks: [fetchParams: result])
+      }
       await reloadTasks.removeTask(params: fetchParams)
       return result
     }
@@ -139,7 +142,7 @@ class TasksService: ObservableObject {
     var tasks = [FetchParams: [ApiTask]]()
     for teamId in teamIds {
       _ = try? await reloadTasks(teamId: teamId, filter: TasksFilter(completed: false))
-      tasks[FetchParams(teamId: teamId, filter: TasksFilter(completed: false))] = try? await api.tasks(teamId: teamId, finished: false)
+      tasks[FetchParams(teamId: teamId, filter: TasksFilter(completed: false))] = try? await api.tasks(teamId: teamId, finished: false, search: nil)
     }
     await update(newTasks: tasks)
   }

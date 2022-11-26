@@ -151,9 +151,10 @@ extension PokerAPI {
     return try await perform(path: "teams/\(teamId)/tasks/\(id)")
   }
   
-  func tasks(teamId: Team.ID, finished: Bool?) async throws -> [ApiTask] {
+  func tasks(teamId: Team.ID, finished: Bool?, search: String?) async throws -> [ApiTask] {
     var queryParams = [String: String]()
     queryParams["finished"] = finished.map(String.init)
+    queryParams["search"] = search
     return try await perform(
       type: [ApiTask].self,
       path: "teams/\(teamId)/tasks",

@@ -9,4 +9,5 @@ import Foundation
 
 struct TasksFilter: Hashable {
   var completed: Bool
+  var searchText: String = ""
 }

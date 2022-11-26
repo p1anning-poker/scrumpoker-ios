@@ -15,7 +15,7 @@ struct HBar<Content: View>: View {
     HStack {
       content()
     }
-    .frame(height: 40)
+    .frame(height: 36)
   }
 }
 

@@ -33,7 +33,7 @@ struct TeamView: View {
       TabView(selection: $tab) {
         NavigationView {
           TasksView(team: team,
-                    filter: TasksFilter(completed: false),
+                    finished: false,
                     allowedToCreate: true,
                     taskToOpen: $taskToOpen)
           .frame(minWidth: 300)
@@ -44,7 +44,7 @@ struct TeamView: View {
         .tag(Tab.tasks)
         NavigationView {
           TasksView(team: team,
-                    filter: TasksFilter(completed: true),
+                    finished: true,
                     allowedToCreate: false,
                     taskToOpen: $taskToOpen)
           .frame(minWidth: 300)
