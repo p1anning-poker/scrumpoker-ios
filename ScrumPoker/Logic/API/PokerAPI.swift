@@ -185,6 +185,10 @@ extension PokerAPI {
   func vote(taskId: ApiTask.ID, teamId: Team.ID, vote: Vote) async throws {
     _ = try await perform(path: "teams/\(teamId)/tasks/\(taskId)/votes", method: .PUT, params: ["value": vote.rawValue])
   }
+  
+  func votesStat(teamId: Team.ID) async throws -> TasksVotesStat {
+    return try await perform(path: "teams/\(teamId)/tasks/votesStat")
+  }
 }
 
 // MARK: - Teams

@@ -38,6 +38,18 @@ final class TestTasksService: TasksService {
       return VoteInfo.sample(vote: Vote("\(id)"), count: id + 1)
     }
   }
+  
+  override func tasksVotesStat(teamId: Team.ID) async throws -> TasksVotesStat {
+    return TasksVotesStat(
+      totalTasksCount: 10,
+      userVotesStat: (0..<5).map { id in
+        return .init(
+          user: PublicUser(userUuid: "\(id)", name: "User #\(id)"),
+          votedTasksCount: .random(in: 0..<10)
+        )
+      }
+    )
+  }
 }
 
 private actor ReloadTasksStorage {
@@ -210,6 +222,10 @@ class TasksService: ObservableObject {
   func vote(taskId: ApiTask.ID, teamId: Team.ID, vote: Vote) async throws {
     try await api.vote(taskId: taskId, teamId: teamId, vote: vote)
     reload(teamId: teamId, finished: false)
+  }
+  
+  func tasksVotesStat(teamId: Team.ID) async throws -> TasksVotesStat {
+    return try await api.votesStat(teamId: teamId)
   }
 }
 

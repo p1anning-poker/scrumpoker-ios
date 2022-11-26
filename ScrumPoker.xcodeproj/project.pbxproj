@@ -11,6 +11,8 @@
 		B40B4D1029328F3300E1C622 /* InjectedValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40B4D0F29328F3300E1C622 /* InjectedValues.swift */; };
 		B40B4D122932B0DE00E1C622 /* VoteInfo+Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40B4D112932B0DE00E1C622 /* VoteInfo+Sample.swift */; };
 		B40B4D172932BBBF00E1C622 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40B4D162932BBBF00E1C622 /* SearchBar.swift */; };
+		B40B4D1A2932C4B900E1C622 /* TaskVotesStatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40B4D192932C4B900E1C622 /* TaskVotesStatView.swift */; };
+		B40B4D1C2932C4FA00E1C622 /* TasksVotesStat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40B4D1B2932C4FA00E1C622 /* TasksVotesStat.swift */; };
 		B4184C40291A719300AE0FD9 /* View+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4184C3F291A719300AE0FD9 /* View+Helpers.swift */; };
 		B4184C5A291D3F2800AE0FD9 /* VotesChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4184C59291D3F2800AE0FD9 /* VotesChart.swift */; };
 		B4184C5C291D4E3C00AE0FD9 /* NotificationsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4184C5B291D4E3C00AE0FD9 /* NotificationsService.swift */; };
@@ -69,6 +71,8 @@
 		B40B4D0F29328F3300E1C622 /* InjectedValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectedValues.swift; sourceTree = "<group>"; };
 		B40B4D112932B0DE00E1C622 /* VoteInfo+Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VoteInfo+Sample.swift"; sourceTree = "<group>"; };
 		B40B4D162932BBBF00E1C622 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		B40B4D192932C4B900E1C622 /* TaskVotesStatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskVotesStatView.swift; sourceTree = "<group>"; };
+		B40B4D1B2932C4FA00E1C622 /* TasksVotesStat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksVotesStat.swift; sourceTree = "<group>"; };
 		B4184C3F291A719300AE0FD9 /* View+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Helpers.swift"; sourceTree = "<group>"; };
 		B4184C59291D3F2800AE0FD9 /* VotesChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotesChart.swift; sourceTree = "<group>"; };
 		B4184C5B291D4E3C00AE0FD9 /* NotificationsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsService.swift; sourceTree = "<group>"; };
@@ -144,6 +148,14 @@
 			path = Injection;
 			sourceTree = "<group>";
 		};
+		B40B4D182932C49A00E1C622 /* TeamVotesStat */ = {
+			isa = PBXGroup;
+			children = (
+				B40B4D192932C4B900E1C622 /* TaskVotesStatView.swift */,
+			);
+			path = TeamVotesStat;
+			sourceTree = "<group>";
+		};
 		B4184C58291D3F1E00AE0FD9 /* VotesChart */ = {
 			isa = PBXGroup;
 			children = (
@@ -161,6 +173,7 @@
 				B44B9ACE28D787A400B3E4EE /* Profile.swift */,
 				B490CD242915C01500EEAD4C /* Team.swift */,
 				B490CD4629181C9700EEAD4C /* TeamMember.swift */,
+				B40B4D1B2932C4FA00E1C622 /* TasksVotesStat.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -328,6 +341,7 @@
 		B493D4F328D3321300B95A23 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B40B4D182932C49A00E1C622 /* TeamVotesStat */,
 				B4184C58291D3F1E00AE0FD9 /* VotesChart */,
 				B490CD4329181C3000EEAD4C /* TeamMembers */,
 				B490CD3E2918100000EEAD4C /* SideBar */,
@@ -439,6 +453,7 @@
 				B40B4D0D29328AC300E1C622 /* HBar.swift in Sources */,
 				B493D4F028D32F5900B95A23 /* Dependencies.swift in Sources */,
 				B493D4EB28D31DC300B95A23 /* AppState.swift in Sources */,
+				B40B4D1A2932C4B900E1C622 /* TaskVotesStatView.swift in Sources */,
 				B490CD4529181C3D00EEAD4C /* TeamMembersView.swift in Sources */,
 				B490CD232915BFE200EEAD4C /* TeamsView.swift in Sources */,
 				B4184C61291D518B00AE0FD9 /* AppRoute.swift in Sources */,
@@ -452,6 +467,7 @@
 				B490CD2C2915C84700EEAD4C /* ErrorView.swift in Sources */,
 				B44B9ACF28D787A400B3E4EE /* Profile.swift in Sources */,
 				B490CD272915C24300EEAD4C /* TeamListView.swift in Sources */,
+				B40B4D1C2932C4FA00E1C622 /* TasksVotesStat.swift in Sources */,
 				B490CD34291652BE00EEAD4C /* PublicUser+Sample.swift in Sources */,
 				B4E0E24128F202EF00471A32 /* PublicUser.swift in Sources */,
 				B490CD392917F74100EEAD4C /* TeamView.swift in Sources */,
@@ -603,7 +619,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "\"ScrumPoker/Preview Content\"";
 				DEVELOPMENT_TEAM = DD57QBF5UM;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -637,7 +653,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "\"ScrumPoker/Preview Content\"";
 				DEVELOPMENT_TEAM = DD57QBF5UM;
 				ENABLE_HARDENED_RUNTIME = YES;

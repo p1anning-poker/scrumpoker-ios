@@ -58,6 +58,13 @@ struct TeamView: View {
             Text("Members")
           }
           .tag(Tab.members)
+        if #available(macOS 13.0, *), team.membershipStatus == .owner {
+          TaskVotesStatView(teamId: team.id)
+            .tabItem {
+              Text("Statistics")
+            }
+            .tag(Tab.statistics)
+        }
       }
       .onChange(of: taskToOpen) { newValue in
         updateSelectedTabToShowTaskIfNeeded()
@@ -96,7 +103,7 @@ struct TeamView: View {
 private extension TeamView {
   
   enum Tab {
-    case tasks, completed, members
+    case tasks, completed, members, statistics
   }
 }
 
