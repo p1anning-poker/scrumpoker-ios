@@ -32,6 +32,7 @@ struct TasksView: View {
           }
           Spacer()
           Toggle("Subscription", isOn: isSubscriptionOn())
+            .disabled(true)
         }
         .padding([.leading, .trailing])
       }
@@ -86,7 +87,11 @@ struct TasksView: View {
     return Binding {
       isSubscribed
     } set: { newValue in
-      watchingService.changeSubscription(enabled: newValue, for: team.id)
+      do {
+        try watchingService.changeSubscription(enabled: newValue, for: team.id)
+      } catch {
+        print("Failed to change subscription: \(error)")
+      }
     }
   }
   
