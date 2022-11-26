@@ -93,3 +93,14 @@ final class AppState: ObservableObject {
     defaults.set(lastLogin, forKey: Keys.lastLogin)
   }
 }
+
+struct AppStateKey: InjectionKey {
+  static var currentValue: AppState = AppState.shared
+}
+
+extension InjectedValues {
+  var appState: AppState {
+    get { Self[AppStateKey.self] }
+    set { Self[AppStateKey.self] = newValue }
+  }
+}

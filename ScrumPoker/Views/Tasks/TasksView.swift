@@ -9,8 +9,10 @@ import SwiftUI
 
 struct TasksView: View {
   
-  @EnvironmentObject private var tasksService: TasksService
-  @EnvironmentObject private var watchingService: WatchingService
+  @Injected(\.tasksService)
+  private var tasksService: TasksService
+  @Injected(\.watchingService)
+  private var watchingService: WatchingService
   
   let team: Team
   let filter: TasksFilter
@@ -26,7 +28,7 @@ struct TasksView: View {
   var body: some View {
     VStack(alignment: .leading) {
       if allowedToCreate {
-        HStack(alignment: .center) {
+        HBar {
           Button(action: createTask) {
             Label("Add task", systemImage: "rectangle.badge.plus")
           }
@@ -235,38 +237,13 @@ extension TasksView {
 
 struct MyTasksView_Previews: PreviewProvider {
   static var previews: some View {
-    let appState = AppState.shared
-    let tasks = (0..<5).map { id in
-      ApiTask.sample(
-        id: "id",
-        vote: Bool.random() ? Vote.one : nil
-      )
-    }
-    
-    let deeplinkService = DeeplinkService()
-    
-//    NavigationView {
-      TasksView(
-        team: .sample(id: "1"),
-        filter: TasksFilter(completed: false),
-        allowedToCreate: false,
-        taskToOpen: .constant(nil),
-        tasks: tasks
-      )
-        .environmentObject(
-          TasksService(
-            api: PokerAPI(
-              networkService: NetworkService(),
-              appState: appState
-            ),
-            appState: appState,
-            notificationsService: NotificationsService(
-              deeplinkService: deeplinkService
-            ),
-            deeplinkService: deeplinkService
-          )
-        )
-        .frame(width: 600)
-//    }
+    TasksView(
+      team: .sample(id: "1"),
+      filter: TasksFilter(completed: false),
+      allowedToCreate: true,
+      taskToOpen: .constant(nil)
+    )
+    .testDependences()
+    .frame(width: 600)
   }
 }

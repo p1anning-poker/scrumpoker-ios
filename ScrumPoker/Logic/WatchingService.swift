@@ -56,3 +56,19 @@ extension WatchingService {
     throw WatchingError.notSupported
   }
 }
+
+struct WatchingServiceKey: InjectionKey {
+    static var currentValue: WatchingService = WatchingService(
+      tasksService: InjectedValues[\.tasksService],
+      teamsService: InjectedValues[\.teamsService],
+      notificationsService: InjectedValues[\.notificationsService],
+      appState: InjectedValues[\.appState]
+    )
+}
+
+extension InjectedValues {
+  var watchingService: WatchingService {
+    get { Self[WatchingServiceKey.self] }
+    set { Self[WatchingServiceKey.self] = newValue }
+  }
+}

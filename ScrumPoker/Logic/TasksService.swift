@@ -8,7 +8,29 @@
 import Foundation
 import Combine
 
-final class TasksService: ObservableObject {
+final class TestTasksService: TasksService {
+  
+  private var testTasks: CurrentValueSubject<[ApiTask], Never> = CurrentValueSubject((0..<5).map { id in
+    ApiTask.sample(
+      id: "id",
+      vote: Bool.random() ? Vote.one : nil
+    )
+  })
+  
+  override func subscribe(teamId: Team.ID, finished: Bool) -> AnyPublisher<[ApiTask], Never> {
+    return testTasks.eraseToAnyPublisher()
+  }
+  
+  override func reloadTasks(teamId: Team.ID, filter: TasksFilter) async throws -> [ApiTask] {
+    return testTasks.value
+  }
+  
+  override func delete(taskId: ApiTask.ID, teamId: Team.ID, isFinished: Bool) async throws {
+    testTasks.value.removeAll(where: { $0.id == taskId })
+  }
+}
+
+class TasksService: ObservableObject {
   // MARK: Properties
   private let api: PokerAPI
   private let appState: AppState
@@ -103,9 +125,8 @@ final class TasksService: ObservableObject {
   }
   
   private func configure() {}
-}
-
-extension TasksService {
+  
+  // MARK: - Tasks
   
   func task(id: ApiTask.ID, teamId: Team.ID) async throws -> ApiTask {
     let task = try await api.task(id: id, teamId: teamId)
@@ -155,5 +176,21 @@ private extension TasksService {
   struct FetchParams: Hashable {
     var teamId: Team.ID
     var filter: TasksFilter
+  }
+}
+
+struct TasksServiceKey: InjectionKey {
+    static var currentValue: TasksService = TasksService(
+      api: InjectedValues[\.pokerApi],
+      appState: InjectedValues[\.appState],
+      notificationsService: InjectedValues[\.notificationsService],
+      deeplinkService: InjectedValues[\.deeplinkService]
+    )
+}
+
+extension InjectedValues {
+  var tasksService: TasksService {
+    get { Self[TasksServiceKey.self] }
+    set { Self[TasksServiceKey.self] = newValue }
   }
 }

@@ -80,3 +80,13 @@ extension NotificationsService: UNUserNotificationCenterDelegate {
   }
 }
 
+struct NotificationsServiceKey: InjectionKey {
+  static var currentValue: NotificationsService = NotificationsService(deeplinkService: InjectedValues[\.deeplinkService])
+}
+
+extension InjectedValues {
+  var notificationsService: NotificationsService {
+    get { Self[NotificationsServiceKey.self] }
+    set { Self[NotificationsServiceKey.self] = newValue }
+  }
+}

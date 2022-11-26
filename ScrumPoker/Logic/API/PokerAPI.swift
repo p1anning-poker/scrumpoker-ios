@@ -238,3 +238,17 @@ extension PokerAPI {
     )
   }
 }
+
+struct PokerApiKey: InjectionKey {
+  static var currentValue: PokerAPI = PokerAPI(
+    networkService: InjectedValues[\.networkService],
+    appState: InjectedValues[\.appState]
+  )
+}
+
+extension InjectedValues {
+  var pokerApi: PokerAPI {
+    get { Self[PokerApiKey.self] }
+    set { Self[PokerApiKey.self] = newValue }
+  }
+}

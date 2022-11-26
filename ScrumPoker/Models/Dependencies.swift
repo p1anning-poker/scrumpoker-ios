@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 final class Dependencies {
   
@@ -26,4 +27,30 @@ final class Dependencies {
     notificationsService: notificationsService,
     appState: appState
   )
+}
+
+extension View {
+  func testDependences() -> some View {
+    let appState = AppState.shared
+    let networkService = NetworkService()
+    let pokerApi = PokerAPI(networkService: networkService, appState: appState)
+    let deeplinkService = DeeplinkService()
+    let notificationsService = NotificationsService(deeplinkService: deeplinkService)
+    let tasksService = TestTasksService(api: pokerApi, appState: appState, notificationsService: notificationsService, deeplinkService: deeplinkService)
+    let profileService = ProfileService(api: pokerApi, appState: appState)
+    let teamsService = TeamsService(api: pokerApi)
+    let watchingService = WatchingService(tasksService: tasksService, teamsService: teamsService, notificationsService: notificationsService, appState: appState)
+    
+    InjectedValues[\.appState] = appState
+    InjectedValues[\.networkService] = networkService
+    InjectedValues[\.pokerApi] = pokerApi
+    InjectedValues[\.deeplinkService] = deeplinkService
+    InjectedValues[\.notificationsService] = notificationsService
+    InjectedValues[\.tasksService] = tasksService
+    InjectedValues[\.profileService] = profileService
+    InjectedValues[\.teamsService] = teamsService
+    InjectedValues[\.watchingService] = watchingService
+    
+    return self
+  }
 }

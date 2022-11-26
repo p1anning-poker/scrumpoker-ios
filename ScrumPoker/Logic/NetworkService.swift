@@ -42,3 +42,14 @@ final class NetworkService {
     Swift.print(text)
   }
 }
+
+struct NetworkServiceKey: InjectionKey {
+  static var currentValue: NetworkService = NetworkService()
+}
+
+extension InjectedValues {
+  var networkService: NetworkService {
+    get { Self[NetworkServiceKey.self] }
+    set { Self[NetworkServiceKey.self] = newValue }
+  }
+}

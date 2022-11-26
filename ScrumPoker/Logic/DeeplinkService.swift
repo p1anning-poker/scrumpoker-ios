@@ -33,3 +33,14 @@ final class DeeplinkService: ObservableObject {
     }
   }
 }
+
+struct DeeplinkServiceKey: InjectionKey {
+  static var currentValue: DeeplinkService = DeeplinkService()
+}
+
+extension InjectedValues {
+  var deeplinkService: DeeplinkService {
+    get { Self[DeeplinkServiceKey.self] }
+    set { Self[DeeplinkServiceKey.self] = newValue }
+  }
+}

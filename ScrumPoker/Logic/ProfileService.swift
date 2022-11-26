@@ -41,3 +41,17 @@ extension ProfileService {
     appState.set(numberOfTasks: 0)
   }
 }
+
+struct ProfileServiceKey: InjectionKey {
+    static var currentValue: ProfileService = ProfileService(
+      api: InjectedValues[\.pokerApi],
+      appState: InjectedValues[\.appState]
+    )
+}
+
+extension InjectedValues {
+  var profileService: ProfileService {
+    get { Self[ProfileServiceKey.self] }
+    set { Self[ProfileServiceKey.self] = newValue }
+  }
+}

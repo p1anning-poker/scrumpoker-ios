@@ -116,3 +116,16 @@ extension TeamsService {
     return team
   }
 }
+
+struct TeamsServiceKey: InjectionKey {
+    static var currentValue: TeamsService = TeamsService(
+      api: InjectedValues[\.pokerApi]
+    )
+}
+
+extension InjectedValues {
+  var teamsService: TeamsService {
+    get { Self[TeamsServiceKey.self] }
+    set { Self[TeamsServiceKey.self] = newValue }
+  }
+}
