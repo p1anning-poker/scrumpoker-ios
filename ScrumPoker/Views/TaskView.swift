@@ -86,8 +86,8 @@ struct TaskView: View {
         Button("Share link", action: shareLink)
         Spacer()
         if task.finished {
-          Button("Revote") {
-            revote()
+          Button("Restart") {
+            restart()
           }
         } else {
           Button("Finish") {
@@ -268,12 +268,11 @@ struct TaskView: View {
     }
   }
   
-  private func revote() {
+  private func restart() {
     error = nil
     Task {
       do {
-        try await taskService.revote(taskId: taskId, teamId: teamId)
-        reloadVotes()
+        try await taskService.restart(taskId: taskId, teamId: teamId)
       } catch {
         self.error = error.localizedDescription
       }

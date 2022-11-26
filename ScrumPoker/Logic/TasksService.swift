@@ -40,6 +40,20 @@ final class TestTasksService: TasksService {
   }
 }
 
+private actor ReloadTasksStorage {
+  typealias ReloadTask = Task<[ApiTask], Error>
+  
+  var tasks: [TasksService.FetchParams: ReloadTask] = [:]
+  
+  func add(task: ReloadTask, params: TasksService.FetchParams) {
+    tasks[params] = task
+  }
+  
+  func removeTask(params: TasksService.FetchParams) {
+    tasks[params] = nil
+  }
+}
+
 class TasksService: ObservableObject {
   // MARK: Properties
   private let api: PokerAPI
@@ -47,8 +61,7 @@ class TasksService: ObservableObject {
   private let notificationsService: NotificationsService
   private let deeplinkService: DeeplinkService
   
-  private var reloadTasks: [FetchParams: Task<[ApiTask], Error>] = [:]
-  
+  private let reloadTasks = ReloadTasksStorage()
   private var cachedTasks: CurrentValueSubject<[FetchParams: [ApiTask]], Never> = CurrentValueSubject([:])
 
   // MARK: - Lifecycle
@@ -108,16 +121,16 @@ class TasksService: ObservableObject {
   
   func reloadTasks(teamId: Team.ID, filter: TasksFilter) async throws -> [ApiTask] {
     let fetchParams = FetchParams(teamId: teamId, filter: filter)
-    if let task = reloadTasks[fetchParams] {
+    if let task = await reloadTasks.tasks[fetchParams] {
       return try await task.value
     } else {
       let task = Task {
         try await api.tasks(teamId: teamId, finished: filter.completed)
       }
-      self.reloadTasks[fetchParams] = task
+      await self.reloadTasks.add(task: task, params: fetchParams)
       let result = try await task.value
       await update(newTasks: [fetchParams: result])
-      reloadTasks[fetchParams] = nil
+      await reloadTasks.removeTask(params: fetchParams)
       return result
     }
   }
@@ -167,7 +180,7 @@ class TasksService: ObservableObject {
     reload(teamId: teamId, finished: true)
   }
   
-  func revote(taskId: ApiTask.ID, teamId: Team.ID) async throws {
+  func restart(taskId: ApiTask.ID, teamId: Team.ID) async throws {
     try await api.activate(taskId: taskId, teamId: teamId)
     reload(teamId: teamId, finished: false)
     reload(teamId: teamId, finished: true)
