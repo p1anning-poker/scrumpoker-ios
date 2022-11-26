@@ -61,15 +61,6 @@ final class TeamsService: ObservableObject {
   private func configure() {
     latestOpenedTeamId = defaults.string(forKey: Keys.latestOpenedTeamId)
     reload()
-    
-    Task {
-      let notifications = await MainActor.run {
-        NotificationCenter.default.publisher(for: NSUIApplication.didBecomeActiveNotification).values
-      }
-      for await _ in notifications {
-        reload()
-      }
-    }
   }
   
   private func reload() {

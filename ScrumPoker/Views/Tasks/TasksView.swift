@@ -71,6 +71,9 @@ struct TasksView: View {
       update(tasks: tasks, animated: true)
     }
     .frame(maxWidth: .infinity, alignment: .leading)
+    .onBecomeForeground {
+      reload()
+    }
     .onAppear {
       reload()
     }

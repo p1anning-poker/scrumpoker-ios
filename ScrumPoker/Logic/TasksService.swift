@@ -64,6 +64,18 @@ class TasksService: ObservableObject {
       .eraseToAnyPublisher()
   }
   
+  func subscribe(taskId: ApiTask.ID, teamId: Team.ID) -> AnyPublisher<ApiTask, Never> {
+    let finished = FetchParams(teamId: teamId, filter: TasksFilter(completed: true))
+    let notFinished = FetchParams(teamId: teamId, filter: TasksFilter(completed: false))
+    return cachedTasks
+      .compactMap { tasks in
+        tasks[notFinished]?.first(where: { $0.id == taskId }) ?? tasks[finished]?.first(where: { $0.id == taskId })
+      }
+      .removeDuplicates()
+      .dropFirst()
+      .eraseToAnyPublisher()
+  }
+  
   func subscribe(teamIds: Set<Team.ID>, finished: Bool) -> AnyPublisher<[Team.ID: [ApiTask]], Never> {
     return cachedTasks
       .map { tasks -> [Team.ID: [ApiTask]] in
@@ -141,6 +153,12 @@ class TasksService: ObservableObject {
   
   func finish(taskId: ApiTask.ID, teamId: Team.ID) async throws {
     try await api.finish(taskId: taskId, teamId: teamId)
+    reload(teamId: teamId, finished: false)
+    reload(teamId: teamId, finished: true)
+  }
+  
+  func revote(taskId: ApiTask.ID, teamId: Team.ID) async throws {
+    try await api.activate(taskId: taskId, teamId: teamId)
     reload(teamId: teamId, finished: false)
     reload(teamId: teamId, finished: true)
   }

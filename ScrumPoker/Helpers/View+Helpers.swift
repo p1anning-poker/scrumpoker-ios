@@ -20,3 +20,12 @@ extension View {
       )
   }
 }
+
+extension View {
+  @ViewBuilder
+  func onBecomeForeground(_ action: @escaping () -> Void) -> some View {
+    onReceive(NotificationCenter.default.publisher(for: NSUIApplication.didBecomeActiveNotification)) { _ in
+      action()
+    }
+  }
+}

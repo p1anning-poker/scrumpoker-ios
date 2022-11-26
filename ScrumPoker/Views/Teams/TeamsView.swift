@@ -63,6 +63,9 @@ struct TeamsView: View {
         )
       }
     }
+    .onBecomeForeground {
+      reload()
+    }
     .onAppear {
       reload()
     }

@@ -165,6 +165,10 @@ extension PokerAPI {
     _ = try await perform(path: "teams/\(teamId)/tasks/\(taskId)/finish", method: .POST)
   }
   
+  func activate(taskId: ApiTask.ID, teamId: Team.ID) async throws {
+    _ = try await perform(path: "teams/\(teamId)/tasks/\(taskId)/activate", method: .POST)
+  }
+  
   func delete(taskId: ApiTask.ID, teamId: Team.ID) async throws {
     _ = try await perform(path: "teams/\(teamId)/tasks/\(taskId)", method: .DELETE)
   }

@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct TaskView: View {
-  @EnvironmentObject private var taskService: TasksService
-  @EnvironmentObject private var appState: AppState
+  @Injected(\.tasksService)
+  private var taskService: TasksService
+  @Injected(\.appState)
+  private var appState: AppState
   @Environment(\.openURL) var openURL
   
   let teamId: Team.ID
@@ -42,6 +44,9 @@ struct TaskView: View {
     }
     .frame(minWidth: 300, maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     .padding()
+    .onReceive(taskService.subscribe(taskId: taskId, teamId: teamId)) { task in
+      setTask(task, animated: true)
+    }
     .onAppear {
       if task?.finished == true {
         reloadVotes()
@@ -76,23 +81,21 @@ struct TaskView: View {
   
   @ViewBuilder
   private var globalActions: some View {
-    VStack {
-      HStack {
-        if let task = task {
-          Button("Share link", action: shareLink)
-          Spacer()
-          if task.finished == false {
-            Button("Finish") {
-              finish()
-            }
+    HBar {
+      if let task = task {
+        Button("Share link", action: shareLink)
+        Spacer()
+        if task.finished {
+          Button("Revote") {
+            revote()
           }
         } else {
-          
+          Button("Finish") {
+            finish()
+          }
         }
       }
-      Spacer()
     }
-    .frame(height: 30)
   }
   
   @ViewBuilder
@@ -217,7 +220,6 @@ struct TaskView: View {
     Task {
       do {
         try await taskService.vote(taskId: taskId, teamId: teamId, vote: vote)
-        reload(animated: true)
       } catch {
         self.error = error.localizedDescription
       }
@@ -240,7 +242,18 @@ struct TaskView: View {
     Task {
       do {
         try await taskService.finish(taskId: taskId, teamId: teamId)
-        reload(animated: true)
+        reloadVotes()
+      } catch {
+        self.error = error.localizedDescription
+      }
+    }
+  }
+  
+  private func revote() {
+    error = nil
+    Task {
+      do {
+        try await taskService.revote(taskId: taskId, teamId: teamId)
         reloadVotes()
       } catch {
         self.error = error.localizedDescription
@@ -278,7 +291,7 @@ struct TaskView_Previews: PreviewProvider {
         ),
         teamId: "1"
       )
-      .environmentObject(AppState.shared)
     }
+    .testDependences()
   }
 }
